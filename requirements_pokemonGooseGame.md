@@ -1,6 +1,6 @@
 # Pokemon Goose Game Requirements
 
-Questo foglio di requisiti ha la priorità rispetto a requirements_GooseGame.
+Questo foglio di requisiti ha la priorità rispetto a requirements_GooseGame, qualora sorgessero conflitti.
 
 
 ### Personaggi giocabili
@@ -17,6 +17,9 @@ Questo foglio di requisiti ha la priorità rispetto a requirements_GooseGame.
 4. Il tipo della casella può determinare delle interazioni con il giocatore che la occupa in base al tipo della sua pedina, oltre agli effetti previsti dalla casella. Queste interazioni sono qui descritte:
 	1. Se il giocatore deve pagare una posta nel momento in cui si trova in una casella il cui tipo rientra nei tipi elencati negli attributi `half_damage_from`, `no_damage_from`, `double_damage_from` del pokemon che sta giocando, tale posta è rispettivamente dimezzata, annullata o raddoppiata.
 	2. Se il giocatore deve "guadagnare" una posta nel momento in cui si trova in una casella il cui tipo rientra nei tipi elencati negli attributi `half_damage_to`, `no_damage_to`, `double_damage_to` del pokemon che sta giocando, tale posta è rispettivamente dimezzata, annullata o raddoppiata.
+1. Le caselle **blu** hanno un effetto che è da considerarsi molto influente all'esito della partita, in maniera positiva o negativa o entrambi.
+	1. Sono caselle **identificate**, ovvero sono distinte da tutte le altre per il loro nome e sono sempre le stesse tra una partita e l'altra.
+1. Le caselle **gialle** hanno un effetto che è da considerarsi leggermente influente all'esito della partita, in maniera positiva o negativa o entrambi.+
 	
 ### Posta 
 
@@ -56,4 +59,10 @@ Questo foglio di requisiti ha la priorità rispetto a requirements_GooseGame.
 	1. Guadagna il palio;
 5. Chi perde la lotta;
 	1. Perde il palio;
-	2. Perde una quantità di HPs pari alla differenza tra i punteggi di lotta * 2% di max vita dello sconfitto.
+	2. Perde HPs
+	
+### Tabellone
+
+1. Saranno presenti 63 caselle totali su tabellone
+	1. Ogni 9 caselle 1 di esse sarà **gialla**, partendo dalle caselle 9 e 5
+	2. Le caselle il cui indice ricade nella seguente lista saranno considerate **blu**: [6, 19, 31, 42, 52, 58]
