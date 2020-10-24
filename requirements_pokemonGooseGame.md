@@ -5,7 +5,7 @@ Questo foglio di requisiti ha la priorità rispetto a requirements_GooseGame, qu
 
 ### Personaggi giocabili
 1. Ogni giocatore può scegliere un pokemon come pedina di gioco;
-2. Alla scelta, saranno mostrate informazioni dettagliate reperite dal database remoto [pokeapi](pokeapi.co);
+2. Alla scelta, saranno mostrate informazioni dettagliate reperite dal database remoto [pokeapi](https://pokeapi.co/);
 	1. La lista dei pokemon selezionabili sarà reperita da pokeapi;
 	2. Ogni pedina ha un **tipo**, determinato dal tipo del pokemon che rappresenta così come riporta pokeapi.
 
