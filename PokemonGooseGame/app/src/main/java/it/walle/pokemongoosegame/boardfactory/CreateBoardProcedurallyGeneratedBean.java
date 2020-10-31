@@ -1,33 +1,22 @@
 package it.walle.pokemongoosegame.boardfactory;
 
-import it.walle.pokemongoosegame.entity.Board;
-
 public class CreateBoardProcedurallyGeneratedBean extends CreateBoardBean{
-    private int numCells;
-    private int yellowCellDelta;
-    private int[] yellowCellStartingIndexes;
+    private BoardProcedurallyGeneratedSettings boardSettings;
+    private BlueCellSettings[] blueCellSettings;
 
-    public int getNumCells() {
-        return numCells;
+    public BlueCellSettings[] getBlueCellSettings() {
+        return blueCellSettings;
     }
 
-    public void setNumCells(int numCells) {
-        this.numCells = numCells;
+    public void setBlueCellSettings(BlueCellSettings[] blueCellSettings) {
+        this.blueCellSettings = blueCellSettings;
     }
 
-    public int getYellowCellDelta() {
-        return yellowCellDelta;
+    public BoardProcedurallyGeneratedSettings getBoardSettings() {
+        return boardSettings;
     }
 
-    public void setYellowCellDelta(int yellowCellDelta) {
-        this.yellowCellDelta = yellowCellDelta;
-    }
-
-    public int[] getYellowCellStartingIndexes() {
-        return yellowCellStartingIndexes;
-    }
-
-    public void setYellowCellStartingIndexes(int[] yellowCellStartingIndexes) {
-        this.yellowCellStartingIndexes = yellowCellStartingIndexes;
+    public void setBoardSettings(BoardProcedurallyGeneratedSettings boardSettings) {
+        this.boardSettings = boardSettings;
     }
 }
