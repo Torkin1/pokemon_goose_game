@@ -29,6 +29,17 @@ public class BoardFactoryProcedurallyGenerated extends BoardFactory{
         }
     }
 
+    private void checkIndexAvailability(Board board, BlueCell candidate) throws IndexUnavailableException {
+        try {
+            // Checks if index is in bounds and if there is no BlueCells with already such index
+            if (board.getCells().get(candidate.getBoardIndex()) != null) {
+                throw new IndexAlreadyInUseException(board, candidate);
+            }
+        } catch (IndexOutOfBoundsException e){
+            throw new IndexUnavailableException(e);
+        }
+    }
+
     private void createBoardProcedurallyGenerated(CreateBoardProcedurallyGeneratedBean bean){
         Board board = new Board();
         List<BlueCell> blueCells = new ArrayList<>();
@@ -53,17 +64,12 @@ public class BoardFactoryProcedurallyGenerated extends BoardFactory{
         // Adds blue cells to the board
         for (BlueCell c : blueCells){
 
-            // Checks if the blue cell has a legal index
-            if (bean.getBoardSettings().getNumCells() - c.getBoardIndex() > 0 && bean.getBoardSettings().getNumCells() - c.getBoardIndex() < bean.getBoardSettings().getNumCells()){
-
-                // If the index is not already in use, adds the blue cell to the board at the provided index
-                if (board.getCells().get(c.getBoardIndex()) == null){
-                    board.getCells().add(c.getBoardIndex(), c);
-                } else {
-                    Log.w(LOG_TAG, c.getClass().getSimpleName() + "wants index " + c.getBoardIndex() + ", already in use by " + board.getCells().get(c.getBoardIndex()).getClass().getSimpleName() + ", skipping" );
-                }
-            } else {
-                Log.w(LOG_TAG, c.getClass().getSimpleName() + " has an illegal index, skipping");
+            try{
+                // If the index is available, adds the blue cell to the board at such index
+                checkIndexAvailability(board, c);
+                board.getCells().add(c.getBoardIndex(), c);
+            } catch (IndexUnavailableException e){
+                Log.w(LOG_TAG , e.getMessage(), e);
             }
         }
 
