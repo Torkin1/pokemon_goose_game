@@ -7,4 +7,8 @@ public class IndexUnavailableException extends Exception{
     public IndexUnavailableException(Exception e) {
         super(e.getMessage(), e);
     }
+
+    public IndexUnavailableException(String message) {
+        super(message);
+    }
 }
