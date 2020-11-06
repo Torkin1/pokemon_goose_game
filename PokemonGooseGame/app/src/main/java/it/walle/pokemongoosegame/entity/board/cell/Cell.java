@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.entity.cell;
+package it.walle.pokemongoosegame.entity.board.cell;
 
 import it.walle.pokemongoosegame.entity.effect.Effect;
 

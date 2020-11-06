@@ -1,8 +1,8 @@
 package it.walle.pokemongoosegame.boardfactory;
 
 
-import it.walle.pokemongoosegame.entity.Board;
-import it.walle.pokemongoosegame.entity.cell.BlueCell;
+import it.walle.pokemongoosegame.entity.board.Board;
+import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 
 public class IndexAlreadyInUseException extends IndexUnavailableException {
     public IndexAlreadyInUseException(Board board, BlueCell candidate) {

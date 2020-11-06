@@ -1,7 +1,5 @@
-package it.walle.pokemongoosegame.entity.cell;
+package it.walle.pokemongoosegame.entity.board.cell;
 
-
-import androidx.annotation.NonNull;
 
 public class BlueCell extends Cell {
     private int boardIndex;

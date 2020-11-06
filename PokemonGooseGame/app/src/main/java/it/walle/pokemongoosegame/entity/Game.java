@@ -2,6 +2,8 @@ package it.walle.pokemongoosegame.entity;
 
 import java.util.List;
 
+import it.walle.pokemongoosegame.entity.board.Board;
+
 public class Game{
 
     private List<User> gamers;

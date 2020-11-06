@@ -1,9 +1,9 @@
-package it.walle.pokemongoosegame.entity;
+package it.walle.pokemongoosegame.entity.board;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import it.walle.pokemongoosegame.entity.cell.Cell;
+import it.walle.pokemongoosegame.entity.board.cell.Cell;
 
 public class Board {
 

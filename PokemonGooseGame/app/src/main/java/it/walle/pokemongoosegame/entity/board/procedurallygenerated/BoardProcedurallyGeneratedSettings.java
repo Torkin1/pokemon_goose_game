@@ -1,14 +1,22 @@
-package it.walle.pokemongoosegame.boardfactory;
+package it.walle.pokemongoosegame.entity.board.procedurallygenerated;
 
-import it.walle.pokemongoosegame.entity.cell.BlueCell;
+import androidx.annotation.NonNull;
+
+import it.walle.pokemongoosegame.entity.board.BoardSettings;
+import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.effect.YellowEffect;
 
-public class BoardProcedurallyGeneratedSettings {
-    private int numCells;   // Number of cells on the board
-    private int yellowCellDelta;    // The distance from two yellow cells
+public class BoardProcedurallyGeneratedSettings extends BoardSettings {
+
+    private int numCells;                       // Number of cells on the board
+    private int yellowCellDelta;                // The distance from two yellow cells
     private int[] yellowCellStartingIndexes;    // Starting from these indexes, there will be one yellow cell every yellowCellDelta cells .
-    private BlueCell[] blueCells;   // Blue cells which are to be injected in the board.
-    private YellowEffect[] yellowEffect;   // Yellow effects which can be injected in the board
+    private BlueCell[] blueCells;               // Blue cells which are to be injected in the board.
+    private YellowEffect[] yellowEffect;        // Yellow effects which can be injected in the board
+
+    public BoardProcedurallyGeneratedSettings(@NonNull String name) {
+        super(name);
+    }
 
 
     public BlueCell[] getBlueCells() {

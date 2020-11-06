@@ -1,5 +1,7 @@
 package it.walle.pokemongoosegame.boardfactory;
 
+import it.walle.pokemongoosegame.entity.board.procedurallygenerated.BoardProcedurallyGeneratedSettings;
+
 public class CreateBoardProcedurallyGeneratedBean extends CreateBoardBean{
     private BoardProcedurallyGeneratedSettings boardSettings;
     private BlueCellSettings[] blueCellSettings;

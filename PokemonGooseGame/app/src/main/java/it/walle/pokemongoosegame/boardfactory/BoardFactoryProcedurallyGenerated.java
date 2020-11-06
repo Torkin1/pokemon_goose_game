@@ -6,11 +6,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.walle.pokemongoosegame.entity.Board;
-import it.walle.pokemongoosegame.entity.cell.BlueCell;
-import it.walle.pokemongoosegame.entity.cell.Cell;
-import it.walle.pokemongoosegame.settings.BoardProcedurallyGeneratedSettingsDAO;
-import it.walle.pokemongoosegame.settings.json.BoardProcedurallyGeneratedSettingsDAO_JSON;
+import it.walle.pokemongoosegame.entity.board.Board;
+import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
+import it.walle.pokemongoosegame.entity.board.cell.Cell;
+import it.walle.pokemongoosegame.entity.board.procedurallygenerated.BoardProcedurallyGeneratedSettings;
 
 public class BoardFactoryProcedurallyGenerated extends BoardFactory{
 
