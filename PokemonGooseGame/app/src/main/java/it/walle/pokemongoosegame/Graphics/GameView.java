@@ -14,8 +14,8 @@ import android.view.SurfaceView;
 import it.walle.pokemongoosegame.GameActivity;
 import it.walle.pokemongoosegame.MainActivity;
 import it.walle.pokemongoosegame.R;
-import it.walle.pokemongoosegame.entity.Board;
 import it.walle.pokemongoosegame.entity.Pokemon;
+import it.walle.pokemongoosegame.entity.board.Board;
 
 public class GameView extends SurfaceView implements Runnable{
 

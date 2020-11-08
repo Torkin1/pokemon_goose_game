@@ -1,8 +1,8 @@
-package it.walle.pokemongoosegame.entity.board.procedurallygenerated;
+package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
 
 import androidx.annotation.NonNull;
 
-import it.walle.pokemongoosegame.entity.board.BoardSettings;
+import it.walle.pokemongoosegame.boardfactory.BoardSettings;
 import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.effect.YellowEffect;
 

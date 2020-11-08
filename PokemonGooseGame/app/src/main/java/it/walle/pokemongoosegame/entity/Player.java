@@ -1,12 +1,11 @@
 package it.walle.pokemongoosegame.entity;
 
-public class User{
+public class Player {
 
     private String username;
-    private int pokemonID;
+    private Pokemon pokemon;
 
-    public User(){
-        this.pokemonID = 0;
+    public Player(){
         this.username = null;
     }
 
@@ -18,11 +17,11 @@ public class User{
         return username;
     }
 
-    public void setPokemonID(int pokemonID){
-        this.pokemonID = pokemonID;
+    public Pokemon getPokemon() {
+        return pokemon;
     }
 
-    public int getPokemonID(){
-        return this.pokemonID;
+    public void setPokemon(Pokemon pokemon) {
+        this.pokemon = pokemon;
     }
 }

@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.entity.board;
+package it.walle.pokemongoosegame.boardfactory;
 
 import androidx.annotation.NonNull;
 

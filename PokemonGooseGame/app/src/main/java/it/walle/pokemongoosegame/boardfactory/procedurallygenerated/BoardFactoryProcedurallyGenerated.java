@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.boardfactory;
+package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
 
 import android.content.Context;
 import android.util.Log;
@@ -6,16 +6,19 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.walle.pokemongoosegame.boardfactory.BoardFactory;
+import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
+import it.walle.pokemongoosegame.boardfactory.IndexAlreadyInUseException;
+import it.walle.pokemongoosegame.boardfactory.IndexUnavailableException;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
-import it.walle.pokemongoosegame.entity.board.procedurallygenerated.BoardProcedurallyGeneratedSettings;
 
-public class BoardFactoryProcedurallyGenerated extends BoardFactory{
+public class BoardFactoryProcedurallyGenerated extends BoardFactory {
 
     private static final String LOG_TAG = BoardProcedurallyGeneratedSettings.class.getName();
 
-    public BoardFactoryProcedurallyGenerated(Context context) {
+    private BoardFactoryProcedurallyGenerated(Context context) {
         super(context);
     }
 

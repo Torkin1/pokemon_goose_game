@@ -1,6 +1,6 @@
 package it.walle.pokemongoosegame.settings;
 
-import it.walle.pokemongoosegame.entity.board.BoardSettings;
+import it.walle.pokemongoosegame.boardfactory.BoardSettings;
 
 public interface BoardSettingsDAO {
     public void storeBoardSettings(BoardSettings settings);

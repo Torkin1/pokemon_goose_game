@@ -3,10 +3,9 @@ package it.walle.pokemongoosegame.settings.json;
 import android.content.Context;
 import android.util.Log;
 
-import java.io.File;
 import java.io.IOException;
 
-import it.walle.pokemongoosegame.entity.board.BoardSettings;
+import it.walle.pokemongoosegame.boardfactory.BoardSettings;
 import it.walle.pokemongoosegame.settings.BoardSettingsDAO;
 import it.walle.pokemongoosegame.settings.UnableToLoadSettingsException;
 

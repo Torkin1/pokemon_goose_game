@@ -6,7 +6,7 @@ import it.walle.pokemongoosegame.entity.board.Board;
 
 public class Game{
 
-    private List<User> gamers;
+    private List<Player> gamers;
     private List<Integer> scores;
     private Board board;
 
@@ -16,11 +16,11 @@ public class Game{
         this.board = null;
     }
 
-    public void setGamers(List<User> gamers){
+    public void setGamers(List<Player> gamers){
         this.gamers = gamers;
     }
 
-    public List<User> getGamers(){
+    public List<Player> getGamers(){
         return this.gamers;
     }
 

@@ -6,14 +6,30 @@ import java.lang.reflect.InvocationTargetException;
 
 public abstract class BoardFactory {
 
-    // Base name for all instances of BoardFactory
-    protected static final String baseName = BoardFactory.class.getSimpleName();
     protected final Context context;
-    public static BoardFactory getInstance(Context context, BoardType type) throws ClassNotFoundException, IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException {
+
+    private static BoardFactoryType inferBoardFactoryType(CreateBoardBean bean) throws UnregisteredBoardFactoryTypeException {
+
+        // Searches in BoardFactoryTypes for a match
+        for (BoardFactoryType t : BoardFactoryType.values()){
+            if (t.getCreateBoardBeanTypeName().equals(bean.getClass().getName())){
+                return t;
+            }
+        }
+        throw new UnregisteredBoardFactoryTypeException(bean);
+    }
+
+
+    public static BoardFactory getInstance(Context context, CreateBoardBean createBoardBean) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+
+        // Infers the desired BoardFactory type by looking at createBoardBean type
+        BoardFactoryType type = inferBoardFactoryType(createBoardBean);
 
         // return a reference to the desired BoardFactory
-        return (BoardFactory) Class.forName(baseName + type.toString()).getConstructor(Context.class).newInstance(context);
+        return (BoardFactory) Class.forName(type.toString()).getConstructor(Context.class).newInstance(context);
     }
+
+
 
     public BoardFactory(Context context){
         this.context = context;

@@ -1,8 +1,10 @@
-package it.walle.pokemongoosegame.boardfactory;
+package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
 
-import it.walle.pokemongoosegame.entity.board.procedurallygenerated.BoardProcedurallyGeneratedSettings;
+import it.walle.pokemongoosegame.boardfactory.BlueCellSettings;
+import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
+import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.BoardProcedurallyGeneratedSettings;
 
-public class CreateBoardProcedurallyGeneratedBean extends CreateBoardBean{
+public class CreateBoardProcedurallyGeneratedBean extends CreateBoardBean {
     private BoardProcedurallyGeneratedSettings boardSettings;
     private BlueCellSettings[] blueCellSettings;
 
