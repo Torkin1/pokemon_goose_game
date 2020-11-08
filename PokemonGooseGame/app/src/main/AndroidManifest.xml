@@ -9,7 +9,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PokemonGooseGame">
-        <activity android:name=".MainActivity">
+        <service android:name=".Graphics.MusicService"
+            android:enabled="true"/>
+        <activity android:name=".Aboutus"  android:screenOrientation="landscape"
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar">
+        </activity>
+        <activity android:name=".Info" android:screenOrientation="landscape"
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar" >
+        </activity>
+        <activity android:name=".GameActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
