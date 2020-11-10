@@ -5,6 +5,7 @@ import android.content.Context;
 import java.lang.reflect.InvocationTargetException;
 
 import it.walle.pokemongoosegame.boardfactory.BoardFactory;
+import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.Pokemon;
@@ -23,7 +24,7 @@ public class GameFactory {
         // Creates a Player instance and binds it to the specified pokemon
         Player player = new Player();
         Pokemon pokemon = new Pokemon();
-        player.setUsername(bean.getUsername());
+        player.setUsername(bean.getPlayerUsername());
 
         // TODO: queries pokeapi for details to insert in Pokemon instance
 
@@ -34,14 +35,14 @@ public class GameFactory {
         this.game.getGamers().add(player);
     }
 
-    public void addNewBoard(AddNewBoardBean bean) throws BoardFactoryCreationFailureException {
+    public void addNewBoard(CreateBoardBean bean) throws BoardFactoryCreationFailureException {
         try {
 
             // Creates a new Board
-            BoardFactory.getInstance(this.context, bean.getCreateBoardBean()).createBoard(bean.getCreateBoardBean());
+            BoardFactory.getInstance(this.context, bean).createBoard();
 
             // Binds the board to the game
-            this.game.setBoard(bean.getCreateBoardBean().getBoard());
+            this.game.setBoard(bean.getBoard());
         }
         catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
             throw new BoardFactoryCreationFailureException(e);
