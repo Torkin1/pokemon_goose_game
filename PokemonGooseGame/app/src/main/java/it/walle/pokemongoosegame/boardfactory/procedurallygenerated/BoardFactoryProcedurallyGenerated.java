@@ -18,14 +18,14 @@ public class BoardFactoryProcedurallyGenerated extends BoardFactory {
 
     private static final String LOG_TAG = BoardProcedurallyGeneratedSettings.class.getName();
 
-    private BoardFactoryProcedurallyGenerated(Context context) {
-        super(context);
+    private BoardFactoryProcedurallyGenerated(Context context, CreateBoardBean bean) {
+        super(context, bean);
     }
 
     @Override
-    public void createBoard(CreateBoardBean bean) {
+    public void createBoard() {
         try {
-            this.createBoardProcedurallyGenerated((CreateBoardProcedurallyGeneratedBean) bean);
+            this.createBoardProcedurallyGenerated((CreateBoardProcedurallyGeneratedBean) this.bean);
         } catch (ClassCastException e){
             Log.w(LOG_TAG, e.getMessage(), e);
         }

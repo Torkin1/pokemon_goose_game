@@ -27,6 +27,14 @@ public enum BoardFactoryType {
         return this.boardFactoryType.getName();
     }
 
+    public Class<? extends CreateBoardBean> getCreateBoardBeanType() {
+        return createBoardBeanType;
+    }
+
+    public Class<? extends BoardFactory> getBoardFactoryType() {
+        return boardFactoryType;
+    }
+
     @NonNull
     @Override
     public String toString() {
