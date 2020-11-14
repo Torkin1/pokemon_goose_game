@@ -19,7 +19,9 @@ public class Pokemon implements Parcelable {
     @ColumnInfo(name = "name")
     private String name;
     @ColumnInfo(name = "hp")
-    private int hp;
+    private int hp;                     // Max health value
+    @ColumnInfo(name = "currentHp")
+    private int currentHp;              // Current health value
     @ColumnInfo(name = "type")
     private List<String> type;
 
@@ -56,6 +58,14 @@ public class Pokemon implements Parcelable {
         hp = in.readInt();
         type = new ArrayList<String>();
         in.readList(type, String.class.getClassLoader());
+    }
+
+    public int getCurrentHp() {
+        return currentHp;
+    }
+
+    public void setCurrentHp(int currentHp) {
+        this.currentHp = currentHp;
     }
 
     public void setId(int id){

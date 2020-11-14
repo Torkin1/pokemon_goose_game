@@ -1,22 +1,22 @@
 package it.walle.pokemongoosegame.game;
 
 public class AddNewPlayerBean {
-    private String username;
-    private int id;
+    private String playerUsername;  // The player username
+    private int pokemonId;          // The pokemon id
 
-    public String getUsername() {
-        return username;
+    public String getPlayerUsername() {
+        return playerUsername;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setPlayerUsername(String playerUsername) {
+        this.playerUsername = playerUsername;
     }
 
-    public int getId() {
-        return id;
+    public int getPokemonId() {
+        return pokemonId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setPokemonId(int pokemonId) {
+        this.pokemonId = pokemonId;
     }
 }
