@@ -4,8 +4,6 @@ import android.content.Context;
 
 import java.lang.reflect.InvocationTargetException;
 
-import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.CreateBoardProcedurallyGeneratedBean;
-
 public abstract class BoardFactory {
 
     protected final Context context;
@@ -29,7 +27,7 @@ public abstract class BoardFactory {
         BoardFactoryType type = infereBoardFactoryType(createBoardBean);
 
         // return a reference to the desired BoardFactory
-        return (BoardFactory) Class.forName(type.toString()).getConstructor(Context.class, type.getCreateBoardBeanType()).newInstance(context, createBoardBean);
+        return (BoardFactory) Class.forName(type.getBoardFactoryTypeName()).getConstructor(Context.class, type.getCreateBoardBeanType()).newInstance(context, createBoardBean);
     }
 
 

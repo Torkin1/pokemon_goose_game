@@ -14,18 +14,18 @@ import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
 
-public class BoardFactoryProcedurallyGenerated extends BoardFactory {
+public class BoardFactoryPG extends BoardFactory {
 
-    private static final String LOG_TAG = BoardProcedurallyGeneratedSettings.class.getName();
+    private static final String LOG_TAG = BoardPGParams.class.getName();
 
-    private BoardFactoryProcedurallyGenerated(Context context, CreateBoardBean bean) {
+    private BoardFactoryPG(Context context, CreateBoardBean bean) {
         super(context, bean);
     }
 
     @Override
     public void createBoard() {
         try {
-            this.createBoardProcedurallyGenerated((CreateBoardProcedurallyGeneratedBean) this.bean);
+            this.createBoardProcedurallyGenerated((CreateBoardPGBean) this.bean);
         } catch (ClassCastException e){
             Log.w(LOG_TAG, e.getMessage(), e);
         }
@@ -42,7 +42,7 @@ public class BoardFactoryProcedurallyGenerated extends BoardFactory {
         }
     }
 
-    private void createBoardProcedurallyGenerated(CreateBoardProcedurallyGeneratedBean bean){
+    private void createBoardProcedurallyGenerated(CreateBoardPGBean bean){
         Board board = new Board();
         List<BlueCell> blueCells = new ArrayList<>();
         List<String> pokemonTypes = new ArrayList<>();
@@ -50,15 +50,15 @@ public class BoardFactoryProcedurallyGenerated extends BoardFactory {
         // TODO: Populates pokemonTypes with types queried from pokeapi.
 
         // Populates BlueCells with blue cells.
-        for (int i = 0; i < bean.getBlueCellSettings().length; i ++){
+        for (int i = 0; i < bean.getBoardSettings().getBlueCellSettings().size(); i ++){
             BlueCell blueCell;
             try {
-                blueCell = (BlueCell) Class.forName(bean.getBlueCellSettings()[i].getBlueCellClassName()).newInstance();
-                blueCell.setBoardIndex(bean.getBlueCellSettings()[i].getBoardIndex());
+                blueCell = (BlueCell) Class.forName(bean.getBoardSettings().getBlueCellSettings().get(i).getBlueCellName()).newInstance();
+                blueCell.setBoardIndex(bean.getBoardSettings().getBlueCellSettings().get(i).getBoardIndex());
                 blueCells.add(blueCell);
             } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
                 // If an error occurs the blue cell is skipped
-                Log.w(LOG_TAG, "Unable to instantiate Blue Cell with class name: " + bean.getBlueCellSettings()[i].getBlueCellClassName(), e);
+                Log.w(LOG_TAG, "Unable to instantiate Blue Cell with class name: " + bean.getBoardSettings().getBlueCellSettings().get(i).getBlueCellName(), e);
             }
 
         }
@@ -76,7 +76,7 @@ public class BoardFactoryProcedurallyGenerated extends BoardFactory {
         }
 
         // Generates all remaining cells and adds them to the board
-        for (int i = 0; i < bean.getBoardSettings().getNumCells(); i ++){
+        for (int i = 0; i < bean.getBoardSettings().getBoardPGParams().getNumCells(); i ++){
 
             // If the index is already in use by a blue cell it ignores it
             if (board.getCells().get(i) != null){
@@ -88,8 +88,17 @@ public class BoardFactoryProcedurallyGenerated extends BoardFactory {
             cell.setType(pokemonTypes.get((int) Math.floor(Math.random() * pokemonTypes.size())));
 
             // If it's a yellow cell adds a random yellow effect to it
-            for (int j = 0; j < bean.getBoardSettings().getYellowCellStartingIndexes().length; j ++){
-                if ((i + (Math.abs(bean.getBoardSettings().getYellowCellStartingIndexes()[j] - bean.getBoardSettings().getYellowCellDelta()))) % bean.getBoardSettings().getYellowCellDelta() == 0){
+            for (int j = 0; j < bean.getBoardSettings().getYellowCellStartingIndexes().size(); j ++){
+                if ((i + (Math.abs(
+                        bean
+                                .getBoardSettings()
+                                .getYellowCellStartingIndexes()
+                                .get(i)
+                                .getIndex() - bean.getBoardSettings().getBoardPGParams().getYellowCellDelta())
+                )) % bean
+                        .getBoardSettings()
+                        .getBoardPGParams()
+                        .getYellowCellDelta() == 0) {
                     // TODO: adds yellow effect. Names of YellowEffects to istantiate are read from local DB.
                 }
             }

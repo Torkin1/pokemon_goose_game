@@ -1,17 +1,23 @@
 package it.walle.pokemongoosegame.boardfactory;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+@Entity(primaryKeys = {"boardSettingsName", "blueCellName"})
 public class BlueCellSettings {
-    private String blueCellClassName;
-    private int boardIndex;
+    @NonNull
+    private String boardSettingsName;       // The name of the corresponding board configuration
+    @NonNull
+    private String blueCellName;            // The name of the corresponding blue cell
+    private int boardIndex;                 // The index where the corresponding blue cell will be placed
 
-    public String getBlueCellClassName() {
-        return blueCellClassName;
+    public String getBlueCellName() {
+        return blueCellName;
     }
 
-    public void setBlueCellClassName(String blueCellClassName) {
-        this.blueCellClassName = blueCellClassName;
+    public void setBlueCellName(String blueCellName) {
+        this.blueCellName = blueCellName;
     }
 
     public int getBoardIndex() {
@@ -22,9 +28,17 @@ public class BlueCellSettings {
         this.boardIndex = boardIndex;
     }
 
+    public String getBoardSettingsName() {
+        return boardSettingsName;
+    }
+
+    public void setBoardSettingsName(String boardSettingsName) {
+        this.boardSettingsName = boardSettingsName;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        return this.getBlueCellClassName();
+        return this.getBlueCellName();
     }
 }

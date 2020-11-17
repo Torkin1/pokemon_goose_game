@@ -10,7 +10,7 @@ import java.util.logging.Logger;
 
 public class MethodGetter {
 	
-	private static Logger logger = Logger.getLogger(MethodGetter.class.getName());
+	private static final Logger logger = Logger.getLogger(MethodGetter.class.getName());
 	
 	private MethodGetter() {}
 
@@ -35,6 +35,11 @@ public class MethodGetter {
 			throw new NoSuchSetterException(attrName);
 		}
 	}
+
+	public static Method getMethodByRoot(String root, Class<?> objClass) throws NoSuchMethodException {
+		return getGetterOrSetter(root, "", objClass);
+
+	}
 	
 	private static Method getGetterOrSetter(String getOrSet, String attrName, Class<?> objClass) throws NoSuchMethodException {
 		
@@ -48,7 +53,6 @@ public class MethodGetter {
 							&& methods[j].getName().substring(2).compareTo(attrName.substring(0, 1).toUpperCase() + attrName.substring(1)) == 0
 							&& !methods[j].isSynthetic())
 					) {
-				// logger.log(Level.INFO, methods[j].getName());
 				return methods[j];
 			}
 		}
