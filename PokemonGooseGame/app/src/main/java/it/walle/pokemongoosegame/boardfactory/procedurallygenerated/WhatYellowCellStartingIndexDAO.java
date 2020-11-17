@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.settings;
+package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

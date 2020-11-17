@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.settings;
+package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;
@@ -6,7 +6,6 @@ import androidx.room.Relation;
 import java.util.List;
 
 import it.walle.pokemongoosegame.boardfactory.BlueCellSettings;
-import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.BoardPGParams;
 
 public class BoardPGSettings {
     @Embedded
@@ -16,7 +15,7 @@ public class BoardPGSettings {
     @Relation(parentColumn = "name", entityColumn = "boardSettingsName" )
     private List<BlueCellSettings> blueCellSettings;                                // Parameters needed by board factory to inject blue cells in the board, one for each blue cell
     @Relation(parentColumn = "name", entityColumn = "boardSettingsName" )
-    private List<WhatYellowEffectName> yellowEffectName;                           // Yellow effect names which can be injected in the board
+    private List<WhatYellowEffectName> yellowEffectName;                            // Yellow effect names which can be injected in the board
 
     public BoardPGParams getBoardPGParams() {
         return boardPGParams;

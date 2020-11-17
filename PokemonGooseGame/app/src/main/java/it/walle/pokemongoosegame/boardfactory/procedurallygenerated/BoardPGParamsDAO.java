@@ -1,12 +1,10 @@
-package it.walle.pokemongoosegame.settings;
+package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Transaction;
-
-import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.BoardPGParams;
 
 @Dao
 public interface BoardPGParamsDAO {
