@@ -1,91 +1,18 @@
 package it.walle.pokemongoosegame.entity;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import androidx.room.ColumnInfo;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
-import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-public class Type implements Parcelable {
+public class Type{
 
-    @PrimaryKey(autoGenerate = false)
-    @ColumnInfo(name="id")
-    private int id;
-    @ColumnInfo(name="typeName")
-    private String typeName;
-    @ColumnInfo(name = "double_damage_from")
-    private List<String> double_damage_from;
-    @ColumnInfo(name = "double_damage_to")
-    private List<String> double_damage_to;
-    @ColumnInfo(name = "half_damage_from")
-    private List<String> half_damage_from;
-    @ColumnInfo(name = "half_damage_to")
-    private List<String> half_damage_to;
-    @ColumnInfo(name = "no_damage_from")
-    private List<String> no_damage_from;
-    @ColumnInfo(name = "no_damage_to")
-    private List<String> no_damage_to;
-
-    public static final Parcelable.Creator<Type> CREATOR = new Parcelable.Creator<Type>() {
-        @Override
-        public Type createFromParcel(Parcel in) {
-            return new Type(in);
-        }
-
-        @Override
-        public Type[] newArray(int size) {
-            return new Type[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(typeName);
-        dest.writeList(half_damage_from);
-        dest.writeList(half_damage_to);
-        dest.writeList(double_damage_from);
-        dest.writeList(double_damage_to);
-        dest.writeList(no_damage_from);
-        dest.writeList(no_damage_to);
-    }
+    private String typeName = "";
+    private List<String> double_damage_from = null;
+    private List<String> double_damage_to = null;
+    private List<String> half_damage_from = null;
+    private List<String> half_damage_to = null;
+    private List<String> no_damage_from = null;
+    private List<String> no_damage_to = null;
 
     public Type(){}
-
-    private Type(Parcel in) {
-        id = in.readInt();
-        typeName = in.readString();
-        half_damage_from = new ArrayList<String>();
-        in.readList(half_damage_from, String.class.getClassLoader());
-        half_damage_to = new ArrayList<String>();
-        in.readList(half_damage_to, String.class.getClassLoader());
-        double_damage_from = new ArrayList<String>();
-        in.readList(double_damage_from, String.class.getClassLoader());
-        double_damage_to = new ArrayList<String>();
-        in.readList(double_damage_to, String.class.getClassLoader());
-        no_damage_from = new ArrayList<String>();
-        in.readList(no_damage_from, String.class.getClassLoader());
-        no_damage_to = new ArrayList<String>();
-        in.readList(no_damage_to, String.class.getClassLoader());
-    }
-
-    public void setId(int id){
-        this.id = id;
-    }
-
-    public int getId(){
-        return id;
-    }
 
     public void setTypeName(String typeName){
         this.typeName = typeName;
