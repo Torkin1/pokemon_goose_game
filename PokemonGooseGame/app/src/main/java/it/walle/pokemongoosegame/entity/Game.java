@@ -12,11 +12,15 @@ public class Game{
     private List<Player> gamers = new ArrayList<>();                    // All players in the game
     private Board board;                                                // Board used in the game
     private int currentPlayerIndex;                                     // Current player index
+    private int nextPlayerIndex;                                        // Next Player index
     private final List<Player> winners = new ArrayList<>();             // If a player wins the game is added to this list. Only cool guys allowed
 
-    public Game(){
-        this.gamers = null;
-        this.board = null;
+    public int getNextPlayerIndex() {
+        return nextPlayerIndex;
+    }
+
+    public void setNextPlayerIndex(int nextPlayerIndex) {
+        this.nextPlayerIndex = nextPlayerIndex;
     }
 
     public List<Player> getWinners() {

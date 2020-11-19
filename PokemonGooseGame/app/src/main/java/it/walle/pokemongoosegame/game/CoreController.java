@@ -40,16 +40,42 @@ public class CoreController {
     }
 
     public void nextTurn(){
-        // TODO: Changes the current player to the next player
+
+        // Saves current player index for later use
+        int old = this.game.getCurrentPlayerIndex();
+
+        // Updates next player index to the following player in the list with no idle turns
+        Player p;
+        int i;
+        for (i = this.game.getNextPlayerIndex(); (p = this.game.getGamers().get(i)).getNumOfIdleTurns() != 0; i = (i + 1) % this.game.getGamers().size()) {
+            p.setIdleTurns(p.getNumOfIdleTurns() - 1);
+        }
+
+        // Changes the current player to the next player and updates next player index
+        this.game.setCurrentPlayerIndex(i);
+        this.game.setNextPlayerIndex((old + 1) % this.game.getGamers().size());
+    }
+
+    public void setNextPlayer(String username){
+        this
+                .game
+                .setNextPlayerIndex(this
+                        .game
+                        .getGamers()
+                        .indexOf(this
+                                .game
+                                .getPlayerByUsername(username)));
     }
 
     public void chooseWinner(WinnerBean bean){
-        // TODO: Calculates the provided player score and removes it from the play, returning their score
+        // TODO: Removes the player from the game and returns their score
     }
 
     public List<WinnerBean> endGame(){
         List<WinnerBean> winnerBeans = new ArrayList<>();
         // TODO: Ends current game and returns the winners with their scores, with the highest score in first position.
+
+        // Ends game and returns winner
         this.abortGame();
         return winnerBeans;
     }
