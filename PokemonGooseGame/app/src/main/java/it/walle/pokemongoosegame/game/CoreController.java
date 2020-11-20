@@ -34,21 +34,22 @@ public class CoreController {
         this.game = game;
     }
 
-    public void setupGame(Game game){
-        // Tells the controller to play the provided game
-        this.setGame(game);
-    }
+    public void nextTurn(NextTurnBean bean){
 
-    public void nextTurn(){
+        // Initialize structures to count how may turns a player spent idle
+        for (Player p : this.game.getGamers()){
+           bean.getWhoWaited().put(p.getUsername(), 0);
+       }
 
         // Saves current player index for later use
         int old = this.game.getCurrentPlayerIndex();
 
-        // Updates next player index to the following player in the list with no idle turns
+        // Updates next player index to the following player in the list with no idle turns, writing how many turns a player spent idle in the bean
         Player p;
         int i;
         for (i = this.game.getNextPlayerIndex(); (p = this.game.getGamers().get(i)).getNumOfIdleTurns() != 0; i = (i + 1) % this.game.getGamers().size()) {
             p.setIdleTurns(p.getNumOfIdleTurns() - 1);
+            bean.getWhoWaited().replace(p.getUsername(), bean.getWhoWaited().get(p.getUsername()) + 1);
         }
 
         // Changes the current player to the next player and updates next player index
