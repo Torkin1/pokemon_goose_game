@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
+package it.walle.pokemongoosegame.entity.board.pgsettings;
 
 import androidx.room.Embedded;
 import androidx.room.Relation;

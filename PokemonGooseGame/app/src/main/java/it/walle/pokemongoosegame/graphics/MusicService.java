@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.Graphics;
+package it.walle.pokemongoosegame.graphics;
 
 import android.app.Service;
 import android.content.Intent;

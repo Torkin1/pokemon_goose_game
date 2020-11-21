@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
+package it.walle.pokemongoosegame.database.boardpgdao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -6,6 +6,8 @@ import androidx.room.Insert;
 import androidx.room.Query;
 
 import java.util.List;
+
+import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowCellStartingIndex;
 
 @Dao
 public interface WhatYellowCellStartingIndexDAO {

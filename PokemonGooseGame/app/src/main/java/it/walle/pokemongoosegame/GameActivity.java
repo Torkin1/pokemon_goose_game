@@ -6,7 +6,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import it.walle.pokemongoosegame.Graphics.GameView;
+import it.walle.pokemongoosegame.graphics.GameView;
 
 public class GameActivity extends AppCompatActivity {
     private GameView gameView;

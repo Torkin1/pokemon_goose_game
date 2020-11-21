@@ -13,6 +13,7 @@ import it.walle.pokemongoosegame.boardfactory.IndexUnavailableException;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
+import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGParams;
 
 public class BoardFactoryPG extends BoardFactory {
 

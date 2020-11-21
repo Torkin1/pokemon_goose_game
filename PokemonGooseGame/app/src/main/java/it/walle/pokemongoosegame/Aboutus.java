@@ -5,16 +5,13 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.provider.CalendarContract;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,7 +19,7 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
-import it.walle.pokemongoosegame.Graphics.MusicService;
+import it.walle.pokemongoosegame.graphics.MusicService;
 import mehdi.sakout.aboutpage.AboutPage;
 import mehdi.sakout.aboutpage.Element;
 

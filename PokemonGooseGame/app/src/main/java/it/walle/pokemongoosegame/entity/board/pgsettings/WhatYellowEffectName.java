@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
+package it.walle.pokemongoosegame.entity.board.pgsettings;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

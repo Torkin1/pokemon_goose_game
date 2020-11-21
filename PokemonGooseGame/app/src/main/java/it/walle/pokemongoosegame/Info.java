@@ -4,7 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -12,7 +11,7 @@ import android.view.WindowManager;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import it.walle.pokemongoosegame.Graphics.MusicService;
+import it.walle.pokemongoosegame.graphics.MusicService;
 
 public class Info extends AppCompatActivity {
 
