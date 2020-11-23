@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Type{
 
-    private String typeName = "";
+    private String name = "";
     private List<String> double_damage_from = null;
     private List<String> double_damage_to = null;
     private List<String> half_damage_from = null;
@@ -14,12 +14,12 @@ public class Type{
 
     public Type(){}
 
-    public void setTypeName(String typeName){
-        this.typeName = typeName;
+    public void setName(String name){
+        this.name = name;
     }
 
-    public String getTypeName(){
-        return this.typeName;
+    public String getName(){
+        return this.name;
     }
 
     public void setHalf_damage_from(List<String> half_damage_from){
