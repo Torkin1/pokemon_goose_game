@@ -7,15 +7,14 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.media.AudioAttributes;
-import android.media.AudioManager;
 import android.media.SoundPool;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -33,6 +32,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.navigation.NavigationView;
 
 import it.walle.pokemongoosegame.graphics.MusicService;
+import it.walle.pokemongoosegame.graphics.SoundEffects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
@@ -45,7 +45,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private SoundPool soundPool;
 
     //sound effect
-    private int sound;
+    private int sound_back, sound_click;
+
+    //sounds
+    SoundEffects soundEffects;
+
+    //context
+    Context context;
 
     HomeWatcher mHomeWatcher;//music controller
 
@@ -63,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setContentView(R.layout.activity_main);
 
+        this.context = getApplicationContext();
 
         //music
 
@@ -109,23 +116,31 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+
                 switch (menuItem.getItemId()) {
                     case R.id.nav_home:
 
                         Intent home = new Intent(MainActivity.this, MainActivity.class);
+                        if (!prefs.getBoolean("isMute", false))
+                            soundPool.play(sound_back, 1, 1, 0, 0, 1);
                         startActivity(home);
                         rotateConfigImg();
                         Toast.makeText(getApplicationContext(), "Hello Povero popolo", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.nav_info:
-                        Intent info = new Intent(MainActivity.this, Info.class);
 
+                        Intent info = new Intent(MainActivity.this, Info.class);
+                        if (!prefs.getBoolean("isMute", false))
+                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(info);
                         break;
 
                     case R.id.nav_AboutUs:
                         Intent aboutUs = new Intent(MainActivity.this, Aboutus.class);
+                        if (!prefs.getBoolean("isMute", false))
+                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(aboutUs);
                         break;
 
@@ -142,6 +157,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_share: {
 
                         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        if (!prefs.getBoolean("isMute", false))
+                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
+
+
                         sharingIntent.setType("text/plain");
                         String shareBody = "http://play.google.com/store/apps/detail?id=" + getPackageName();
                         String shareSub = "Try now";
@@ -202,33 +221,33 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         //inizilizzo il suono
-        //TODO
-        //has to be done for any sound has to be revisited
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                     .setUsage(AudioAttributes.USAGE_GAME)
                     .build();
-            soundPool = new SoundPool.Builder()
+        soundPool = new SoundPool.Builder()
                     .setAudioAttributes(audioAttributes)
                     .build();
-        } else {
-            soundPool = new SoundPool(1, AudioManager.STREAM_MUSIC, 0);
-        }
+
 
         //prendere da  file
-        sound = soundPool.load(this, R.raw.click_sound, 1);
+        sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
+        sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
         //se non è muto metto gli effetti del suono
         if (!prefs.getBoolean("isMute", false))
-            soundPool.play(sound, 1, 1, 0, 0, 1);
+            soundPool.play(sound_back, 1, 1, 0, 0, 1);
     }
 
     //So don't close after i go back and I'm in the menu
     @Override
     public void onBackPressed() {
+        soundEffects = new SoundEffects(this);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
+            final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+            if (!prefs.getBoolean("isMute", false))
+                soundPool.play(sound_back, 1, 1, 0, 0, 1);
             rotateConfigImg();
         } else
             super.onBackPressed();

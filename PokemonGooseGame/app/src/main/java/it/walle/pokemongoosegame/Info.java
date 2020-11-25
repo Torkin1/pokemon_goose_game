@@ -4,6 +4,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.PowerManager;
@@ -18,6 +21,11 @@ public class Info extends AppCompatActivity {
     HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
     private MusicService mServ;
+    //for sound effects
+    private SoundPool soundPool;
+
+    //sound effect
+    private int sound_back, sound_click;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,20 @@ public class Info extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         
         setContentView(R.layout.activity_info);
+
+        //inizilizzo il suono
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+
+        //prendere da  file
+        sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
+        sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
         //BIND Music Service
         doBindService();
@@ -110,6 +132,14 @@ public class Info extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+        if (!prefs.getBoolean("isMute", false))
+            soundPool.play(sound_back, 1, 1, 0, 0, 1);
+        super.onBackPressed();
+    }
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();

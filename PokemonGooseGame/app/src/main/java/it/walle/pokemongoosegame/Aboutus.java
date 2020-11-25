@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 
 import android.annotation.SuppressLint;
 import android.os.IBinder;
@@ -29,6 +32,11 @@ public class Aboutus extends AppCompatActivity {
     HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
     private MusicService mServ;
+    //for sound effects
+    private SoundPool soundPool;
+
+    //sound effect
+    private int sound_back, sound_click;
 
 
     @Override
@@ -44,6 +52,20 @@ public class Aboutus extends AppCompatActivity {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
 
         boolean isMute = prefs.getBoolean("isMute", false);
+
+        //inizilizzo il suono
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+
+        //prendere da  file
+        sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
+        sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
 
         //BIND Music Service
@@ -61,6 +83,7 @@ public class Aboutus extends AppCompatActivity {
                     mServ.pauseMusic();
                 }
             }
+
             @Override
             public void onHomeLongPressed() {
                 if (mServ != null) {
@@ -71,11 +94,10 @@ public class Aboutus extends AppCompatActivity {
         mHomeWatcher.startWatch();
 
 
-
         Element adsElement = new Element();
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
-                    .setDescription(" It's not a game Its the game!")
+                .setDescription(" It's not a game Its the game!")
                 .setImage(R.drawable.logo)
                 .addItem(new Element().setTitle("Version 0.1 Pre Alfa"))
                 .addGroup("CONNECT WITH US!")
@@ -93,7 +115,7 @@ public class Aboutus extends AppCompatActivity {
         Element copyright = new Element();
         @SuppressLint("DefaultLocale") final String copyrightString = String.format("Copyright %d by Wall-E Team", Calendar.getInstance().get(Calendar.YEAR));
         copyright.setTitle(copyrightString);
-         copyright.setIconDrawable(R.drawable.copyright_icon);
+        copyright.setIconDrawable(R.drawable.copyright_icon);
         copyright.setGravity(Gravity.CENTER);
         copyright.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,11 +128,11 @@ public class Aboutus extends AppCompatActivity {
 
     //Bind/Unbind music service
 
-    private ServiceConnection Scon =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {
-            mServ = ((MusicService.ServiceBinder)binder).getService();
+            mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -118,16 +140,14 @@ public class Aboutus extends AppCompatActivity {
         }
     };
 
-    void doBindService(){
-        bindService(new Intent(this,MusicService.class),
-                Scon,Context.BIND_AUTO_CREATE);
+    void doBindService() {
+        bindService(new Intent(this, MusicService.class),
+                Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }
@@ -161,6 +181,13 @@ public class Aboutus extends AppCompatActivity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+        if (!prefs.getBoolean("isMute", false))
+            soundPool.play(sound_back, 1, 1, 0, 0, 1);
+        super.onBackPressed();
+    }
 
     @Override
     protected void onDestroy() {
@@ -169,7 +196,7 @@ public class Aboutus extends AppCompatActivity {
         //UNBIND music service
         doUnbindService();
         Intent music = new Intent();
-        music.setClass(this,MusicService.class);
+        music.setClass(this, MusicService.class);
         mHomeWatcher.stopWatch();
         stopService(music);
 
