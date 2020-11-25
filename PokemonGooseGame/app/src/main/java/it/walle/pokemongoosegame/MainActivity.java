@@ -64,18 +64,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
 
-
-
-
-
-
         //music
 
         //BIND Music Service
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        startService(music);
+        if (isMute)
+            startService(music);
 
 
 //Start HomeWatcher
@@ -87,6 +83,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     mServ.pauseMusic();
                 }
             }
+
             @Override
             public void onHomeLongPressed() {
                 if (mServ != null) {
@@ -95,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
         mHomeWatcher.startWatch();
-
 
 
         //hooks for the menu
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         break;
 
                     case R.id.nav_info:
-                        Intent info = new Intent(MainActivity.this , Info.class);
+                        Intent info = new Intent(MainActivity.this, Info.class);
 
                         startActivity(info);
                         break;
@@ -161,7 +157,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-
         findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -192,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         mServ.stopMusic();
                     Toast.makeText(getApplicationContext(), "Sound off", Toast.LENGTH_SHORT).show();
 
-                }else{
+                } else {
                     volumeCtrl.setImageResource(R.drawable.sound_on);
                     if (mServ != null)
                         mServ.startMusic();
@@ -267,11 +262,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     //music
     //Bind/Unbind music service
 
-    private ServiceConnection Scon =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {
-            mServ = ((MusicService.ServiceBinder)binder).getService();
+            mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -279,16 +274,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     };
 
-    void doBindService(){
-        bindService(new Intent(this,MusicService.class),
-                Scon,Context.BIND_AUTO_CREATE);
+    void doBindService() {
+        bindService(new Intent(this, MusicService.class),
+                Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }

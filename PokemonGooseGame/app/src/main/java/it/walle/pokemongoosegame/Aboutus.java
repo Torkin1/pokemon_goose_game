@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +39,12 @@ public class Aboutus extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_aboutus);
+
+        //get preferences
+        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+
+        boolean isMute = prefs.getBoolean("isMute", false);
+
 
         //BIND Music Service
         doBindService();
