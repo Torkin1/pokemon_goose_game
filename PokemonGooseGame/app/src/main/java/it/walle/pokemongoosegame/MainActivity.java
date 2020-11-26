@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -176,9 +175,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-        findViewById(R.id.play).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.play_button_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //if creates bugs, stop the animation from here, and use different global variables!
+//                play_button_img.clearAnimation();
+//                zoomAnim.cancel();
+//                zoomAnim.reset();
+                final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+                if (!prefs.getBoolean("isMute", false))
+                    soundPool.play(sound_click, 1, 1, 0, 0, 1);
                 startActivity(new Intent(MainActivity.this, GameActivity.class));
             }
         });
@@ -187,6 +193,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
         highScoreTxt.setText("HighScore:" + prefs.getInt("highscore", 0));
+
+        ImageView play_button_img = findViewById(R.id.play_button_img);
+        Animation zoomAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_in);
+        play_button_img.startAnimation(zoomAnim);
 
         isMute = prefs.getBoolean("isMute", false);
 

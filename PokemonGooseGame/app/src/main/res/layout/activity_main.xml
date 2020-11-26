@@ -34,15 +34,12 @@
 
             />
 
-        <TextView
-            android:id="@+id/play"
+        <ImageView
+            android:id="@+id/play_button_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:fontFamily="monospace"
-            android:text="Play"
-            android:textColor="#000000"
-            android:textSize="64sp" />
+            android:src="@drawable/play_button_img"/>
 
         <TextView
             android:id="@+id/highScoreTxt"
