@@ -86,7 +86,11 @@ public class CoreController {
     }
 
     public void throwDices(ThrowDicesBean bean){
-        // TODO: Throws dices with params specified in bean. Alea iacta est
+        ArrayList<Integer> exitNumbers = new ArrayList<>();
+        for(int i = 0; i < bean.getNumOfDices(); i++){
+            exitNumbers.add(i, (int) (Math.random() * bean.getNumOfFaces() + 1));
+        }
+        bean.setExitNumbers(exitNumbers);
     }
 
     public void getPlayerInfo(PlayerInfoBean bean){
