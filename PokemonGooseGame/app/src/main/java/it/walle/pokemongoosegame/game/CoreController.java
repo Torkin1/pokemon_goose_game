@@ -8,6 +8,7 @@ import java.util.List;
 
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
+import it.walle.pokemongoosegame.entity.board.cell.Cell;
 import it.walle.pokemongoosegame.utils.MethodGetter;
 import it.walle.pokemongoosegame.utils.NoSuchSetterException;
 
@@ -93,12 +94,16 @@ public class CoreController {
     }
 
     public void getPlayerInfo(PlayerInfoBean bean){
-        Player player = game.getPlayerByUsername(bean.getUsername());
+        Player player = this.game.getPlayerByUsername(bean.getUsername());
         bean.setPlayer(player);
     }
 
     public void getCellInfo(CellInfoBean bean){
-        // TODO: populates the bean with infos of the cell specified by the provided board index, then returns it
+        Cell cell = this.game
+                .getBoard()
+                .getCells()
+                .get(bean.getRequestedIndex());
+        bean.setCell(cell);
     }
 
     public String[] getAllPlayersInACellUsernames(int index){
