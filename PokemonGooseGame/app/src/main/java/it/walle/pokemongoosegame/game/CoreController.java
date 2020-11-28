@@ -75,7 +75,6 @@ public class CoreController {
     public List<WinnerBean> endGame(){
         List<WinnerBean> winnerBeans = new ArrayList<>();
         // TODO: Ends current game and returns the winners with their scores, with the highest score in first position.
-
         // Ends game and returns winner
         this.abortGame();
         return winnerBeans;
@@ -94,7 +93,8 @@ public class CoreController {
     }
 
     public void getPlayerInfo(PlayerInfoBean bean){
-        // TODO: populates the bean with infos of the player specified by the provided username, then returns it
+        Player player = game.getPlayerByUsername(bean.getUsername());
+        bean.setPlayer(player);
     }
 
     public void getCellInfo(CellInfoBean bean){
