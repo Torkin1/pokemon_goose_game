@@ -82,7 +82,7 @@ public class CoreController {
     }
 
     public void abortGame(){
-        // TODO: Ends the game without declaring a winner
+        this.game = null;
     }
 
     public void throwDices(ThrowDicesBean bean){
