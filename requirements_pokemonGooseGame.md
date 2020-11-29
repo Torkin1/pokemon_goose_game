@@ -26,7 +26,6 @@ Questo foglio di requisiti ha la priorità rispetto a requirements_GooseGame, qu
 1. La **posta** è un ammontare da sottrarre o aggiungere al giocatore che va a toccare una o più delle seguenti fonti, personali per ogni giocatore:
 	1. **Monete**:
 		1. Ogni giocatore inizia la partita con una **quantità iniziale** di monete pari a zero;
-		1. Il giocatore che ne possiede di più a fine partita è proclamato vincitore.
 	1. **HPs**:
 		1. Ogni giocatore inizia la partita con una quantità iniziale di HPs pari a 100;
 		1. Se un giocatore esaurisce i suoi HPs, il giocatore deve trasferire tutto il suo denaro sul **piatto** ed **esce dal gioco**. <div id=Posta.1.2.2>
