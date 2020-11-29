@@ -11,6 +11,7 @@ public class Game{
 
     private List<Player> gamers = new ArrayList<>();                    // All players in the game
     private Board board;                                                // Board used in the game
+    private int plate;                                                  // The plate of the game
     private int currentPlayerIndex;                                     // Current player index
     private int nextPlayerIndex;                                        // Next Player index
     private final List<Player> winners = new ArrayList<>();             // If a player wins the game is added to this list. Only cool guys allowed
@@ -57,4 +58,8 @@ public class Game{
     }
 
     public Board getBoard(){return this.board;}
+
+    public void setPlate(int plate){ this.plate = plate; }
+
+    public int getPlate(){ return this.plate; }
 }

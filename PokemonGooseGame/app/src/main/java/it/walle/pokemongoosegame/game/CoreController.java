@@ -70,7 +70,21 @@ public class CoreController {
     }
 
     public void chooseWinner(WinnerBean bean){
-        // TODO: Removes the player from the game and returns their score
+        Player winner = this.game.getPlayerByUsername(bean.getWinnerUsername());
+
+        this.game.getGamers().remove(winner);
+        this.game.getWinners().add(winner);
+
+        int score = this.calculateScore(winner);
+        bean.setScore(score);
+    }
+
+    private int calculateScore(Player player){
+        int scoreHp = player.getPokemon().getHp();
+        int scoreMoney = player.getMoney();
+        int scorePlate = this.game.getPlate();
+
+        return scoreHp + scoreMoney + scorePlate;
     }
 
     public List<WinnerBean> endGame(){
