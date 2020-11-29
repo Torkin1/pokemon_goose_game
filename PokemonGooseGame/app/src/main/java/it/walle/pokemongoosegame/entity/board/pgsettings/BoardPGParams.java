@@ -1,9 +1,8 @@
 package it.walle.pokemongoosegame.entity.board.pgsettings;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 
-import it.walle.pokemongoosegame.boardfactory.BoardParams;
+import it.walle.pokemongoosegame.entity.board.BoardParams;
 
 @Entity(inheritSuperIndices = true)
 public class BoardPGParams extends BoardParams {

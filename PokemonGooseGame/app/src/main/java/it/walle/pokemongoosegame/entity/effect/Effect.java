@@ -2,8 +2,10 @@ package it.walle.pokemongoosegame.entity.effect;
 
 public abstract class Effect {
 
-    private String name;                                            // The readable name of the effect
+    private String title;                                           // The readable name of the effect
     private String description;                                     // A textual description of the effect
+
+
     public abstract void doEffect(InvocationContext context);       // Implementation of the actual effect
 
     public String getDescription() {
@@ -19,11 +21,11 @@ public abstract class Effect {
         return this.getDescription();
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

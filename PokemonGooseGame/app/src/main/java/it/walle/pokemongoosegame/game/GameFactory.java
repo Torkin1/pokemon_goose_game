@@ -2,8 +2,6 @@ package it.walle.pokemongoosegame.game;
 
 import android.content.Context;
 
-import java.lang.reflect.InvocationTargetException;
-
 import it.walle.pokemongoosegame.boardfactory.BoardFactory;
 import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.entity.Game;
@@ -35,7 +33,7 @@ public class GameFactory {
         this.game.getGamers().add(player);
     }
 
-    public void addNewBoard(CreateBoardBean bean) throws BoardFactoryCreationFailureException {
+    public void addNewBoard(CreateBoardBean bean) throws BoardFactoryReferencingFailureException {
         try {
 
             // Creates a new Board
@@ -44,8 +42,8 @@ public class GameFactory {
             // Binds the board to the game
             this.game.setBoard(bean.getBoard());
         }
-        catch (ClassNotFoundException | IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e) {
-            throw new BoardFactoryCreationFailureException(e);
+        catch (ClassNotFoundException e) {
+            throw new BoardFactoryReferencingFailureException(e);
         }
     }
 

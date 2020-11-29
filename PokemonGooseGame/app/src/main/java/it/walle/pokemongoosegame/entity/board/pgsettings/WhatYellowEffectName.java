@@ -4,12 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity (primaryKeys = {"boardSettingsName", "yellowEffectName"})
+@Entity (primaryKeys = {"boardSettingsName", "yellowEffectClassName"})
 public class WhatYellowEffectName {
     @NonNull
-    private String boardSettingsName;
+    private String boardSettingsName;       // BoardSettings name which this entity refers
     @NonNull
-    private String yellowEffectName;
+    private String yellowEffectClassName;   // The name of the class of the corresponding effect
 
     public String getBoardSettingsName() {
         return boardSettingsName;
@@ -19,11 +19,12 @@ public class WhatYellowEffectName {
         this.boardSettingsName = boardSettingsName;
     }
 
-    public String getYellowEffectName() {
-        return yellowEffectName;
+    @NonNull
+    public String getYellowEffectClassName() {
+        return yellowEffectClassName;
     }
 
-    public void setYellowEffectName(String yellowEffectName) {
-        this.yellowEffectName = yellowEffectName;
+    public void setYellowEffectClassName(@NonNull String yellowEffectClassName) {
+        this.yellowEffectClassName = yellowEffectClassName;
     }
 }

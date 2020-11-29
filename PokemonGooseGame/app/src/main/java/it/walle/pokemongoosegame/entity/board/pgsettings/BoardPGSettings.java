@@ -15,7 +15,8 @@ public class BoardPGSettings {
     @Relation(parentColumn = "name", entityColumn = "boardSettingsName" )
     private List<BlueCellSettings> blueCellSettings;                                // Parameters needed by board factory to inject blue cells in the board, one for each blue cell
     @Relation(parentColumn = "name", entityColumn = "boardSettingsName" )
-    private List<WhatYellowEffectName> yellowEffectName;                            // Yellow effect names which can be injected in the board
+    private List<WhatYellowEffectName> yellowEffectNames;                           // Yellow effect names which can be injected in the board
+    @Relation(parentColumn = "name", entityColumn = "name")
 
     public BoardPGParams getBoardPGParams() {
         return boardPGParams;
@@ -41,11 +42,11 @@ public class BoardPGSettings {
         this.blueCellSettings = blueCellSettings;
     }
 
-    public List<WhatYellowEffectName> getYellowEffectName() {
-        return yellowEffectName;
+    public List<WhatYellowEffectName> getYellowEffectNames() {
+        return yellowEffectNames;
     }
 
-    public void setYellowEffectName(List<WhatYellowEffectName> yellowEffectName) {
-        this.yellowEffectName = yellowEffectName;
+    public void setYellowEffectNames(List<WhatYellowEffectName> yellowEffectNames) {
+        this.yellowEffectNames = yellowEffectNames;
     }
 }

@@ -3,7 +3,7 @@ package it.walle.pokemongoosegame.entity.board.cell;
 
 public class BlueCell extends Cell {
 
-    private String name;        // BlueCells are distinctive cells, so they must be distinguished from one another by their name
+    private String title;       // Readable name of the cell
     private int boardIndex;     // The index of the board where this blue cell will be placed
 
     public int getBoardIndex() {
@@ -14,11 +14,11 @@ public class BlueCell extends Cell {
         this.boardIndex = boardIndex;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 }
