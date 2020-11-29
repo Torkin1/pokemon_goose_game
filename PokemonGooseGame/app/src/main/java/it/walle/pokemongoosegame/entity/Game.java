@@ -15,6 +15,7 @@ public class Game{
     private int currentPlayerIndex;                                     // Current player index
     private int nextPlayerIndex;                                        // Next Player index
     private final List<Player> winners = new ArrayList<>();             // If a player wins the game is added to this list. Only cool guys allowed
+    private final List<Player> losers = new ArrayList<>();              // If a player lose the game is added to this list. Only bad players allowed
 
     public int getNextPlayerIndex() {
         return nextPlayerIndex;
@@ -26,6 +27,10 @@ public class Game{
 
     public List<Player> getWinners() {
         return winners;
+    }
+
+    public List<Player> getLosers() {
+        return losers;
     }
 
     public int getCurrentPlayerIndex() {

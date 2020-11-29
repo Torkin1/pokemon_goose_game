@@ -80,6 +80,13 @@ public class CoreController {
     }
 
     private int calculateScore(Player player){
+
+        //Check if the player has lost, if he has lost set the score to 0
+        if(this.game.getLosers().contains(player)){
+            return 0;
+        }
+
+        //if the player has not lost calculate score
         int scoreHp = player.getPokemon().getHp();
         int scoreMoney = player.getMoney();
         int scorePlate = this.game.getPlate();
@@ -89,10 +96,41 @@ public class CoreController {
 
     public List<WinnerBean> endGame(){
         List<WinnerBean> winnerBeans = new ArrayList<>();
-        // TODO: Ends current game and returns the winners with their scores, with the highest score in first position.
+
+        // Create a list of all players which is a combination of winning players, losing players and gamers list
+        List<Player> allPlayers = new ArrayList<>();
+        allPlayers.addAll(this.game.getGamers());
+        allPlayers.addAll(this.game.getWinners());
+        allPlayers.addAll(this.game.getLosers());
+
+        // Now for all the players crate winnerBean and set username and score
+        for(int i = 0; i < allPlayers.size(); i++){
+            WinnerBean bean = new WinnerBean();
+            bean.setWinnerUsername(allPlayers.get(i).getUsername());
+            bean.setScore(calculateScore(allPlayers.get(i)));
+            winnerBeans.add(bean);
+        }
+
+        // Sort winnerBeans list with the highest score in first position
+        this.BubbleSort(winnerBeans);
+
         // Ends game and returns winner
         this.abortGame();
         return winnerBeans;
+    }
+
+    private void BubbleSort(List<WinnerBean> winnerBeans){
+        for(int i = 0; i < winnerBeans.size(); i++) {
+            boolean flag = false;
+            for(int j = 0; j < winnerBeans.size()-1; j++) {
+                if(winnerBeans.get(j).getScore() < winnerBeans.get(j + 1).getScore()){
+                    WinnerBean temp = winnerBeans.get(j);
+                    winnerBeans.set(j, winnerBeans.get(j + 1));
+                    winnerBeans.set(j + 1, temp);
+                }
+            }
+            if(!flag) break;
+        }
     }
 
     public void abortGame(){
