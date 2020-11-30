@@ -19,27 +19,12 @@ public class GameActivity extends AppCompatActivity {
         //fare FullScreen l'activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        gameView = new GameView(this);
 
-        Point point = new Point();//creo un oggetto punto
-        getWindowManager().getDefaultDisplay().getSize(point);
-        //ora l'oggeto point ha le misure x e y
+        //To show the GameView on the screen
+        setContentView(gameView);
 
-        gameView = new GameView(this, point.x, point.y);
-
-        //ora per mostrarare la gameview sullo schermo
-        setContentView(gameView);//inoltre serve invocar onpause e onresume
-        //così il gioco va in pausa se metto pausa l'activity anche il gioco
-        //si ferma e se riparte uguale.
 
     }
 
-    protected void onPause(){
-        super.onPause();
-        gameView.pause();
-    }
-
-    protected void onResume(){
-        super.onResume();
-        gameView.resume();
-    }
 }

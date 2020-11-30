@@ -30,6 +30,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
+import it.walle.pokemongoosegame.graphics.AppConstants;
 import it.walle.pokemongoosegame.graphics.MusicService;
 import it.walle.pokemongoosegame.graphics.SoundEffects;
 
@@ -60,6 +61,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        AppConstants.initialization(this.getApplicationContext());
 
 
         //The main should be fullScreen

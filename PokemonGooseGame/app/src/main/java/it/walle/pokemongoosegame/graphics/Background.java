@@ -1,17 +1,43 @@
-package it.walle.pokemongoosegame;
+package it.walle.pokemongoosegame.graphics;
 
 import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 public class Background {
     //classe per dare effetti al background, come movimento o altro.
 
-    int x = 0, y = 0;
-    Bitmap background;
+    int bgImageX = 0, bgImageY = 0, bgImgVelocity;
 
-    Background(int screenX, int screenY, Resources res){
-        background = BitmapFactory.decodeResource(res, R.drawable.bg);
-        background = Bitmap.createScaledBitmap(background, screenX, screenY, false);
+    public Background() {
+//        System.out.println("Sono in background");
+//
+//        System.out.println("creato il background");
+        bgImageX = 0;
+        bgImageY = 0;
+        bgImgVelocity = 3;
+
+    }
+
+    //getter method for getting the x-coordinated
+    public int getX(){
+        return bgImageX;
+    }
+    //getter method for getting the y-coordinated
+    public int getY(){
+        return bgImageY;
+    }
+
+    //setter for the x-coordinates
+    public void setX(int bgImageX){
+        this.bgImageX = bgImageX;
+    }
+
+    //setter for the y-coordinates
+    public void setY(int bgImageX){
+        this.bgImageY = bgImageY;
+    }
+
+    //getter velocity
+    public int getBgImageVelocity(){
+        return bgImgVelocity;
     }
 }
