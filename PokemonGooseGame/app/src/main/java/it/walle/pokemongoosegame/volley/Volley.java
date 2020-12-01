@@ -25,7 +25,6 @@ public class Volley {
         }
 
         public void apiCall(String url, Response.Listener listner) {
-            RequestQueue requestQueue = com.android.volley.toolbox.Volley.newRequestQueue(context);
             StringRequest stringRequest = new StringRequest(Request.Method.GET,
                     url,
                     listner
@@ -35,6 +34,6 @@ public class Volley {
                     // Handle error
                 }
             });
-            requestQueue.add(stringRequest);
+            RequestQueueHolder.getInstance(context).getRequestQueue().add(stringRequest);
         }
     }

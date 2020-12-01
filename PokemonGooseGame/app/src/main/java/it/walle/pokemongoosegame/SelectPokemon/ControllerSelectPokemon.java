@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.android.volley.Response;
 
-import it.walle.pokemongoosegame.DAO.DAOPokemon;
+import it.walle.pokemongoosegame.dao.DAOPokemon;
 
 public class ControllerSelectPokemon{
 

@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.android.volley.Response;
 
-import it.walle.pokemongoosegame.DAO.DAOPokemon;
-import it.walle.pokemongoosegame.DAO.DAOType;
+import it.walle.pokemongoosegame.dao.DAOPokemon;
+import it.walle.pokemongoosegame.dao.DAOType;
 import it.walle.pokemongoosegame.entity.Pokemon;
 import it.walle.pokemongoosegame.entity.Type;
 

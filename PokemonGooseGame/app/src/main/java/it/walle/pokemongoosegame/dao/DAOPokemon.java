@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.DAO;
+package it.walle.pokemongoosegame.dao;
 
 import android.content.Context;
 import android.util.Log;

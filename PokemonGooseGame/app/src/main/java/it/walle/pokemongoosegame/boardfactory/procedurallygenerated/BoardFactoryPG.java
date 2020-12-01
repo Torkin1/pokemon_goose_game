@@ -1,25 +1,18 @@
 package it.walle.pokemongoosegame.boardfactory.procedurallygenerated;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
-import it.walle.pokemongoosegame.DAO.DAOType;
 import it.walle.pokemongoosegame.boardfactory.BoardFactory;
-import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.boardfactory.IndexAlreadyInUseException;
 import it.walle.pokemongoosegame.boardfactory.IndexUnavailableException;
-import it.walle.pokemongoosegame.database.boardpgdao.WhatYellowEffectNameDAO;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
 import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGParams;
-import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
-import it.walle.pokemongoosegame.entity.effect.Effect;
 import it.walle.pokemongoosegame.entity.effect.YellowEffect;
 
 public class BoardFactoryPG extends BoardFactory {
