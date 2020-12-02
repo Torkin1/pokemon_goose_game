@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.volley;
+/*package it.walle.pokemongoosegame.volley;
 
 import android.content.Context;
 
@@ -8,8 +8,8 @@ import com.android.volley.Response;
 
 import it.walle.pokemongoosegame.dao.DAOPokemon;
 import it.walle.pokemongoosegame.dao.DAOType;
-import it.walle.pokemongoosegame.entity.Pokemon;
-import it.walle.pokemongoosegame.entity.Type;
+import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
 
 public class ResponseSelectPokemonVolley implements Response.Listener<String> {
     private Context context;
@@ -41,3 +41,6 @@ public class ResponseSelectPokemonVolley implements Response.Listener<String> {
                         });
     }
 }
+
+
+ */

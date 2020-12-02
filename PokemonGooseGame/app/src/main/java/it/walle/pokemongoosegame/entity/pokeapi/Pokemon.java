@@ -1,6 +1,8 @@
-package it.walle.pokemongoosegame.entity;
+package it.walle.pokemongoosegame.entity.pokeapi;
 
 import java.util.List;
+
+import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
 
 public class Pokemon{
 

@@ -17,7 +17,7 @@ import it.walle.pokemongoosegame.GameActivity;
 import it.walle.pokemongoosegame.GameThread;
 import it.walle.pokemongoosegame.MainActivity;
 import it.walle.pokemongoosegame.R;
-import it.walle.pokemongoosegame.entity.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
 import it.walle.pokemongoosegame.entity.board.Board;
 
 public class GameView extends SurfaceView implements SurfaceHolder.Callback {

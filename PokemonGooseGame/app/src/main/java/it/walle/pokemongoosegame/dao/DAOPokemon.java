@@ -14,9 +14,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import it.walle.pokemongoosegame.entity.Pokemon;
-import it.walle.pokemongoosegame.entity.Type;
-import it.walle.pokemongoosegame.volley.Volley;
+import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
 import it.walle.pokemongoosegame.volley.ServerCallback;
 
 public class DAOPokemon {
@@ -76,8 +75,7 @@ public class DAOPokemon {
             }
         };
 
-        Volley volleyPokemon = Volley.getReference(context);
-        volleyPokemon.apiCall(url, listner);
+        // TODO: do the actual request to pokeapi
     }
 
     public void LoadPokemon(Response.Listener listener, String pokemonName){
@@ -107,12 +105,15 @@ public class DAOPokemon {
                     DAOPokemon.this.setResults(pokemonMutableLiveData);
 
                     for(int i = 0; i < typesResponseList.length(); i++) {
+                        /* TODO: Load types calling DAOType
                         DAOType.getReference(context).
                                 LoadType(typesResponseList.
                                                 getJSONObject(i).
                                                 getJSONObject("type").
                                                 getString("name"),
                                          listener);
+
+                        */
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -120,8 +121,7 @@ public class DAOPokemon {
             }
         };
 
-        Volley volley = Volley.getReference(context);
-        volley.apiCall(url, listener);
+        // TODO: do the actual request to pokeapi
     }
 
 }

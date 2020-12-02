@@ -1,5 +1,7 @@
 package it.walle.pokemongoosegame.entity;
 
+import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+
 public class Player {
 
     // Params needed to start a game. Once set, their values aren't likely to be changed

@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.SelectPokemon;
+package it.walle.pokemongoosegame.selectPokemon;
 
 import android.content.Context;
 
