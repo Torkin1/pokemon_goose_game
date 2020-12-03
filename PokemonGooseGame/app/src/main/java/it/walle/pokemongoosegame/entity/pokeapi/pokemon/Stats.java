@@ -2,7 +2,7 @@ package it.walle.pokemongoosegame.entity.pokeapi.pokemon;
 
 public class Stats {
     private int base_stat; //valore base della stat
-    private StatPointer stat;
+    private StatInformations stat;
 
     public Stats(){}
 
@@ -14,11 +14,11 @@ public class Stats {
         this.base_stat = base_stat;
     }
 
-    public StatPointer getStat() {
+    public StatInformations getStat() {
         return stat;
     }
 
-    public void setStat(StatPointer stat) {
+    public void setStat(StatInformations stat) {
         this.stat = stat;
     }
 }

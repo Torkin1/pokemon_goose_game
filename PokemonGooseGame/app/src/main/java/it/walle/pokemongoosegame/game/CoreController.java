@@ -9,6 +9,7 @@ import java.util.List;
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.StatsEnumeration;
 import it.walle.pokemongoosegame.utils.MethodGetter;
 import it.walle.pokemongoosegame.utils.NoSuchSetterException;
 
@@ -87,12 +88,19 @@ public class CoreController {
         }
 
         //if the player has not lost calculate score
-        //int scoreHp = player.getPokemon().getStats();
+
+        int scoreHp = player
+                .getPokemon()
+                .getRequiredStat(
+                        StatsEnumeration
+                                .HP
+                                .getStat()
+                )
+                .getBase_stat();
         int scoreMoney = player.getMoney();
         int scorePlate = this.game.getPlate();
 
-        //return scoreHp + scoreMoney + scorePlate;
-        return scoreMoney + scorePlate;
+        return scoreHp + scoreMoney + scorePlate;
     }
 
     public List<WinnerBean> endGame(){

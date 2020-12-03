@@ -1,10 +1,10 @@
 package it.walle.pokemongoosegame.entity.pokeapi.pokemon;
 
-public class StatPointer {
+public class StatInformations {
     private String name; //nome della stat
     private String url; //url completo della stat
 
-    public StatPointer(){}
+    public StatInformations(){}
 
     public String getName() {
         return name;
