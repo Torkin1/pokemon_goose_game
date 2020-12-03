@@ -14,15 +14,31 @@ public class ControllerSelectPokemon{
         this.daoPokemon = DAOPokemon.getReference(context);
     }
 
-    public void LoadPokemon(SelectPokemonBean selectPokemonBean, Response.Listener listener){
-        this.daoPokemon.LoadPokemon(listener, selectPokemonBean.getPokemonChoose());
+    public void LoadPokemon(SelectPokemonBean selectPokemonBean, Response.Listener listener, Response.ErrorListener errorListener) {
+        String pokemon = selectPokemonBean.getPokemonChoose(); //pokemon scelto dall'utente di cui si vogliono tutte le informazioni da pokeapi tramite volley
+
+        this.daoPokemon
+                .LoadPokemon(
+                        pokemon,
+                        listener,
+                        errorListener
+                );
     }
 
-    public void LoadAllPokemonName(Response.Listener listener){
-        this.daoPokemon.LoadAllPokemonName(listener);
+    public void LoadAllPokemonName(Response.Listener listener, Response.ErrorListener errorListener) {
+        this.daoPokemon
+                .LoadAllPokemonName(
+                        listener,
+                        errorListener
+                );
     }
 
     public void SelectPokemon(SelectPokemonBean selectPokemonBean) {
-        selectPokemonBean.getPlayer().setPokemon(selectPokemonBean.getPokemon());
+        selectPokemonBean
+                .getPlayer()
+                .setPokemon(
+                        selectPokemonBean
+                        .getPokemon()
+                );
     }
 }

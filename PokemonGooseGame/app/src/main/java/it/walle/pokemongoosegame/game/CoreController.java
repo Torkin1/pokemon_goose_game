@@ -87,11 +87,12 @@ public class CoreController {
         }
 
         //if the player has not lost calculate score
-        int scoreHp = player.getPokemon().getHp();
+        //int scoreHp = player.getPokemon().getStats();
         int scoreMoney = player.getMoney();
         int scorePlate = this.game.getPlate();
 
-        return scoreHp + scoreMoney + scorePlate;
+        //return scoreHp + scoreMoney + scorePlate;
+        return scoreMoney + scorePlate;
     }
 
     public List<WinnerBean> endGame(){

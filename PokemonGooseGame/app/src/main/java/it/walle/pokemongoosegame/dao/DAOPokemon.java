@@ -1,30 +1,27 @@
 package it.walle.pokemongoosegame.dao;
 
 import android.content.Context;
-import android.util.Log;
 
-import androidx.lifecycle.MutableLiveData;
-
+import com.android.volley.Request;
 import com.android.volley.Response;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.AllPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
+import it.walle.pokemongoosegame.volley.GsonQueryRequest;
+import it.walle.pokemongoosegame.volley.PokeAPIGetter;
+import it.walle.pokemongoosegame.volley.RequestQueueHolder;
 import it.walle.pokemongoosegame.volley.ServerCallback;
 
 public class DAOPokemon {
 
     private static DAOPokemon reference = null;
-    private static final int LIMIT = 1050;
+    private ServerCallback serverCallback;
     private Context context;
-    private Object results;
-    private ServerCallback serverCallbackPokemon;
 
     public static DAOPokemon getReference(Context context){
         if(reference == null){
@@ -33,95 +30,95 @@ public class DAOPokemon {
         return reference;
     }
 
+    public ServerCallback getServerCallback(){
+        return this.serverCallback;
+    }
+
     private DAOPokemon(Context context){
         this.context = context;
     }
 
-    public ServerCallback getServerCallbackPokemon(){ return this.serverCallbackPokemon; }
+    public void getNumOfPokemon(Response.Listener<CountPokemon> listener, Response.ErrorListener errorListener){
 
+        String url = PokeAPIGetter.getReference().getNumOfPokemon();
 
-    public void setResults(Object results){
-        this.results = results;
+        //Richiesta volley per ottenere il numero di pokemon totale
+        RequestQueueHolder
+                .getInstance(context)
+                .getRequestQueue()
+                .add(
+                        new GsonQueryRequest<CountPokemon>(
+                                Request.Method.GET,
+                                url,
+                                listener,
+                                errorListener,
+                                CountPokemon.class
+                        ));
     }
 
-    public Object getResults(){
-        return this.results;
-    }
+    public void LoadAllPokemonName(Response.Listener<AllPokemon> listener, Response.ErrorListener errorListener){
 
-
-    public void LoadAllPokemonName(Response.Listener listner){
-        String url = "https://pokeapi.co/api/v2/pokemon?limit=%d";
-        url = String.format(url, LIMIT);
-        this.serverCallbackPokemon = new ServerCallback() {
+        //Creazione del listner per ottenere il numero di pokemon totale
+        Response.Listener<CountPokemon> listenerForNumOfPokemon = new Response.Listener<CountPokemon>(){
             @Override
-            public void onSuccess(Object response, Response.Listener<String> listener) {
+            public void onResponse(CountPokemon response) {
+                int numOfPokemon = response.getCount();
 
-                List<String> pokemonNamesList = new ArrayList<>();
+                //Richiesta volley per ottenere tutti i nomi dei pokemon con il limite di "numOfPokemon"
 
-                try {
-                    JSONObject jsonObject = new JSONObject((String) response);
-                    JSONArray resultsList = jsonObject.getJSONArray("results");
-                    for(int i = 0; i < resultsList.length(); i++) {
-                        pokemonNamesList.add(i, (String) resultsList.getJSONObject(i).get("name"));
-                    }
+                String url = PokeAPIGetter.getReference().getAllPokemonName(numOfPokemon);
 
-                    DAOPokemon.this.setResults(pokemonNamesList);
-                    if (DAOPokemon.this.results != null && ((List<String>)DAOPokemon.this.results).size() > 0) {
-                        Log.w("CA", "" + ((List<String>)DAOPokemon.this.results).size());
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                RequestQueueHolder
+                        .getInstance(context)
+                        .getRequestQueue()
+                        .add(
+                                new GsonQueryRequest<AllPokemon>(
+                                        Request.Method.GET,
+                                        url,
+                                        listener,
+                                        errorListener,
+                                        AllPokemon.class
+                                ));
             }
         };
 
-        // TODO: do the actual request to pokeapi
+        getNumOfPokemon(listenerForNumOfPokemon, null);
     }
 
-    public void LoadPokemon(Response.Listener listener, String pokemonName){
-        String url = "https://pokeapi.co/api/v2/pokemon/%s";
-        url = String.format(url, pokemonName);
+    public void LoadPokemon(String pokemonName, Response.Listener<Pokemon> listener, Response.ErrorListener errorListener){
 
-        this.serverCallbackPokemon = new ServerCallback() {
+        String url = PokeAPIGetter.getReference().getPokemonByName(pokemonName);
+
+        //Creazione di una callback per ottenere tutti i tipi di un pokemon
+        this.serverCallback = new ServerCallback() {
             @Override
-            public void onSuccess(Object response, Response.Listener<String> listener) {
-
-                try {
-                    JSONObject jsonObject = new JSONObject((String) response);
-                    int pokemonId = jsonObject.getInt("id");
-
-                    String pokemonName = jsonObject.getString("name");
-
-                    JSONArray stats = jsonObject.getJSONArray("stats");
-                    int pokemonHp = stats.getJSONObject(0).getInt("base_stat");
-
-                    JSONArray typesResponseList = jsonObject.getJSONArray("types");
-
-                    List<Type> pokemonType = new ArrayList<>();
-
-                    Pokemon pokemon = new Pokemon(pokemonId, pokemonName, pokemonHp, pokemonType);
-                    MutableLiveData<Pokemon> pokemonMutableLiveData = new MutableLiveData<>();
-                    pokemonMutableLiveData.setValue(pokemon);
-                    DAOPokemon.this.setResults(pokemonMutableLiveData);
-
-                    for(int i = 0; i < typesResponseList.length(); i++) {
-                        /* TODO: Load types calling DAOType
-                        DAOType.getReference(context).
-                                LoadType(typesResponseList.
-                                                getJSONObject(i).
-                                                getJSONObject("type").
-                                                getString("name"),
-                                         listener);
-
-                        */
+            public void onSuccess(Object response, Response.Listener<Type> listener) {
+                Pokemon pokemon = (Pokemon) response;
+                    for(int i = 0; i < pokemon.getTypes().length; i++) {
+                        DAOType.getReference(context)
+                                .LoadTypeByName(
+                                        pokemon.getTypes()[i]
+                                                .getType()
+                                                .getName(),
+                                        listener,
+                                        null
+                                );
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
-            }
         };
 
-        // TODO: do the actual request to pokeapi
+        //Richiesta volley per ottenere il pokemon
+        RequestQueueHolder
+                .getInstance(context)
+                .getRequestQueue()
+                .add(
+                        new GsonQueryRequest<Pokemon>(
+                                Request.Method.GET,
+                                url,
+                                listener,
+                                errorListener,
+                                Pokemon.class
+                        ));
     }
 
 }
