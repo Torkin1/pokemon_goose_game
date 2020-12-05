@@ -1,16 +1,16 @@
 package it.walle.pokemongoosegame.entity.pokeapi.pokemon;
 
-import it.walle.pokemongoosegame.entity.pokeapi.type.TypePointer;
+import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
 
 public class TypePointerPokemon {
     private int slot;
-    private TypePointer type;
+    private EntityPointer type;
 
-    public TypePointer getType() {
+    public EntityPointer getType() {
         return type;
     }
 
-    public void setType(TypePointer type) {
+    public void setType(EntityPointer type) {
         this.type = type;
     }
 }

@@ -1,7 +1,5 @@
 package it.walle.pokemongoosegame.volley;
 
-import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
-
 public class PokeAPIGetter {
 
     private final String BASE;
@@ -19,7 +17,7 @@ public class PokeAPIGetter {
         return ref;
     }
 
-    public PokeAPIGetter(PokeAPIVersion version){
+    private PokeAPIGetter(PokeAPIVersion version){
         String unformattedBase = "https://pokeapi.co/api/v%d/";           // Change this with the current accepted pokeapi base url
         this.BASE = String.format(unformattedBase, version.getVersion());
     }

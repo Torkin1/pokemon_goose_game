@@ -5,12 +5,9 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.Response;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
-import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.AllPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
 import it.walle.pokemongoosegame.volley.GsonQueryRequest;
 import it.walle.pokemongoosegame.volley.PokeAPIGetter;
@@ -56,7 +53,7 @@ public class DAOPokemon {
                         ));
     }
 
-    public void LoadAllPokemonName(Response.Listener<AllPokemon> listener, Response.ErrorListener errorListener){
+    public void LoadAllPokemonName(Response.Listener<EntityPack> listener, Response.ErrorListener errorListener){
 
         //Creazione del listner per ottenere il numero di pokemon totale
         Response.Listener<CountPokemon> listenerForNumOfPokemon = new Response.Listener<CountPokemon>(){
@@ -72,12 +69,12 @@ public class DAOPokemon {
                         .getInstance(context)
                         .getRequestQueue()
                         .add(
-                                new GsonQueryRequest<AllPokemon>(
+                                new GsonQueryRequest<EntityPack>(
                                         Request.Method.GET,
                                         url,
                                         listener,
                                         errorListener,
-                                        AllPokemon.class
+                                        EntityPack.class
                                 ));
             }
         };

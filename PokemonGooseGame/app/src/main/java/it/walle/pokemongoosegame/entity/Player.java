@@ -1,6 +1,6 @@
 package it.walle.pokemongoosegame.entity;
 
-import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
 public class Player {
 

@@ -91,12 +91,7 @@ public class CoreController {
 
         int scoreHp = player
                 .getPokemon()
-                .getRequiredStat(
-                        StatsEnumeration
-                                .HP
-                                .getStat()
-                )
-                .getBase_stat();
+                .getCurrentHp();
         int scoreMoney = player.getMoney();
         int scorePlate = this.game.getPlate();
 

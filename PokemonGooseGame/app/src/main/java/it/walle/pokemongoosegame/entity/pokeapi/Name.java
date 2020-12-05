@@ -1,8 +1,8 @@
 package it.walle.pokemongoosegame.entity.pokeapi;
 
 public class Name {
-    private String name;                    // Name of type
-    private LanguagePointer language;       // Language of the name
+    private String name;                  // Name of type
+    private EntityPointer language;       // Language of the name
 
     public String getName() {
         return name;
@@ -12,11 +12,11 @@ public class Name {
         this.name = name;
     }
 
-    public LanguagePointer getLanguage() {
+    public EntityPointer getLanguage() {
         return language;
     }
 
-    public void setLanguage(LanguagePointer language) {
+    public void setLanguage(EntityPointer language) {
         this.language = language;
     }
 }
