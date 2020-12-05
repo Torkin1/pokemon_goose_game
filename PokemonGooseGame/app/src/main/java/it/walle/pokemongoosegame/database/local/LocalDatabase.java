@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.database;
+package it.walle.pokemongoosegame.database.local;
 
 import android.content.Context;
 
@@ -7,13 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import it.walle.pokemongoosegame.boardfactory.BlueCellSettings;
+import it.walle.pokemongoosegame.database.local.boardpgdao.BlueCellSettingsDAO;
+import it.walle.pokemongoosegame.database.local.boardpgdao.BoardPGParamsDAO;
+import it.walle.pokemongoosegame.database.local.boardpgdao.WhatYellowCellStartingIndexDAO;
+import it.walle.pokemongoosegame.database.local.boardpgdao.WhatYellowEffectNameDAO;
 import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGParams;
 import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowCellStartingIndex;
 import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
-import it.walle.pokemongoosegame.database.boardpgdao.BlueCellSettingsDAO;
-import it.walle.pokemongoosegame.database.boardpgdao.BoardPGParamsDAO;
-import it.walle.pokemongoosegame.database.boardpgdao.WhatYellowCellStartingIndexDAO;
-import it.walle.pokemongoosegame.database.boardpgdao.WhatYellowEffectNameDAO;
 
 @Database(entities = {
         // Entities modelling the settings tree for BoardFactory

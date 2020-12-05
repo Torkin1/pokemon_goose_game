@@ -1,7 +1,7 @@
 package it.walle.pokemongoosegame.selectPokemon;
 
 import it.walle.pokemongoosegame.entity.Player;
-import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
 public class SelectPokemonBean {
     private Player player;

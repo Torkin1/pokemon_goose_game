@@ -1,11 +1,10 @@
 package it.walle.pokemongoosegame.entity;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import it.walle.pokemongoosegame.entity.board.Board;
+import it.walle.pokemongoosegame.game.PlayerNotInGameException;
 
 public class Game{
 

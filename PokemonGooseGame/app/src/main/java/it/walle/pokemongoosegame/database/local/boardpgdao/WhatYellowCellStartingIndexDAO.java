@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.database.boardpgdao;
+package it.walle.pokemongoosegame.database.local.boardpgdao;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;

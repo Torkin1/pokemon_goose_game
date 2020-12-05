@@ -4,9 +4,11 @@ import android.content.Context;
 
 import com.android.volley.Response;
 
-import it.walle.pokemongoosegame.dao.DAOPokemon;
+import it.walle.pokemongoosegame.database.pokeapi.DAOPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
+
+// TODO: Does this class have any use?
 
 public class ResponseSelectPokemonVolley implements Response.Listener<Pokemon> {
     private Context context;

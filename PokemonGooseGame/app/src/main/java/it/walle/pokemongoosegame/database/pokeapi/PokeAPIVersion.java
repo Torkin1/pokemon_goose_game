@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.volley;
+package it.walle.pokemongoosegame.database.pokeapi;
 
 public enum PokeAPIVersion {
 

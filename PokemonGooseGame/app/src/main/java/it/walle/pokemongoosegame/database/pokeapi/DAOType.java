@@ -1,16 +1,13 @@
-package it.walle.pokemongoosegame.dao;
+package it.walle.pokemongoosegame.database.pokeapi;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 
 import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
 import it.walle.pokemongoosegame.volley.GsonQueryRequest;
-import it.walle.pokemongoosegame.volley.PokeAPIGetter;
 import it.walle.pokemongoosegame.volley.RequestQueueHolder;
-import it.walle.pokemongoosegame.volley.ServerCallback;
 
 public class DAOType {
     private static DAOType reference = null;
