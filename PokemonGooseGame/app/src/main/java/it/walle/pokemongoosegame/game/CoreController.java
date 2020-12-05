@@ -4,12 +4,12 @@ import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
-import it.walle.pokemongoosegame.entity.pokeapi.pokemon.StatsEnumeration;
 import it.walle.pokemongoosegame.utils.MethodGetter;
 import it.walle.pokemongoosegame.utils.NoSuchSetterException;
 
@@ -116,25 +116,16 @@ public class CoreController {
         }
 
         // Sort winnerBeans list with the highest score in first position
-        this.BubbleSort(winnerBeans);
+        winnerBeans.sort(new Comparator<WinnerBean>() {
+            @Override
+            public int compare(WinnerBean o1, WinnerBean o2) {
+                return o1.getScore() - o2.getScore();
+            }
+        });
 
         // Ends game and returns winner
         this.abortGame();
         return winnerBeans;
-    }
-
-    private void BubbleSort(List<WinnerBean> winnerBeans){
-        for(int i = 0; i < winnerBeans.size(); i++) {
-            boolean flag = false;
-            for(int j = 0; j < winnerBeans.size()-1; j++) {
-                if(winnerBeans.get(j).getScore() < winnerBeans.get(j + 1).getScore()){
-                    WinnerBean temp = winnerBeans.get(j);
-                    winnerBeans.set(j, winnerBeans.get(j + 1));
-                    winnerBeans.set(j + 1, temp);
-                }
-            }
-            if(!flag) break;
-        }
     }
 
     public void abortGame(){
