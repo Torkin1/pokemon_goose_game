@@ -10,6 +10,7 @@ import java.util.List;
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
+import it.walle.pokemongoosegame.entity.effect.InvocationContext;
 import it.walle.pokemongoosegame.utils.MethodGetter;
 import it.walle.pokemongoosegame.utils.NoSuchSetterException;
 
@@ -214,19 +215,72 @@ public class CoreController {
     }
 
     public void moveInCell(MoveBean bean){
-        // TODO: called when the player enters a Cell
+
+        //Set the new position of the player
+        Player player = this.game
+                        .getPlayerByUsername(bean.getPlayerUsername());
+
+        player.setCurrentPosition(bean.getBoardIndex());
+
+        Cell cell = this.game
+                .getBoard()
+                .getCells()
+                .get(bean.getBoardIndex());
+
+        //Check if in the cell there are an effect or not. If there are, do entry effect
+        if(cell.getEntryEffect() == null){
+            InvocationContext invocationContext =
+                    this.setInvocationContext(
+                            bean.getPlayerUsername(),
+                            bean.getBoardIndex()
+                    );
+
+            cell.getEntryEffect().doEffect(invocationContext);
+        }
     }
 
     public void moveFromCell(MoveBean bean){
-        // TODO: Called when the player gets out from a cell
+        Cell cell = this.game
+                .getBoard()
+                .getCells()
+                .get(bean.getBoardIndex());
+
+        //Check if in the cell there are an effect or not. If there are, do exit effect
+        if(cell.getExitEffect() != null){
+            InvocationContext invocationContext =
+                    this.setInvocationContext(
+                            bean.getPlayerUsername(),
+                            bean.getBoardIndex()
+                    );
+
+            cell.getExitEffect().doEffect(invocationContext);
+        }
     }
 
     public void stayInCell(MoveBean bean){
-        /*
-         TODO:
-          Called when the player stays in a Cell, for example when it starts the turn in that cell.
-          The boardIndex bean field it's ignored since a player can stay in a cell only if it's the currently occupied cell.
-         */
+        Cell cell = this.game
+                .getBoard()
+                .getCells()
+                .get(bean.getBoardIndex());
+
+        //Check if in the cell there are an effect or not. If there are, do entry effect
+        if(cell.getStayEffect() != null){
+            InvocationContext invocationContext =
+                    this.setInvocationContext(
+                            bean.getPlayerUsername(),
+                            bean.getBoardIndex()
+                    );
+
+            cell.getStayEffect().doEffect(invocationContext);
+        }
+    }
+
+    private InvocationContext setInvocationContext(String playerUsername, int boardIndex) {
+        InvocationContext invocationContext = new InvocationContext();
+        invocationContext.setTriggerUsername(playerUsername);
+        invocationContext.setWhereTriggered(boardIndex);
+
+        return invocationContext;
     }
 
 }

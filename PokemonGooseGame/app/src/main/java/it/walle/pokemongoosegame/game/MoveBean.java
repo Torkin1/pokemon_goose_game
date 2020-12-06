@@ -11,4 +11,12 @@ public class MoveBean {
     public void setBoardIndex(int boardIndex) {
         this.boardIndex = boardIndex;
     }
+
+    public String getPlayerUsername() {
+        return playerUsername;
+    }
+
+    public void setPlayerUsername(String playerUsername) {
+        this.playerUsername = playerUsername;
+    }
 }
