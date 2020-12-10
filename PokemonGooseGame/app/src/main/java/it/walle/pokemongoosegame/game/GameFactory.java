@@ -6,7 +6,7 @@ import it.walle.pokemongoosegame.boardfactory.BoardFactory;
 import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
-import it.walle.pokemongoosegame.entity.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
 public class GameFactory {
 
@@ -21,10 +21,8 @@ public class GameFactory {
     public void addNewPlayer(AddNewPlayerBean bean){
         // Creates a Player instance and binds it to the specified pokemon
         Player player = new Player();
-        Pokemon pokemon = new Pokemon();
+        Pokemon pokemon = bean.getPokemon();
         player.setUsername(bean.getPlayerUsername());
-
-        // TODO: queries pokeapi for details to insert in Pokemon instance
 
         // Binds the pokemon to the Player instance
         player.setPokemon(pokemon);

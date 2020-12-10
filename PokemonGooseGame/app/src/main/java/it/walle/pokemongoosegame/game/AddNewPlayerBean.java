@@ -1,8 +1,10 @@
 package it.walle.pokemongoosegame.game;
 
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
+
 public class AddNewPlayerBean {
     private String playerUsername;  // The player username
-    private int pokemonId;          // The pokemon id
+    private Pokemon pokemon;          // The pokemon id
 
     public String getPlayerUsername() {
         return playerUsername;
@@ -12,11 +14,11 @@ public class AddNewPlayerBean {
         this.playerUsername = playerUsername;
     }
 
-    public int getPokemonId() {
-        return pokemonId;
+    public Pokemon getPokemon() {
+        return pokemon;
     }
 
-    public void setPokemonId(int pokemonId) {
-        this.pokemonId = pokemonId;
+    public void setPokemon(Pokemon pokemon) {
+        this.pokemon = pokemon;
     }
 }

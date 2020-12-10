@@ -1,34 +1,13 @@
 package it.walle.pokemongoosegame.selectPokemon;
 
-import it.walle.pokemongoosegame.entity.Player;
-import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
-
 public class SelectPokemonBean {
-    private Player player;
-    private String pokemonChoose;
-    private Pokemon pokemon;
+    private String pokemon;
 
-    public void setPlayer(Player player){
-        this.player = player;
-    }
-
-    public Player getPlayer(){
-        return this.player;
-    }
-
-    public void setPokemonChoose(String pokemonChoose){
-        this.pokemonChoose = pokemonChoose;
-    }
-
-    public String getPokemonChoose(){
-        return this.pokemonChoose;
-    }
-
-    public void setPokemon(Pokemon pokemon){
+    public void setPokemon(String pokemon){
         this.pokemon = pokemon;
     }
 
-    public Pokemon getPokemon(){
+    public String getPokemon(){
         return this.pokemon;
     }
 }

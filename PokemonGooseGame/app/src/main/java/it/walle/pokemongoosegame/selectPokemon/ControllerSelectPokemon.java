@@ -15,7 +15,7 @@ public class ControllerSelectPokemon{
     }
 
     public void LoadPokemon(SelectPokemonBean selectPokemonBean, Response.Listener listener, Response.ErrorListener errorListener) {
-        String pokemon = selectPokemonBean.getPokemonChoose(); //pokemon scelto dall'utente di cui si vogliono tutte le informazioni da pokeapi tramite volley
+        String pokemon = selectPokemonBean.getPokemon(); //pokemon scelto dall'utente di cui si vogliono tutte le informazioni da pokeapi tramite volley
 
         this.daoPokemon
                 .LoadPokemon(
@@ -30,15 +30,6 @@ public class ControllerSelectPokemon{
                 .LoadAllPokemonName(
                         listener,
                         errorListener
-                );
-    }
-
-    public void SelectPokemon(SelectPokemonBean selectPokemonBean) {
-        selectPokemonBean
-                .getPlayer()
-                .setPokemon(
-                        selectPokemonBean
-                        .getPokemon()
                 );
     }
 }
