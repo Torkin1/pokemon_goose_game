@@ -42,6 +42,10 @@ public class GameThread extends Thread{
                     System.out.println("canvas form afte sync" + canvas.toString());
                     AppConstants.getGameEngine().updateAndDrawBackgroundImage(canvas);
                     //add here all the elements that have to be on screen
+                    AppConstants.getGameEngine().updateAndDrawBoard(canvas);
+                    AppConstants.getGameEngine().updateAndDrawPawn(canvas);
+
+
 
                     //unlock canvas
                     surfaceHolder.unlockCanvasAndPost(canvas);

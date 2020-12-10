@@ -31,6 +31,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.navigation.NavigationView;
 
 import it.walle.pokemongoosegame.graphics.AppConstants;
+import it.walle.pokemongoosegame.graphics.GameView;
 import it.walle.pokemongoosegame.graphics.MusicService;
 import it.walle.pokemongoosegame.graphics.SoundEffects;
 
@@ -188,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
                 if (!prefs.getBoolean("isMute", false))
                     soundPool.play(sound_click, 1, 1, 0, 0, 1);
-                startActivity(new Intent(MainActivity.this, GameActivity.class));
+                startActivity(new Intent(MainActivity.this, GameView.class));
             }
         });
 

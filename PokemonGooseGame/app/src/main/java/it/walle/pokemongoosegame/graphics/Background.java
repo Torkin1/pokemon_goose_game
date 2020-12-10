@@ -1,6 +1,5 @@
 package it.walle.pokemongoosegame.graphics;
 
-import android.content.res.Resources;
 
 public class Background {
     //classe per dare effetti al background, come movimento o altro.
@@ -32,7 +31,7 @@ public class Background {
     }
 
     //setter for the y-coordinates
-    public void setY(int bgImageX){
+    public void setY(int bgImageY){
         this.bgImageY = bgImageY;
     }
 

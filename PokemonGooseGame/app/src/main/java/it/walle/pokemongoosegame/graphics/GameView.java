@@ -1,26 +1,28 @@
 package it.walle.pokemongoosegame.graphics;
 
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.media.AudioAttributes;
 import android.media.SoundPool;
+import android.os.Bundle;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Random;
 
-import it.walle.pokemongoosegame.GameActivity;
 import it.walle.pokemongoosegame.GameThread;
-import it.walle.pokemongoosegame.MainActivity;
 import it.walle.pokemongoosegame.R;
-import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+import it.walle.pokemongoosegame.entity.Pokemon;
 import it.walle.pokemongoosegame.entity.board.Board;
 
-public class GameView extends SurfaceView implements SurfaceHolder.Callback {
+public class GameView extends AppCompatActivity {
 
     private GameThread gameThread;
 
@@ -41,57 +43,166 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
     //usato per tenere i dati del gioco, si aggiorna ogni nuvoa versione!
     private SharedPreferences prefs;
 
-    //with this i chage the context!
-    public GameView(Context context) {
-        super(context);
-        initView(); //class that will initiliazie surfaceview and the threads
-    }
+    //the dice image
+    ImageView diceImage;
 
-    void initView(){
-        SurfaceHolder surfaceHolder = getHolder();
-        surfaceHolder.addCallback(this);
-        setFocusable(true);
-        gameThread = new GameThread(surfaceHolder);//now i can lock and unlock the canvas, draw and start the game
-    }
+    //random number
+    Random random = new Random();
 
-    @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        //if there is no gameThread I'll create one, otherwise I'll start
-        if(!gameThread.isRunning()){
-            gameThread = new GameThread(holder);
-            gameThread.start();
-        }
-        else {
-            gameThread.start();
-        }
+    //a text view for the result fo the dice
+    TextView dice_res;
+    String d_res = "Your Score is: ";
 
-    }
+    RelativeLayout game_menu_layout;//getting the realtive layout
+
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        //don't use it yet
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    }
+        setContentView(R.layout.activity_game);
+        SurfaceView surface = (SurfaceView) findViewById(R.id.surface);
 
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        //I'll stop the thread
-        if(gameThread.isRunning()){
-            gameThread.setIsRunning(false);
-            boolean retry = true;
-            while (retry){
-                try {
-                    gameThread.join();//waits the thread to die
-                    retry = false;
+        //fare FullScreen l'activity
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-                }catch (InterruptedException e){
+        gameThread = new GameThread(surface.getHolder());//now i can lock and unlock the canvas, draw and start the game
 
+
+
+        dice_res = findViewById(R.id.text_dice_result);
+
+        diceImage = findViewById(R.id.dice_image);
+        diceImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                rotateDice();
+            }
+        });
+
+        surface.getHolder().addCallback(new SurfaceHolder.Callback() {
+
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+//                holder.setFixedSize(AppConstants.getBitmapBank().getBoardWidth() , AppConstants.getBitmapBank().getBoardHeight()- 90);
+                holder.setSizeFromLayout();
+                // Do some drawing when surface is ready
+                if(!gameThread.isRunning()){
+                    gameThread = new GameThread(holder);
+                    gameThread.start();
+                } else {
+                    gameThread.start();
                 }
             }
 
-        }
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                //I'll stop the thread
+                if (gameThread.isRunning()) {
+                    gameThread.setIsRunning(false);
+                    boolean retry = true;
+                    while (retry) {
+                        try {
+                            gameThread.join();//waits the thread to die
+                            retry = false;
+
+                        } catch (InterruptedException e) {
+
+                        }
+                    }
+                }
+
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                //TODO
+            }
+        });
+
 
     }
+
+    private void rotateDice() {
+        int i = random.nextInt(5)+1;
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
+        diceImage.startAnimation(anim);
+        dice_res.setText(String.format(d_res + "%d" , i));
+        switch (i){
+            case 1:
+                diceImage.setImageResource(R.drawable.dice1);
+                break;
+            case 2:
+                diceImage.setImageResource(R.drawable.dice2);
+                break;
+            case 3:
+                diceImage.setImageResource(R.drawable.dice3);
+                break;
+            case 4:
+                diceImage.setImageResource(R.drawable.dice4);
+                break;
+            case 5:
+                diceImage.setImageResource(R.drawable.dice5);
+                break;
+            case 6:
+                diceImage.setImageResource(R.drawable.dice6);
+                break;
+        }
+    }
+
+}
+
+//        //with this i chage the context!
+//    public GameView(Context context) {
+//        super(context);
+//        initView(); //class that will initiliazie surfaceview and the threads
+//    }
+//
+//    void initView(){
+//        SurfaceHolder surfaceHolder = getHolder();
+//        surfaceHolder.addCallback(this);
+//        setFocusable(true);
+//        gameThread = new GameThread(surfaceHolder);//now i can lock and unlock the canvas, draw and start the game
+//    }
+//
+//    @Override
+//    public void surfaceCreated(SurfaceHolder holder) {
+//        //if there is no gameThread I'll create one, otherwise I'll start
+//        if(!gameThread.isRunning()){
+//            gameThread = new GameThread(holder);
+//            gameThread.start();
+//        }
+//        else {
+//            gameThread.start();
+//        }
+//
+//    }
+//
+//    @Override
+//    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+//        //don't use it yet
+//
+//    }
+//
+//    @Override
+//    public void surfaceDestroyed(SurfaceHolder holder) {
+//        //I'll stop the thread
+//        if(gameThread.isRunning()){
+//            gameThread.setIsRunning(false);
+//            boolean retry = true;
+//            while (retry){
+//                try {
+//                    gameThread.join();//waits the thread to die
+//                    retry = false;
+//
+//                }catch (InterruptedException e){
+//
+//                }
+//            }
+//
+//        }
+//
+//    }
 
 //    public GameView(GameActivity activity, int screenX, int screenY) {
 //        super(activity);
@@ -136,4 +247,4 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback {
 
 
 
-}
+//}

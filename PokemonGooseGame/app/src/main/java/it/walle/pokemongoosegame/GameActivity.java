@@ -19,10 +19,10 @@ public class GameActivity extends AppCompatActivity {
         //fare FullScreen l'activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        gameView = new GameView(this);
+        gameView = new GameView();
 
         //To show the GameView on the screen
-        setContentView(gameView);
+        //setContentView(gameView);
 
 
     }
