@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="it.walle.pokemongoosegame">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -11,17 +11,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PokemonGooseGame">
-        <service android:name=".graphics.MusicService"
-            android:enabled="true"/>
-        <activity android:name=".Aboutus"  android:screenOrientation="landscape"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar">
-        </activity>
-        <activity android:name=".Info" android:screenOrientation="landscape"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar" >
-        </activity>
-        <activity android:name=".GameActivity"
+        <activity android:name=".MainActivity2"></activity>
+
+        <service
+            android:name=".graphics.MusicService"
+            android:enabled="true" />
+
+        <activity
+            android:name=".Aboutus"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar"></activity>
+        <activity
+            android:name=".Info"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar"></activity>
+        <activity
+            android:name=".graphics.GameView"
+            android:screenOrientation="landscape"
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape"
