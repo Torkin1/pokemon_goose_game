@@ -45,6 +45,15 @@ public class GameFactory {
         }
     }
 
+    public int getNumOfPlayers(){
+        // Returns number of players currently added to the game being built by the factory
+        if (game == null){
+            return 0;
+        } else {
+          return this.game.getGamers().size();
+        }
+    }
+
     public Game getGame(){
         return this.game;
     }

@@ -1,5 +1,7 @@
 package it.walle.pokemongoosegame.entity.pokeapi.pokemon;
 
+import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
+
 public class Stats {
     private int base_stat; //valore base della stat
     private EntityPointer stat;

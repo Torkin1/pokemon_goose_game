@@ -1,6 +1,8 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.content.SharedPreferences;
+import android.content.SharedPreferences;
+import android.media.SoundPool;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.SurfaceHolder;
@@ -21,6 +23,7 @@ import it.walle.pokemongoosegame.GameThread;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.entity.Pokemon;
 import it.walle.pokemongoosegame.entity.board.Board;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
 public class GameView extends AppCompatActivity {
 

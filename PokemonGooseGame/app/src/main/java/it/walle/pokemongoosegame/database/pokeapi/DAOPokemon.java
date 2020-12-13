@@ -52,7 +52,7 @@ public class DAOPokemon {
                         ));
     }
 
-    public void LoadAllPokemonName(Response.Listener<EntityPack> listener, Response.ErrorListener errorListener){
+    public void loadAllPokemonPointers(Response.Listener<EntityPack> listener, Response.ErrorListener errorListener){
 
         //Creazione del listner per ottenere il numero di pokemon totale
         Response.Listener<CountPokemon> listenerForNumOfPokemon = new Response.Listener<CountPokemon>(){
@@ -62,7 +62,7 @@ public class DAOPokemon {
 
                 //Richiesta volley per ottenere tutti i nomi dei pokemon con il limite di "numOfPokemon"
 
-                String url = PokeAPIGetter.getReference().getAllPokemonName(numOfPokemon);
+                String url = PokeAPIGetter.getReference().getAllPokemonPointers(numOfPokemon);
 
                 RequestQueueHolder
                         .getInstance(context)
@@ -81,7 +81,7 @@ public class DAOPokemon {
         getNumOfPokemon(listenerForNumOfPokemon, null);
     }
 
-    public void LoadPokemon(String pokemonName, Response.Listener<Pokemon> listener, Response.ErrorListener errorListener){
+    public void loadPokemonByName(String pokemonName, Response.Listener<Pokemon> listener, Response.ErrorListener errorListener){
 
         String url = PokeAPIGetter.getReference().getPokemonByName(pokemonName);
 

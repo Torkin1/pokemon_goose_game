@@ -1,14 +1,25 @@
 package it.walle.pokemongoosegame.entity.pokeapi.pokemon;
-
 public class Pokemon{
 
+    // PokeAPI read-only fields
     private int id;
-    private int currentHp;                  // Remaining pokemon health
     private String name;
     private Stats[] stats;
     private TypePointerPokemon[] types;
+    private Sprites sprites;
+
+    // Dynamic fields
+    private int currentHp;                  // Remaining pokemon health
 
     public Pokemon(){}
+
+    public Sprites getSprites() {
+        return sprites;
+    }
+
+    public void setSprites(Sprites sprites) {
+        this.sprites = sprites;
+    }
 
     public int getId() {
         return id;

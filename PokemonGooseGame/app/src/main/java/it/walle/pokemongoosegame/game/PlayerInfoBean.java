@@ -1,7 +1,7 @@
 package it.walle.pokemongoosegame.game;
 
 import it.walle.pokemongoosegame.entity.Player;
-import it.walle.pokemongoosegame.entity.pokeapi.Pokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
 public class PlayerInfoBean {
     private String username;    // The username of the player which we want to collect infos

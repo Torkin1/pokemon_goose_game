@@ -2,4 +2,15 @@
     <string name="app_name">PokemonGooseGame</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
+    <string name="FRONT_SPRITE_DESCRIPTION">Front sprite of pokemon</string>
+    <string name="TYPE_ICON_DESCRIPTION">Icon of pokemon type</string>
+    <string name="TV_PLAYER_NAME_LABEL_TEXT">Hello! My name\'s:</string>
+    <string name="ET_PLAYER_NAME_HINT">Player name here</string>
+    <string name="TV_CHOOSE_POKEMON_LABEL_TEXT">And I choose you:</string>
+    <string name="ET_POKEMON_NAME_HINT">Pokemon name here</string>
+    <string name="BUTTON_DONE">DONE</string>
+    <string name="PLAYER_DEFAULT_NAME">Player</string>
+    <string name="B_CHANGE_BOARD_TEXT">Change</string>
+    <string name="TV_BOARD_TEXT">Board:</string>
+    <string name="ET_BOARD_HINT">Board name here</string>
 </resources>

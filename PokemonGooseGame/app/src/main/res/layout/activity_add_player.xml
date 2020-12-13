@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddPlayerActivity">
+
+    <TextView
+        android:id="@+id/tvPlayerNameLabel"
+        style="@style/GreetingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/TV_PLAYER_NAME_LABEL_TEXT"
+        android:textAlignment="viewStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/etPlayerName"
+        style="@style/GreetingsLabel"
+        android:layout_width="184dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="4dp"
+        android:ems="10"
+        android:hint="@string/ET_PLAYER_NAME_HINT"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPlayerNameLabel"
+        app:layout_constraintStart_toEndOf="@+id/tvPlayerNameLabel"
+        app:layout_constraintTop_toTopOf="@+id/tvPlayerNameLabel"
+        app:layout_constraintVertical_bias="0.666" />
+
+    <TextView
+        android:id="@+id/tvChoosePokemonLabel"
+        style="@style/GreetingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/TV_CHOOSE_POKEMON_LABEL_TEXT"
+        app:layout_constraintStart_toStartOf="@+id/tvPlayerNameLabel"
+        app:layout_constraintTop_toBottomOf="@+id/tvPlayerNameLabel" />
+
+    <EditText
+        android:id="@+id/etPokemonName"
+        style="@style/GreetingsLabel"
+        android:layout_width="184dp"
+        android:layout_height="46dp"
+        android:ems="10"
+        android:hint="@string/ET_POKEMON_NAME_HINT"
+        android:inputType="none"
+        app:layout_constraintBottom_toBottomOf="@+id/tvChoosePokemonLabel"
+        app:layout_constraintEnd_toEndOf="@+id/etPlayerName"
+        app:layout_constraintStart_toEndOf="@+id/tvChoosePokemonLabel"
+        app:layout_constraintStart_toStartOf="@+id/etPlayerName"
+        app:layout_constraintTop_toTopOf="@+id/tvChoosePokemonLabel" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPokemonList"
+        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/bDone"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/bDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/BUTTON_DONE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/bChangeBoard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="26dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="33dp"
+        android:text="@string/B_CHANGE_BOARD_TEXT"
+        app:layout_constraintEnd_toEndOf="@+id/etBoardName"
+        app:layout_constraintStart_toStartOf="@+id/etBoardName"
+        app:layout_constraintTop_toBottomOf="@+id/etBoardName" />
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/GreetingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:text="@string/TV_BOARD_TEXT"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPlayerNameLabel"
+        app:layout_constraintStart_toEndOf="@+id/etPlayerName"
+        app:layout_constraintTop_toTopOf="@+id/tvPlayerNameLabel" />
+
+    <EditText
+        android:id="@+id/etBoardName"
+        style="@style/GreetingsLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="22dp"
+        android:hint="@string/ET_BOARD_HINT"
+        app:layout_constraintBottom_toBottomOf="@+id/textView"
+        app:layout_constraintStart_toEndOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+</androidx.constraintlayout.widget.ConstraintLayout>
