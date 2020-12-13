@@ -46,6 +46,23 @@ import it.walle.pokemongoosegame.utils.TypeDrawableNotFoundException;
 
 public class AddPlayerActivity extends AppCompatActivity {
 
+    private void startPointingHandAnimation(View pointingHandRef){
+        pointingHandRef
+                .setVisibility(View.VISIBLE);
+        pointingHandRef
+                .startAnimation(
+                        AnimationUtils
+                                .loadAnimation(AddPlayerActivity.this, R.anim.bounce)
+                );
+        pointingHandRef
+                .setHasTransientState(true);
+    }
+
+    private void endPointingHandAnimation(View pointingHandRef){
+        pointingHandRef.clearAnimation();
+        pointingHandRef.setVisibility(View.INVISIBLE);
+        pointingHandRef.setHasTransientState(false);
+    }
 
     private class PokemonHolder extends RecyclerView.ViewHolder{
 
@@ -92,26 +109,15 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 .getLayoutManager()
                                 .findViewByPosition(oldSelectedIndex);
                         if (oldSelectedHolder != null){
-                            View oldSelected = oldSelectedHolder.findViewById(R.id.ivCurrentPokemonPointer);
-                            oldSelected.clearAnimation();
-                            oldSelected.setVisibility(View.INVISIBLE);
+                            View oldSelectedPointingHand = oldSelectedHolder.findViewById(R.id.ivCurrentPokemonPointer);
+                            endPointingHandAnimation(oldSelectedPointingHand);
                         }
 
 
                     }
 
                     // shows pointing hand on clicked pokemon and animates it
-                    PokemonHolder
-                            .this
-                            .ivCurrentPokemonPointer
-                            .setVisibility(View.VISIBLE);
-                    PokemonHolder
-                            .this
-                            .ivCurrentPokemonPointer
-                            .startAnimation(
-                                    AnimationUtils
-                                            .loadAnimation(AddPlayerActivity.this, R.anim.bounce)
-                            );
+                    startPointingHandAnimation(PokemonHolder.this.ivCurrentPokemonPointer);
 
                     // Updates currently selected pokemon index
                     AddPlayerActivity.this.setCurrentlyPointedHolderIndex(pokemonClickedIndex);
@@ -194,18 +200,10 @@ public class AddPlayerActivity extends AppCompatActivity {
 
                     // Puts a pointing hand on it if it's the currently selected pokemon, removes it otherwise
                     if (position == AddPlayerActivity.this.getCurrentlyPointedHolderIndex()){
-
-                        holder.ivCurrentPokemonPointer.setVisibility(View.VISIBLE);
-                        holder.ivCurrentPokemonPointer.startAnimation(
-                                AnimationUtils
-                                        .loadAnimation(AddPlayerActivity.this, R.anim.bounce)
-                        );
+                        startPointingHandAnimation(holder.ivCurrentPokemonPointer);
                     } else {
-                        holder.ivCurrentPokemonPointer.clearAnimation();
-                        holder.ivCurrentPokemonPointer.setVisibility(View.INVISIBLE);
+                        endPointingHandAnimation(holder.ivCurrentPokemonPointer);
                     }
-
-
                 }
 
                 @Override
@@ -222,7 +220,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     /*  TODO:
                     *       Saves player and pokemon data and adds it to the GameFactory, then asks the user if he wants to add another player.
-                    *       If yes, restarts the activity, else proceeds to the next activity
+                    *       If yes, restarts the activity (the gameFactory reference must be preserved), else proceeds to the next activity
                     * */
                 }
             });

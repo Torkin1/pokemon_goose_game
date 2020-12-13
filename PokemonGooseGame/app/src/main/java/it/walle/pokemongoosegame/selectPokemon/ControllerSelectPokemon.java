@@ -51,7 +51,8 @@ public class ControllerSelectPokemon{
         }, null);
     }
 
-    public void selectPokemon(SelectPokemonBean selectPokemonBean) {
+    //FIXME: SelectPokemonBean has no method called getPlayer
+    /*public void selectPokemon(SelectPokemonBean selectPokemonBean) {
         selectPokemonBean
                 .getPlayer()
                 .setPokemon(
@@ -59,6 +60,7 @@ public class ControllerSelectPokemon{
                         .getPokemon()
                 );
     }
+    */
 
     public void getNumOfPokemons(GetNumOfPokemonBean bean){
         daoPokemon

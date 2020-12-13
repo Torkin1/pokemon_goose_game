@@ -21,7 +21,6 @@ import java.util.Random;
 
 import it.walle.pokemongoosegame.GameThread;
 import it.walle.pokemongoosegame.R;
-import it.walle.pokemongoosegame.entity.Pokemon;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
