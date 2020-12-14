@@ -16,6 +16,7 @@ public class GameFactory {
 
     public GameFactory(Context context){
         this.context = context;
+        this.game = new Game();
     }
 
     public void addNewPlayer(AddNewPlayerBean bean){
@@ -31,7 +32,7 @@ public class GameFactory {
         this.game.getGamers().add(player);
     }
 
-    public void addNewBoard(CreateBoardBean bean) throws BoardFactoryReferencingFailureException {
+    public void setBoard(CreateBoardBean bean) throws BoardFactoryReferencingFailureException {
         try {
 
             // Creates a new Board
@@ -46,6 +47,7 @@ public class GameFactory {
     }
 
     public int getNumOfPlayers(){
+
         // Returns number of players currently added to the game being built by the factory
         if (game == null){
             return 0;
@@ -54,7 +56,7 @@ public class GameFactory {
         }
     }
 
-    public Game getGame(){
+    public Game createGame(){
         return this.game;
     }
 }

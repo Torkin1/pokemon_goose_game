@@ -3,22 +3,17 @@ package it.walle.pokemongoosegame;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.animation.ObjectAnimator;
-import android.content.res.Resources;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,42 +22,21 @@ import android.widget.LinearLayout;
 
 import com.android.volley.Response;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
-import java.util.concurrent.Semaphore;
 
-import it.walle.pokemongoosegame.database.pokeapi.DAOPokemon;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
-import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.TypePointerPokemon;
+import it.walle.pokemongoosegame.game.AddNewPlayerBean;
+import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.GameFactory;
 import it.walle.pokemongoosegame.selectPokemon.ControllerSelectPokemon;
-import it.walle.pokemongoosegame.selectPokemon.GetNumOfPokemonBean;
 import it.walle.pokemongoosegame.selectPokemon.LoadPokemonBean;
 import it.walle.pokemongoosegame.utils.TypeDrawableGetter;
 import it.walle.pokemongoosegame.utils.TypeDrawableNotFoundException;
 
 public class AddPlayerActivity extends AppCompatActivity {
-
-    private void startPointingHandAnimation(View pointingHandRef){
-        pointingHandRef
-                .setVisibility(View.VISIBLE);
-        pointingHandRef
-                .startAnimation(
-                        AnimationUtils
-                                .loadAnimation(AddPlayerActivity.this, R.anim.bounce)
-                );
-        pointingHandRef
-                .setHasTransientState(true);
-    }
-
-    private void endPointingHandAnimation(View pointingHandRef){
-        pointingHandRef.clearAnimation();
-        pointingHandRef.setVisibility(View.INVISIBLE);
-        pointingHandRef.setHasTransientState(false);
-    }
 
     private class PokemonHolder extends RecyclerView.ViewHolder{
 
@@ -85,10 +59,11 @@ public class AddPlayerActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    int oldSelectedIndex = AddPlayerActivity.this.currentlyPointedHolderIndex;
+                    int oldSelectedIndex = AddPlayerActivity.this.currentlySelectedPokemonIndex;
                     int pokemonClickedIndex = PokemonHolder.this.getAdapterPosition();
 
-                    // Updates etPlayerName with name of clicked pokemon
+                    // Updates currently selected pokemon
+
                     String pokemonClickedName = AddPlayerActivity
                             .this
                             .getAllPokemons()
@@ -112,15 +87,13 @@ public class AddPlayerActivity extends AppCompatActivity {
                             View oldSelectedPointingHand = oldSelectedHolder.findViewById(R.id.ivCurrentPokemonPointer);
                             endPointingHandAnimation(oldSelectedPointingHand);
                         }
-
-
                     }
 
                     // shows pointing hand on clicked pokemon and animates it
                     startPointingHandAnimation(PokemonHolder.this.ivCurrentPokemonPointer);
 
                     // Updates currently selected pokemon index
-                    AddPlayerActivity.this.setCurrentlyPointedHolderIndex(pokemonClickedIndex);
+                    AddPlayerActivity.this.setCurrentlySelectedPokemonIndex(pokemonClickedIndex);
                 }
             });
         }
@@ -142,12 +115,10 @@ public class AddPlayerActivity extends AppCompatActivity {
             this.addPlayerActivity = addPlayerActivity;
 
             // Inflates text views for pokemon and player name and populates etPlayerName with default player name
-            int numOfPlayers = addPlayerActivity.getGameFactory().getNumOfPlayers();
             this.etPokemonName = addPlayerActivity.findViewById(R.id.etPokemonName);
             this.etPokemonName.setKeyListener(null);
             this.etPlayerName = addPlayerActivity.findViewById(R.id.etPlayerName);
-            String defaultPlayerName = getString(R.string.PLAYER_DEFAULT_NAME) + numOfPlayers;
-            etPlayerName.setText(defaultPlayerName);
+            setDefaultPlayerName(etPlayerName);
 
             // Inflates list of available pokemons
             this.rvPokemonList = addPlayerActivity.findViewById(R.id.rvPokemonList);
@@ -185,6 +156,11 @@ public class AddPlayerActivity extends AppCompatActivity {
 
                     }
                     // sets sprite image querying pokeapi
+                    /* FIXME:
+                        If the holder is recycled before the sprite is loaded in the ImageView, multiple listeners will try to set the sprite in the same ImageView.
+                        This will generate a race condition and the displayed sprite will be the last one loaded in the ImageView, not necessarily the one corresponding to the pokemon.
+                        When the sprites are present in Volley cache they are generally loaded faster and this race condition is less likely (but not impossible) to occur.
+                     */
                     String spritePointer = currentPokemon.getSprites().getOther().getOfficial_artwork().getFront_default();
                     if (spritePointer == null) {
                         spritePointer = currentPokemon.getSprites().getFront_default();
@@ -199,7 +175,7 @@ public class AddPlayerActivity extends AppCompatActivity {
 
 
                     // Puts a pointing hand on it if it's the currently selected pokemon, removes it otherwise
-                    if (position == AddPlayerActivity.this.getCurrentlyPointedHolderIndex()){
+                    if (position == AddPlayerActivity.this.getCurrentlySelectedPokemonIndex()){
                         startPointingHandAnimation(holder.ivCurrentPokemonPointer);
                     } else {
                         endPointingHandAnimation(holder.ivCurrentPokemonPointer);
@@ -218,10 +194,46 @@ public class AddPlayerActivity extends AppCompatActivity {
             this.bDone.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    /*  TODO:
+                    /*
                     *       Saves player and pokemon data and adds it to the GameFactory, then asks the user if he wants to add another player.
-                    *       If yes, restarts the activity (the gameFactory reference must be preserved), else proceeds to the next activity
+                    *       If yes, updates etPLayerName accordinlgy and dismisses the dialog, else proceeds to the next activity
                     * */
+
+                    String currentPlayerName = etPlayerName.getText().toString();
+
+                    // Adds the player with the selected pokemon to the game
+                    AddNewPlayerBean addNewPlayerBean = new AddNewPlayerBean();
+                    addNewPlayerBean.setPlayerUsername(currentPlayerName);
+                    addNewPlayerBean.setPokemon(allPokemons.get(currentlySelectedPokemonIndex));
+                    gameFactory.addNewPlayer(addNewPlayerBean);
+
+                    // Asks user if he wants to add another player to the game
+                    new AlertDialog.Builder(addPlayerActivity)
+                            .setIcon(R.drawable.add_player)
+                            .setTitle(currentPlayerName + getString(R.string.ADD_PLAYER_DIALOG_TITLE))
+                            .setMessage(R.string.ADD_PLAYER_DIALOG_MSG)
+                            .setCancelable(false)
+                            .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    setDefaultPlayerName(etPlayerName);
+                                }
+                            })
+                            .setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    // TODO: adds board
+
+                                    // Sets up game controller with newly created game
+                                    CoreController.getReference().setGame(gameFactory.createGame());
+
+                                    // TODO: starts next activity
+                                }
+                            })
+                            .create()
+                            .show();
+
                 }
             });
 
@@ -270,7 +282,7 @@ public class AddPlayerActivity extends AppCompatActivity {
     private Holder holder;                      // Holds all view elements
     private final GameFactory gameFactory;      // Holds a gamefactory instance to build a new game
     private final List<Pokemon> allPokemons;    // List of all selectable pokemons
-    private int currentlyPointedHolderIndex;    // Index of holder currently pointed by bouncing head
+    private int currentlySelectedPokemonIndex;    // Index of holder currently pointed by bouncing head
 
     public Holder getHolder() {
         return holder;
@@ -288,18 +300,18 @@ public class AddPlayerActivity extends AppCompatActivity {
         return TAG;
     }
 
-    public int getCurrentlyPointedHolderIndex() {
-        return currentlyPointedHolderIndex;
+    public int getCurrentlySelectedPokemonIndex() {
+        return currentlySelectedPokemonIndex;
     }
 
-    public void setCurrentlyPointedHolderIndex(int currentlyPointedHolderIndex) {
-        this.currentlyPointedHolderIndex = currentlyPointedHolderIndex;
+    public void setCurrentlySelectedPokemonIndex(int currentlySelectedPokemonIndex) {
+        this.currentlySelectedPokemonIndex = currentlySelectedPokemonIndex;
     }
 
     public AddPlayerActivity(){
         this.gameFactory = new GameFactory(this);
         this.allPokemons = new Vector<>();
-        this.currentlyPointedHolderIndex = RecyclerView.NO_POSITION;
+        this.currentlySelectedPokemonIndex = RecyclerView.NO_POSITION;
     }
 
     @Override
@@ -325,5 +337,27 @@ public class AddPlayerActivity extends AppCompatActivity {
             }
         });
         ControllerSelectPokemon.getReference(this).loadAllPokemons(loadPokemonBean);
+    }
+
+    private void startPointingHandAnimation(View pointingHandRef){
+
+        pointingHandRef.setVisibility(View.VISIBLE);
+        pointingHandRef.startAnimation(
+                AnimationUtils
+                        .loadAnimation(AddPlayerActivity.this, R.anim.bounce)
+        );
+        pointingHandRef.setHasTransientState(true);     // Needed to keep the animation running after the view goes off screen
+    }
+
+    private void endPointingHandAnimation(View pointingHandRef){
+        pointingHandRef.clearAnimation();
+        pointingHandRef.setVisibility(View.INVISIBLE);
+        pointingHandRef.setHasTransientState(false);
+    }
+
+    private void setDefaultPlayerName(EditText etPlayerName){
+        int numOfPlayers = this.getGameFactory().getNumOfPlayers();
+        String defaultPlayerName = getString(R.string.PLAYER_DEFAULT_NAME) + numOfPlayers;
+        etPlayerName.setText(defaultPlayerName);
     }
 }
