@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/clAddPlayerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddPlayerActivity">
@@ -67,22 +66,32 @@
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+        app:layout_constraintEnd_toStartOf="@+id/bDone"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/bDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/BUTTON_DONE"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/bChangeBoard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="26dp"
         android:layout_marginTop="64dp"
-        android:layout_marginEnd="33dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/B_CHANGE_BOARD_TEXT"
-        app:layout_constraintEnd_toEndOf="@+id/etBoardType"
-        app:layout_constraintHorizontal_bias="0.466"
-        app:layout_constraintStart_toStartOf="@+id/etBoardType"
-        app:layout_constraintTop_toBottomOf="@+id/etBoardType" />
+        app:layout_constraintBottom_toTopOf="@+id/bDone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.605"
+        app:layout_constraintStart_toEndOf="@+id/rvPokemonList"
+        app:layout_constraintTop_toBottomOf="@+id/etBoardType"
+        app:layout_constraintVertical_bias="0.044" />
 
     <TextView
         android:id="@+id/tvTypeBoard"
@@ -128,30 +137,5 @@
         app:layout_constraintEnd_toEndOf="@+id/etBoardType"
         app:layout_constraintStart_toStartOf="@+id/etBoardType"
         app:layout_constraintTop_toTopOf="@+id/tvNameBoard" />
-
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="155dp"
-        android:layout_height="104dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <Button
-            android:id="@+id/bDone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:text="@string/BUTTON_DONE" />
-
-        <Button
-            android:id="@+id/bStartGame"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/BUTTON_START_GAME_TEXT" />
-    </LinearLayout>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
