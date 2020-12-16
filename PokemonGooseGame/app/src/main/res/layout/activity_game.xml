@@ -54,6 +54,33 @@
             android:textColor="#E6E6E6" />
 
         <ImageView
+            android:id="@+id/page_up_img"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+
+            android:layout_below="@+id/text_player_turn"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="13dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:src="@drawable/up_arrow_off" />
+
+
+        <ImageView
+            android:id="@+id/page_down_img"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+
+            android:layout_above="@+id/text_dice_result"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="13dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/down_arrow_off" />
+
+        <ImageView
             android:id="@+id/dice_image"
 
             android:layout_width="50dp"

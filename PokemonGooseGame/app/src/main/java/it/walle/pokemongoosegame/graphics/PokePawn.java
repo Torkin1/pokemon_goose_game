@@ -12,7 +12,7 @@ public class PokePawn {
     public PokePawn() {
 
 //        System.out.println("creato il pokepawn");
-        pokePawnImageX = AppConstants.getBitmapBank().getBoardWidth() / 10 - 170;
+        pokePawnImageX = (AppConstants.getBitmapBank().getBoardWidth() - AppConstants.LEFT_GAME_MENU_WIDTH) / 10;
         pokePawnImageY = AppConstants.getBitmapBank().getBoardHeight() - 120;
         maxFrame = 3;
         pokePawnImgVelocity = 0;

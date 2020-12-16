@@ -10,35 +10,34 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.PokemonGooseGame"
-        android:screenOrientation="landscape"
-        >
-        <activity android:name=".AddPlayerActivity" />
+        android:theme="@style/Theme.PokemonGooseGame">
+        <activity android:name=".MainActivity2"></activity>
 
         <service
             android:name=".graphics.MusicService"
             android:enabled="true" />
+<activity
+            android:name=".AddPlayerActivity"
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar"
+            android:screenOrientation="landscape"
+            />
 
         <activity
             android:name=".Aboutus"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar"></activity>
         <activity
             android:name=".Info"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar"></activity>
         <activity
-            android:name=".GameActivity"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar"
+            android:name=".graphics.GameView"
             android:screenOrientation="landscape"
-            />
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar"
             android:screenOrientation="landscape"
-            >
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +45,5 @@
             </intent-filter>
         </activity>
     </application>
-
-
 
 </manifest>

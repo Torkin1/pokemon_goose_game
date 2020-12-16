@@ -1,7 +1,6 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
@@ -14,8 +13,12 @@ public class AppConstants {
 
 
     //to now the screen dimension
-    static int SCREEN_WIDTH, SCREEN_HEIGHT;
-    public static int LEFT_GAME_MENU_WIDTH, LEFT_GAME_MENU_HEIGHT;
+    static int SCREEN_WIDTH, SCREEN_HEIGHT, CELL_MARGIN = 15;
+    public static int LEFT_GAME_MENU_WIDTH, LEFT_GAME_MENU_HEIGHT, CELL_WH,
+            TOTAL_CELLS = 69, DONE_CELLS = 0,
+            DISPLAYED_SCREEN = 1, PAWNS_SCREEN = 1, TOTAL_SCREENS = 1,
+            CELLS_IN_A_SCREEN = 0;
+    public static boolean DRAWABLE = true;
 
     //for gravity when the pawn has to move up
     static int gravity;
@@ -24,7 +27,7 @@ public class AppConstants {
     static int VELOCITY_WHILE_MOVING;
 
     //initiliazing theref
-    public static void initialization(Context context){
+    public static void initialization(Context context) {
         //setting screen measure
         setScreenSize(context);//I'll use it to scale the images for the best result
         float menu_dp_width = 90f;
@@ -40,22 +43,23 @@ public class AppConstants {
 
         AppConstants.VELOCITY_WHILE_MOVING = -10;
     }
-    public static float convertDpToPixel(float dp, Context context){
+
+    public static float convertDpToPixel(float dp, Context context) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
     //return bitmapbank istance
-    public static BitmapBank getBitmapBank(){
+    public static BitmapBank getBitmapBank() {
         return bitmapBank;
     }
 
     //return gameEngine istance
-    public static GameEngine getGameEngine(){
+    public static GameEngine getGameEngine() {
         return gameEngine;
     }//using the same logic we have the methods (isRunning(),setIsRunning()) in GameThread
 
     //seting the height and width variable, for any device
-    private static void setScreenSize(Context context){
+    private static void setScreenSize(Context context) {
         WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
@@ -66,10 +70,16 @@ public class AppConstants {
         AppConstants.SCREEN_HEIGHT = height;
         float dip = 90f;
         float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, metrics);
+        AppConstants.LEFT_GAME_MENU_WIDTH = (int) px;
+        AppConstants.CELL_WH = (int) px;
 
     }
 
-    public void setLeftMenuWH(int width, int height){
+    public void setRemainingCells(int remainingCells) {
+        AppConstants.DONE_CELLS = remainingCells;
+    }
+
+    public void setLeftMenuWH(int width, int height) {
         AppConstants.LEFT_GAME_MENU_HEIGHT = height;
         AppConstants.LEFT_GAME_MENU_WIDTH = width;
     }

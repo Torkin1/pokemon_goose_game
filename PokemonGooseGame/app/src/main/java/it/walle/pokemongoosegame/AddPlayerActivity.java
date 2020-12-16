@@ -464,6 +464,6 @@ public class AddPlayerActivity extends AppCompatActivity {
     }
 
     private void setBoard(CreateBoardPGBean createBoardPGBean){
-        gameFactory.addNewBoard(createBoardPGBean);
+//        gameFactory.addNewBoard(createBoardPGBean);
     }
 }

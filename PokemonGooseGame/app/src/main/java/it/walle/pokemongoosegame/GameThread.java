@@ -35,17 +35,15 @@ public class GameThread extends Thread{
             //locking the canvas
             Canvas canvas = surfaceHolder.lockCanvas(null);
             if (canvas != null){
-                System.out.println("Canvas != null");
-                System.out.println(canvas.toString());
                 synchronized (surfaceHolder){
-                    System.out.println("Canvas != null after sync");
-                    System.out.println("canvas form afte sync" + canvas.toString());
-                    AppConstants.getGameEngine().updateAndDrawBackgroundImage(canvas);
                     //add here all the elements that have to be on screen
-                    AppConstants.getGameEngine().updateAndDrawBoard(canvas);
+//                    AppConstants.getGameEngine().updateAndDrawBoard(canvas);
+
+                    AppConstants.getGameEngine().updateAndDrawBackgroundImage(canvas);
+//                    if(AppConstants.DRAWABLE)
+                        AppConstants.getGameEngine().updateAndDrawCell(canvas);
+
                     AppConstants.getGameEngine().updateAndDrawPawn(canvas);
-
-
 
                     //unlock canvas
                     surfaceHolder.unlockCanvasAndPost(canvas);

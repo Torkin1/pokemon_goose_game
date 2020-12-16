@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
                 if (!prefs.getBoolean("isMute", false))
                     soundPool.play(sound_click, 1, 1, 0, 0, 1);
-                startActivity(new Intent(MainActivity.this, AddPlayerActivity.class));
+                startActivity(new Intent(MainActivity.this, GameView.class));
             }
         });
 

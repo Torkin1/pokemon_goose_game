@@ -9,16 +9,22 @@ import it.walle.pokemongoosegame.R;
 public class BitmapBank {
 
     //bg reff
-    Bitmap background, pawn, board;
+    Bitmap background, pawn, board, cell;
+    Resources res;
 
     public BitmapBank(Resources res) {
         //Now I take normal iamges and covert them to bitmaps
+        this.res = res;
         background = BitmapFactory.decodeResource(res, R.drawable.bg_large);
+
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_normal);
 
         pawn = BitmapFactory.decodeResource(res, R.drawable.crab_with_a_knife);
 
         board = BitmapFactory.decodeResource(res, R.drawable.moon);
 
+
+        cell = scaleCell(cell);
         //scale the board
         board = scaleBoard(board);
 
@@ -70,6 +76,39 @@ public class BitmapBank {
         return background.getHeight();
     }
 
+
+    public Bitmap getCell() {
+        return cell;
+    }
+
+    public int getCellWidth() {
+        return cell.getWidth();
+    }
+
+    public int getCellHeight() {
+        return cell.getHeight();
+    }
+
+
+    public void setCellResBlue() {
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_blue);
+        cell = scaleCell(cell);
+
+    }
+
+    public void setCellResYellow() {
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_yellow);
+        cell = scaleCell(cell);
+
+    }
+
+    public void setCellRes() {
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_normal);
+        cell = scaleCell(cell);
+
+    }
+
+
     //scale the image checking the devices sizes
     public Bitmap scaleImage(Bitmap bitmap) {
         float widthHeightRatio = getBackgroundWidth() / getBackgroundHeight();
@@ -93,13 +132,18 @@ public class BitmapBank {
 
         System.out.println("Sono in scale board ed la dim del mennu è: " + AppConstants.LEFT_GAME_MENU_WIDTH + " La width dello schermo è di: " + AppConstants.SCREEN_WIDTH);
 
-        return Bitmap.createScaledBitmap(board, AppConstants.SCREEN_WIDTH - AppConstants.LEFT_GAME_MENU_WIDTH*2 + 20, AppConstants.SCREEN_HEIGHT - 120, false);
+        return Bitmap.createScaledBitmap(board, AppConstants.SCREEN_WIDTH - AppConstants.LEFT_GAME_MENU_WIDTH * 2 + 20, AppConstants.SCREEN_HEIGHT - 120, false);
     }
 
     private Bitmap scalePawn(Bitmap pawn) {
 
 
-        return Bitmap.createScaledBitmap(pawn, (AppConstants.SCREEN_WIDTH) / 10, (AppConstants.SCREEN_HEIGHT - 120) / 5, false);
+//        return Bitmap.createScaledBitmap(pawn, (AppConstants.SCREEN_WIDTH) / 10, (AppConstants.SCREEN_HEIGHT - 120) / 5, false);
+        return Bitmap.createScaledBitmap(pawn, cell.getWidth(), cell.getHeight(), false);
+    }
+
+    private Bitmap scaleCell(Bitmap cell) {
+        return Bitmap.createScaledBitmap(cell, cell.getWidth() * 2, cell.getWidth() * 2, false);
     }
 
 }
