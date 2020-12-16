@@ -92,7 +92,7 @@ public class DAOPokemon {
                 Pokemon pokemon = (Pokemon) response;
                     for(int i = 0; i < pokemon.getTypes().length; i++) {
                         DAOType.getReference(context)
-                                .LoadTypeByName(
+                                .loadTypeByName(
                                         pokemon.getTypes()[i]
                                                 .getType()
                                                 .getName(),

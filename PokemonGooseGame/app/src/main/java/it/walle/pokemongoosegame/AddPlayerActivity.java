@@ -1,15 +1,5 @@
 package it.walle.pokemongoosegame;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -24,23 +14,33 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Response;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import it.walle.pokemongoosegame.boardfactory.BoardFactory;
-import it.walle.pokemongoosegame.boardfactory.BoardFactoryType;
+import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.CreateBoardPGBean;
 import it.walle.pokemongoosegame.database.local.LocalDatabase;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
-import it.walle.pokemongoosegame.entity.board.Board;
+import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGSettings;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.TypePointerPokemon;
 import it.walle.pokemongoosegame.game.AddNewPlayerBean;
-import it.walle.pokemongoosegame.game.BoardFactoryReferencingFailureException;
 import it.walle.pokemongoosegame.game.CoreController;
+import it.walle.pokemongoosegame.game.CreateGameBean;
 import it.walle.pokemongoosegame.game.GameFactory;
 import it.walle.pokemongoosegame.selectPokemon.ControllerSelectPokemon;
 import it.walle.pokemongoosegame.selectPokemon.LoadPokemonBean;
@@ -74,7 +74,6 @@ public class AddPlayerActivity extends AppCompatActivity {
                     int pokemonClickedIndex = PokemonHolder.this.getAdapterPosition();
 
                     // Updates currently selected pokemon
-
                     String pokemonClickedName = AddPlayerActivity
                             .this
                             .getAllPokemons()
@@ -208,43 +207,83 @@ public class AddPlayerActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     /*
                     *       Saves player and pokemon data and adds it to the GameFactory, then asks the user if he wants to add another player.
-                    *       If yes, updates etPLayerName accordinlgy and dismisses the dialog, else proceeds to the next activity
+                    *       If yes, updates etPLayerName accordingly and dismisses the dialog, else proceeds to the next activity
                     * */
 
                     String currentPlayerName = etPlayerName.getText().toString();
 
-                    // Adds the player with the selected pokemon to the game
-                    AddNewPlayerBean addNewPlayerBean = new AddNewPlayerBean();
-                    addNewPlayerBean.setPlayerUsername(currentPlayerName);
-                    addNewPlayerBean.setPokemon(allPokemons.get(currentlySelectedPokemonIndex));
-                    gameFactory.addNewPlayer(addNewPlayerBean);
+                    // If the user has not chosen a pokemon, prompts them to select one before continuing
+                    if (currentlySelectedPokemonIndex < 0){
+                        (new AlertDialog.Builder(addPlayerActivity))
+                                .setTitle(R.string.ALERT_NO_POKEMON_SELECTED_TITLE)
+                                .setMessage(R.string.ALERT_NO_POKEMON_SELECTED_MSG)
+                                .setIcon(R.drawable.psyduck_pixel_art_maker_198642)
+                                .create()
+                                .show();
+                    }
+                    else {
 
-                    // Asks user if he wants to add another player to the game
-                    new AlertDialog.Builder(addPlayerActivity)
-                            .setIcon(R.drawable.add_player)
-                            .setTitle(currentPlayerName + getString(R.string.ADD_PLAYER_DIALOG_TITLE))
-                            .setMessage(R.string.ADD_PLAYER_DIALOG_MSG)
-                            .setCancelable(false)
-                            .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    setDefaultPlayerName(etPlayerName);
-                                }
-                            })
-                            .setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    // TODO: adds board
+                        // Adds the player with the selected pokemon to the game
+                        AddNewPlayerBean addNewPlayerBean = new AddNewPlayerBean();
+                        addNewPlayerBean.setPlayerUsername(currentPlayerName);
+                        addNewPlayerBean.setPokemon(allPokemons.get(currentlySelectedPokemonIndex));
+                        controllerSelectPokemon.getAddNewPlayerBeans().add(addNewPlayerBean);
 
-                                    // Sets up game controller with newly created game
-                                    CoreController.getReference().setGame(gameFactory.createGame());
+                        // Asks user if he wants to add another player to the game
+                        new AlertDialog.Builder(addPlayerActivity)
+                                .setIcon(R.drawable.add_player)
+                                .setTitle(currentPlayerName + getString(R.string.ADD_PLAYER_DIALOG_TITLE))
+                                .setMessage(R.string.ADD_PLAYER_DIALOG_MSG)
+                                .setCancelable(false)
+                                .setPositiveButton(getString(R.string.YES), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        setDefaultPlayerName(etPlayerName);
+                                    }
+                                })
+                                .setNegativeButton(getString(R.string.NO), new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
 
-                                    // TODO: starts next activity
-                                }
-                            })
-                            .create()
-                            .show();
+                                        dialog.dismiss();
+
+                                        // If no board has been selected, prompts user to select one before continuing
+                                        if (addPlayerActivity.getCreateBoardPGBean() == null){
+                                            (new AlertDialog.Builder(addPlayerActivity))
+                                                    .setTitle(R.string.ALERT_NO_BOARD_SELECTED_TITLE)
+                                                    .setMessage(R.string.ALERT_NO_BOARD_SELECTED_MSG)
+                                                    .setIcon(R.drawable.psyduck_pixel_art_maker_198642)
+                                                    .create()
+                                                    .show();
+                                        }
+                                        else{
+                                            // Creates a new game
+                                            CreateGameBean createGameBean = new CreateGameBean();
+                                            createGameBean.setCreateBoardBean(addPlayerActivity.getCreateBoardPGBean());
+                                            createGameBean.setContext(addPlayerActivity);
+                                            createGameBean.setLifeCycleOwner(addPlayerActivity);
+                                            createGameBean.setPlayerBeans(controllerSelectPokemon.getAddNewPlayerBeans());
+                                            createGameBean.setGameObserver(new Observer<Game>() {
+                                                @Override
+                                                public void onChanged(Game game) {
+
+                                                    // Sets up game controller with newly created game
+                                                    CoreController.getReference().setGame(game);
+
+                                                    // TODO: starts next activity
+                                                }
+                                            });
+                                            GameFactory.getReference().createGame(createGameBean);
+                                        }
+
+
+                                    }
+                                })
+                                .create()
+                                .show();
+                    }
+
 
                 }
             });
@@ -265,20 +304,16 @@ public class AddPlayerActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     new AlertDialog.Builder(addPlayerActivity)
                             .setTitle(R.string.DIALOG_SELECT_BOARD_TITLE)
-                            .setSingleChoiceItems(R.array.boardTypeDialog, -1, new DialogInterface.OnClickListener() {
+                            .setSingleChoiceItems(R.array.BOARD_CREATION_ALGORITHMS, -1, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    type = (getResources().getStringArray(R.array.boardTypeDialog))[which];
+                                    type = (getResources().getStringArray(R.array.BOARD_CREATION_ALGORITHMS))[which];
                                 }
                             })
                             .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD,new DialogInterface.OnClickListener(){
                                 @Override
                                 public void onClick(DialogInterface dialog, int id){
                                     if(type.equals(BoardTypeEnumeration.PG.getType())) {
-                                        AddPlayerActivity.this
-                                                .holder
-                                                .etBoardType
-                                                .setText(type);
 
                                         LocalDatabase localDatabase = (LocalDatabase) LocalDatabase.getReference(AddPlayerActivity.this);
 
@@ -290,7 +325,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                                         Observer<List<String>> observer = new Observer<List<String>>() {
                                             @Override
                                             public void onChanged(List<String> boardsName) {
-                                                boardsName.add("Create new board");
+                                                boardsName.add(getString(R.string.CREATE_NEW_BOARD_SETTINGS));
                                                 new AlertDialog.Builder(addPlayerActivity)
                                                         .setTitle(R.string.DIALOG_SELECT_BOARD_TITLE)
                                                         .setSingleChoiceItems(boardsName.toArray(new String [boardsName.size()]), -1, new DialogInterface.OnClickListener() {
@@ -302,7 +337,8 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                         .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD,new DialogInterface.OnClickListener(){
                                                             @Override
                                                             public void onClick(DialogInterface dialog, int id){
-                                                                if(name.equals("Create new board")){
+                                                                if(name.equals(getString(R.string.CREATE_NEW_BOARD_SETTINGS))){
+                                                                    // TODO: remove toast and start activity for creating new board settings
                                                                     Toast.makeText(AddPlayerActivity.this, R.string.TOAST_SELECT_BOARD, Toast.LENGTH_LONG).show();
                                                                 }
                                                                 else{
@@ -310,6 +346,10 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                                             .holder
                                                                             .etBoardName
                                                                             .setText(name);
+                                                                    AddPlayerActivity.this
+                                                                            .holder
+                                                                            .etBoardType
+                                                                            .setText(type);
 
                                                                     BoardPGSettings boardPGSettings =
                                                                             ((LocalDatabase) LocalDatabase
@@ -376,22 +416,27 @@ public class AddPlayerActivity extends AppCompatActivity {
         public RecyclerView.Adapter<PokemonHolder> getRvPokemonListAdapter() {
             return rvPokemonListAdapter;
         }
+
+        public Button getbChangeBoard() {
+            return bChangeBoard;
+        }
     }
 
     private static final String TAG = AddPlayerActivity.class.getSimpleName();
 
     private Holder holder;                      // Holds all view elements
-    private final GameFactory gameFactory;      // Holds a gamefactory instance to build a new game
     private final List<Pokemon> allPokemons;    // List of all selectable pokemons
-    private CreateBoardPGBean createBoardPGBean;  //bean for create a new board
+    private CreateBoardBean createBoardPGBean;  //bean for create a new board
     private int currentlySelectedPokemonIndex;    // Index of holder currently pointed by bouncing head
+    private final ControllerSelectPokemon controllerSelectPokemon; // Reference to the controller
+
+
+    public CreateBoardBean getCreateBoardPGBean() {
+        return createBoardPGBean;
+    }
 
     public Holder getHolder() {
         return holder;
-    }
-
-    public GameFactory getGameFactory() {
-        return gameFactory;
     }
 
     public List<Pokemon> getAllPokemons() {
@@ -411,7 +456,8 @@ public class AddPlayerActivity extends AppCompatActivity {
     }
 
     public AddPlayerActivity(){
-        this.gameFactory = new GameFactory(this);
+
+        this.controllerSelectPokemon = new ControllerSelectPokemon(this);
         this.allPokemons = new Vector<>();
         this.currentlySelectedPokemonIndex = RecyclerView.NO_POSITION;
     }
@@ -420,6 +466,9 @@ public class AddPlayerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_player);
+
+        // Initialize controller
+        controllerSelectPokemon.setAddNewPlayerBeans(new ArrayList<>());
 
         // Binds view elements
         this.holder = new Holder(this);
@@ -438,7 +487,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                 }
             }
         });
-        ControllerSelectPokemon.getReference(this).loadAllPokemons(loadPokemonBean);
+        controllerSelectPokemon.loadAllPokemons(loadPokemonBean);
     }
 
     private void startPointingHandAnimation(View pointingHandRef){
@@ -458,12 +507,8 @@ public class AddPlayerActivity extends AppCompatActivity {
     }
 
     private void setDefaultPlayerName(EditText etPlayerName){
-        int numOfPlayers = this.getGameFactory().getNumOfPlayers();
+        int numOfPlayers = controllerSelectPokemon.getAddNewPlayerBeans().size();
         String defaultPlayerName = getString(R.string.PLAYER_DEFAULT_NAME) + numOfPlayers;
         etPlayerName.setText(defaultPlayerName);
-    }
-
-    private void setBoard(CreateBoardPGBean createBoardPGBean){
-//        gameFactory.addNewBoard(createBoardPGBean);
     }
 }

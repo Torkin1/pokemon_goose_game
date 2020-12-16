@@ -5,7 +5,12 @@ import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
 
+import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.UnableToCreateBoardException;
+
 public abstract class BoardFactory {
+
+    public static final int CREATE_BOARD_OK = 0;
+    public static final int CREATE_BOARD_FAILURE = - 1;
 
     protected final Context context;
     protected final CreateBoardBean bean;
@@ -42,5 +47,5 @@ public abstract class BoardFactory {
         this.context = context;
         this.bean = bean;
     }
-    public abstract void createBoard();
+    public abstract void createBoard() throws UnableToCreateBoardException;
 }

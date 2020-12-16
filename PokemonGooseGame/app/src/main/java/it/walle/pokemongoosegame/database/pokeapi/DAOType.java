@@ -5,13 +5,14 @@ import android.content.Context;
 import com.android.volley.Request;
 import com.android.volley.Response;
 
+import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
 import it.walle.pokemongoosegame.volley.GsonQueryRequest;
 import it.walle.pokemongoosegame.volley.RequestQueueHolder;
 
 public class DAOType {
     private static DAOType reference = null;
-    private Context context;
+    private final Context context;
     private final static String TAG = DAOType.class.getSimpleName();
 
     public static DAOType getReference(Context context){
@@ -23,7 +24,7 @@ public class DAOType {
 
     private DAOType(Context context){this.context = context;}
 
-    public void LoadTypeByName(String name, Response.Listener<Type> listener, Response.ErrorListener errorListener) {
+    public void loadTypeByName(String name, Response.Listener<Type> listener, Response.ErrorListener errorListener) {
 
         // Gets the api url to request the type
         String url = PokeAPIGetter.getReference().getTypeByName(name);
@@ -40,5 +41,22 @@ public class DAOType {
                                 errorListener,
                                 Type.class
                         ));
+    }
+
+    public void loadAllTypePointers(Response.Listener<EntityPack> listener, Response.ErrorListener errorListener){
+        String url = PokeAPIGetter.getReference().getAllTypePointers();
+
+        RequestQueueHolder
+                .getInstance(context)
+                .getRequestQueue()
+                .add(
+                        new GsonQueryRequest<EntityPack>(
+                                Request.Method.GET,
+                                url,
+                                listener,
+                                errorListener,
+                                EntityPack.class
+                        )
+                );
     }
 }

@@ -4,6 +4,7 @@ public class PokeAPIGetter {
 
     private final String BASE;
     private final String TYPE_BY_NAME = "type/%s";
+    private final String ALL_TYPE_POINTERS = "type/";
     private final String POKEMON_BY_NAME = "pokemon/%s";
     private final String ALL_POKEMON_POINTERS = "pokemon?limit=%d";
     private final String POKEMON = "pokemon";
@@ -40,6 +41,10 @@ public class PokeAPIGetter {
     public String getPokemonByName(String name){ return buildAPI(String.format(POKEMON_BY_NAME, name)); }
 
     public String getAllPokemonPointers(int limit){ return buildAPI(String.format(ALL_POKEMON_POINTERS, limit)); }
+
+    public String getAllTypePointers(){
+        return buildAPI(ALL_TYPE_POINTERS);
+    }
 
     public String getNumOfPokemon(){ return buildAPI(POKEMON); }
 }

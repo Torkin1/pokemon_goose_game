@@ -4,23 +4,27 @@ import android.content.Context;
 
 import com.android.volley.Response;
 
+import java.util.List;
+
 import it.walle.pokemongoosegame.database.pokeapi.DAOPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
 import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
+import it.walle.pokemongoosegame.game.AddNewPlayerBean;
 
 public class ControllerSelectPokemon{
 
-    private static  ControllerSelectPokemon ref;
-    public static ControllerSelectPokemon getReference(Context context){
-        if (ref == null){
-            ref = new ControllerSelectPokemon(context);
-        }
-        return ref;
+    private final DAOPokemon daoPokemon;
+    private List<AddNewPlayerBean> addNewPlayerBeans;
+
+    public List<AddNewPlayerBean> getAddNewPlayerBeans() {
+        return addNewPlayerBeans;
     }
 
-    private final DAOPokemon daoPokemon;
+    public void setAddNewPlayerBeans(List<AddNewPlayerBean> addNewPlayerBeans) {
+        this.addNewPlayerBeans = addNewPlayerBeans;
+    }
 
     public ControllerSelectPokemon(Context context){
         this.daoPokemon = DAOPokemon.getReference(context);

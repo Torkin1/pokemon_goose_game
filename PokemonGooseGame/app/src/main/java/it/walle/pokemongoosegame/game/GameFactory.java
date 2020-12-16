@@ -1,25 +1,40 @@
 package it.walle.pokemongoosegame.game;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import it.walle.pokemongoosegame.boardfactory.BoardFactory;
 import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
+import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.UnableToCreateBoardException;
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
+import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
 public class GameFactory {
 
     private static final String TAG = GameFactory.class.getName();
-    private Game game;
-    private final Context context;
+    private final Game game;
+    private static GameFactory ref = null;
 
-    public GameFactory(Context context){
-        this.context = context;
+    public static GameFactory getReference(){
+        if (ref == null){
+            ref = new GameFactory();
+        }
+        return  ref;
+    }
+
+    private GameFactory(){
         this.game = new Game();
     }
 
-    public void addNewPlayer(AddNewPlayerBean bean){
+    private void addNewPlayer(AddNewPlayerBean bean){
+
         // Creates a Player instance and binds it to the specified pokemon
         Player player = new Player();
         Pokemon pokemon = bean.getPokemon();
@@ -32,31 +47,60 @@ public class GameFactory {
         this.game.getGamers().add(player);
     }
 
-    public void setBoard(CreateBoardBean bean) throws BoardFactoryReferencingFailureException {
-        try {
+    public void createGame(CreateGameBean bean) {
 
-            // Creates a new Board
-            BoardFactory.getInstance(this.context, bean).createBoard();
-
-            // Binds the board to the game
-            this.game.setBoard(bean.getBoard());
+        // Adds all desired players with their corresponding pokemon to the game
+        for (AddNewPlayerBean addNewPlayerBean : bean.getPlayerBeans()) {
+            this.addNewPlayer(addNewPlayerBean);
         }
-        catch (ClassNotFoundException e) {
-            throw new BoardFactoryReferencingFailureException(e);
-        }
-    }
 
-    public int getNumOfPlayers(){
+        // Creates a board asynchronously
+        int CREATE_BOARD_OK = 0;
+        int CREATE_BOARD_FAILURE = -1;
 
-        // Returns number of players currently added to the game being built by the factory
-        if (game == null){
-            return 0;
-        } else {
-          return this.game.getGamers().size();
-        }
-    }
+        Handler handler = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(@NonNull Message msg) {
 
-    public Game createGame(){
-        return this.game;
+                switch (msg.what) {
+                    case BoardFactory.CREATE_BOARD_OK:
+
+                        // Sets board
+                        GameFactory.this.game.setBoard((Board) msg.obj);
+
+                        // Notifies observer that the game is ready
+                        bean.setGameLiveData(new MutableLiveData<>(game));
+                        bean.getGameLiveData().observe(bean.getLifeCycleOwner(), bean.getGameObserver());
+                        break;
+                    case BoardFactory.CREATE_BOARD_FAILURE:
+                        Log.e(TAG, ((Exception) msg.obj).getMessage(), (Exception) msg.obj);
+                        break;
+                }
+                return true;
+            }
+        });
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                Message msg = Message.obtain();
+                msg.setTarget(handler);
+                try {
+                    BoardFactory.getInstance(bean.getContext(), bean.getCreateBoardBean()).createBoard();
+
+                    // Notifies handler that the board is ready
+                    msg.what = CREATE_BOARD_OK;
+                    msg.obj = bean.getCreateBoardBean().getBoard();
+                } catch (UnableToCreateBoardException | ClassNotFoundException e) {
+
+                    // Notifies handler that an error occurred
+                    msg.what = CREATE_BOARD_FAILURE;
+                    msg.obj = e;
+                } finally {
+                    msg.sendToTarget();
+                }
+            }
+        }).start();
     }
 }

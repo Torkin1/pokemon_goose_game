@@ -15,7 +15,7 @@ public class RequestQueueHolder {
     }
     private RequestQueue requestQueue;      // Queue of volley requests awaiting to be sent
     private RequestQueueHolder(Context context){
-        this.requestQueue = Volley.newRequestQueue(context);
+        this.requestQueue = Volley.newRequestQueue(context.getApplicationContext());
     }
 
     public RequestQueue getRequestQueue() {

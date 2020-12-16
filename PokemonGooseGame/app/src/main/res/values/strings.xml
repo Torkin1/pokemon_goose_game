@@ -23,4 +23,9 @@
     <string name="TOAST_SELECT_BOARD">Coming soon...</string>
     <string name="BUTTON_NEGATIVE_SELECT_BOARD">Back</string>
     <string name="DIALOG_SELECT_BOARD_TITLE">Board configuration</string>
+    <string name="CREATE_NEW_BOARD_SETTINGS">Create new board settings</string>
+    <string name="ALERT_NO_BOARD_SELECTED_TITLE">No board configuration selected!</string>
+    <string name="ALERT_NO_BOARD_SELECTED_MSG">Choose a board configuration before continuing</string>
+    <string name="ALERT_NO_POKEMON_SELECTED_TITLE">No pokemon selected!</string>
+    <string name="ALERT_NO_POKEMON_SELECTED_MSG">You have to select a pokemon first</string>
 </resources>
