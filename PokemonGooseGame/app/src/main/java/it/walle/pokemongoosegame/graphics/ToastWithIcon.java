@@ -13,7 +13,8 @@ public class ToastWithIcon extends Toast {
 
     private final ImageView ivIcon;
     private final TextView tvMsg;
-    private static Toast lastToast;
+    private static ToastWithIcon lastToast;
+    private boolean isCancelable = true;
 
     public ToastWithIcon(Activity activity, Drawable icon, String msg) {
         super(activity);
@@ -30,9 +31,15 @@ public class ToastWithIcon extends Toast {
         this.setDuration(duration);
     }
 
+    public ToastWithIcon(Activity activity, Drawable icon, String msg, int duration, boolean isCancelable){
+        this(activity, icon, msg, duration);
+        this.isCancelable = false;
+    }
+
     @Override
     public void show() {
-        if (lastToast != null){
+
+        if (lastToast != null && lastToast.isCancelable){
             lastToast.cancel();
         }
         super.show();
