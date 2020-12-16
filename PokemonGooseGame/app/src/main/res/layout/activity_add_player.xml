@@ -23,7 +23,7 @@
         android:id="@+id/etPlayerName"
         style="@style/GreetingsLabel"
         android:layout_width="184dp"
-        android:layout_height="45dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:ems="10"
         android:hint="@string/ET_PLAYER_NAME_HINT"
@@ -47,7 +47,7 @@
         android:id="@+id/etPokemonName"
         style="@style/GreetingsLabel"
         android:layout_width="184dp"
-        android:layout_height="46dp"
+        android:layout_height="wrap_content"
         android:ems="10"
         android:hint="@string/ET_POKEMON_NAME_HINT"
         android:inputType="none"
@@ -59,8 +59,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvPokemonList"
-        android:layout_height="wrap_content"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
@@ -84,32 +84,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="26dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="33dp"
         android:text="@string/B_CHANGE_BOARD_TEXT"
-        app:layout_constraintEnd_toEndOf="@+id/etBoardName"
-        app:layout_constraintStart_toStartOf="@+id/etBoardName"
-        app:layout_constraintTop_toBottomOf="@+id/etBoardName" />
+        app:layout_constraintEnd_toEndOf="@+id/etBoardType"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="@+id/etBoardType"
+        app:layout_constraintTop_toBottomOf="@+id/etBoardType" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvTypeBoard"
         style="@style/GreetingsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="11dp"
-        android:text="@string/TV_BOARD_TEXT"
+        android:text="@string/TV_BOARD_TYPE_TEXT"
         app:layout_constraintBottom_toBottomOf="@+id/tvPlayerNameLabel"
         app:layout_constraintStart_toEndOf="@+id/etPlayerName"
         app:layout_constraintTop_toTopOf="@+id/tvPlayerNameLabel" />
 
-    <EditText
-        android:id="@+id/etBoardName"
+    <TextView
+        android:id="@+id/tvNameBoard"
         style="@style/GreetingsLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="22dp"
-        android:hint="@string/ET_BOARD_HINT"
-        app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="@+id/textView" />
+        android:layout_marginStart="11dp"
+        android:text="@string/TV_BOARD_NAME_TEXT"
+        app:layout_constraintBottom_toBottomOf="@+id/tvChoosePokemonLabel"
+        app:layout_constraintStart_toEndOf="@+id/etPokemonName"
+        app:layout_constraintTop_toTopOf="@+id/tvChoosePokemonLabel" />
+
+    <EditText
+        android:id="@+id/etBoardType"
+        style="@style/GreetingsLabel"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:hint="@string/ET_BOARD_TYPE_HINT"
+        app:layout_constraintBottom_toBottomOf="@+id/tvTypeBoard"
+        app:layout_constraintStart_toEndOf="@+id/tvTypeBoard"
+        app:layout_constraintTop_toTopOf="@+id/tvTypeBoard"
+        app:layout_constraintVertical_bias="0.666" />
+
+    <EditText
+        android:id="@+id/etBoardName"
+        style="@style/GreetingsLabel"
+        android:layout_width="184dp"
+        android:layout_height="wrap_content"
+        android:hint="@string/ET_BOARD_NAME_HINT"
+        app:layout_constraintBottom_toBottomOf="@+id/tvNameBoard"
+        app:layout_constraintEnd_toEndOf="@+id/etBoardType"
+        app:layout_constraintStart_toStartOf="@+id/etBoardType"
+        app:layout_constraintTop_toTopOf="@+id/tvNameBoard" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

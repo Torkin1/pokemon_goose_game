@@ -11,10 +11,16 @@
     <string name="BUTTON_DONE">add player</string>
     <string name="PLAYER_DEFAULT_NAME">Player</string>
     <string name="B_CHANGE_BOARD_TEXT">Change</string>
-    <string name="TV_BOARD_TEXT">Board:</string>
-    <string name="ET_BOARD_HINT">Board name here</string>
+    <string name="TV_BOARD_TYPE_TEXT">Board type:</string>
+    <string name="ET_BOARD_TYPE_HINT">Board type here</string>
+    <string name="TV_BOARD_NAME_TEXT">Board name:</string>
+    <string name="ET_BOARD_NAME_HINT">Board name here</string>
     <string name="ADD_PLAYER_DIALOG_TITLE">\ added to the game</string>
     <string name="ADD_PLAYER_DIALOG_MSG">Do you wish to add another player to the game?</string>
     <string name="YES">yes</string>
     <string name="NO">no</string>
+    <string name="BUTTON_POSITIVE_SELECT_BOARD">Ok</string>
+    <string name="TOAST_SELECT_BOARD">Coming soon...</string>
+    <string name="BUTTON_NEGATIVE_SELECT_BOARD">Back</string>
+    <string name="DIALOG_SELECT_BOARD_TITLE">Board configuration</string>
 </resources>
