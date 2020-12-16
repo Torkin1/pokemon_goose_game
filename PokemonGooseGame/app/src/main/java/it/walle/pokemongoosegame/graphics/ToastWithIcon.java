@@ -1,0 +1,41 @@
+package it.walle.pokemongoosegame.graphics;
+
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import it.walle.pokemongoosegame.R;
+
+public class ToastWithIcon extends Toast {
+
+    private final ImageView ivIcon;
+    private final TextView tvMsg;
+    private static Toast lastToast;
+
+    public ToastWithIcon(Activity activity, Drawable icon, String msg) {
+        super(activity);
+        View toastContent = activity.getLayoutInflater().inflate(R.layout.toast_with_icon, activity.findViewById(R.id.llToastLayout));
+        this.tvMsg = toastContent.findViewById(R.id.tvMsg);
+        this.ivIcon = toastContent.findViewById(R.id.ivIcon);
+        tvMsg.setText(msg);
+        ivIcon.setImageDrawable(icon);
+        this.setView(toastContent);
+    }
+
+    public ToastWithIcon(Activity activity, Drawable icon, String msg, int duration){
+        this(activity, icon, msg);
+        this.setDuration(duration);
+    }
+
+    @Override
+    public void show() {
+        if (lastToast != null){
+            lastToast.cancel();
+        }
+        super.show();
+        lastToast = this;
+    }
+}

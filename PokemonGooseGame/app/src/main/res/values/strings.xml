@@ -10,12 +10,12 @@
     <string name="ET_POKEMON_NAME_HINT">Pokemon name here</string>
     <string name="BUTTON_DONE">add player</string>
     <string name="PLAYER_DEFAULT_NAME">Player</string>
-    <string name="B_CHANGE_BOARD_TEXT">Change</string>
+    <string name="B_CHANGE_BOARD_TEXT">Choose</string>
     <string name="TV_BOARD_TYPE_TEXT">Board type:</string>
     <string name="ET_BOARD_TYPE_HINT">Board type here</string>
     <string name="TV_BOARD_NAME_TEXT">Board name:</string>
     <string name="ET_BOARD_NAME_HINT">Board name here</string>
-    <string name="ADD_PLAYER_DIALOG_TITLE">\ added to the game</string>
+    <string name="ADD_PLAYER_DIALOG_TITLE">%s added to the game</string>
     <string name="ADD_PLAYER_DIALOG_MSG">Do you wish to add another player to the game?</string>
     <string name="YES">yes</string>
     <string name="NO">no</string>
@@ -28,4 +28,8 @@
     <string name="ALERT_NO_BOARD_SELECTED_MSG">Choose a board configuration before continuing</string>
     <string name="ALERT_NO_POKEMON_SELECTED_TITLE">No pokemon selected!</string>
     <string name="ALERT_NO_POKEMON_SELECTED_MSG">You have to select a pokemon first</string>
+    <string name="BUTTON_START_GAME_TEXT">Start game</string>
+    <string name="ALERT_NO_PLAYER_ADDED_MSG">Please add at least one player to start the game</string>
+    <string name="ALERT_NO_PLAYER_ADDED_TITLE">No player added!</string>
+    <string name="TOAST_WITH_ICON_HINT">Toast message here</string>
 </resources>
