@@ -78,13 +78,14 @@
         android:layout_marginStart="24dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/B_CHANGE_BOARD_TEXT"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
+        app:layout_constraintHorizontal_bias="0.166"
         app:layout_constraintStart_toEndOf="@+id/rvPokemonList"
-        app:layout_constraintTop_toBottomOf="@+id/etBoardName" />
+        app:layout_constraintTop_toBottomOf="@+id/etBoardName"
+        app:layout_constraintVertical_bias="0.293" />
 
     <TextView
         android:id="@+id/tvTypeBoard"
