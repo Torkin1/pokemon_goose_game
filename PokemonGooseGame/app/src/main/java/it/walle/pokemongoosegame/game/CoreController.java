@@ -2,6 +2,9 @@ package it.walle.pokemongoosegame.game;
 
 import android.util.Log;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,6 +12,7 @@ import java.util.List;
 
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
+import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
 import it.walle.pokemongoosegame.entity.effect.InvocationContext;
 import it.walle.pokemongoosegame.utils.MethodGetter;
@@ -35,6 +39,30 @@ public class CoreController {
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public Board getBoard(){
+        return this.game.getBoard();
+    }
+
+    public List<Player> getPlayers(){
+        return this.game.getGamers();
+    }
+
+    public List<Player> getWinners(){
+        return this.game.getWinners();
+    }
+
+    public List<Player> getLosers(){
+        return this.game.getLosers();
+    }
+
+    public Integer getPlate(){
+        return this.game.getPlate();
+    }
+
+    public void setPlate(Integer val){
+        this.game.setPlate(val);
     }
 
     public void nextTurn(NextTurnBean bean){
@@ -96,6 +124,9 @@ public class CoreController {
         int scoreMoney = player.getMoney();
         int scorePlate = this.game.getPlate();
 
+        // Resets plate
+        this.setPlate(0);
+
         return scoreHp + scoreMoney + scorePlate;
     }
 
@@ -139,19 +170,6 @@ public class CoreController {
             exitNumbers.add(i, (int) (Math.random() * bean.getNumOfFaces() + 1));
         }
         bean.setExitNumbers(exitNumbers);
-    }
-
-    public void getPlayerInfo(PlayerInfoBean bean){
-        Player player = this.game.getPlayerByUsername(bean.getUsername());
-        bean.setPlayer(player);
-    }
-
-    public void getCellInfo(CellInfoBean bean){
-        Cell cell = this.game
-                .getBoard()
-                .getCells()
-                .get(bean.getRequestedIndex());
-        bean.setCell(cell);
     }
 
     public String[] getAllPlayersInACellUsernames(int index){

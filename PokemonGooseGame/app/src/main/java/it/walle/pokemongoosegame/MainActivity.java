@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (!prefs.getBoolean("isMute", false))
                     soundPool.play(sound_click, 1, 1, 0, 0, 1);
                 startActivity(new Intent(MainActivity.this, AddPlayerActivity.class));
+
             }
         });
 
