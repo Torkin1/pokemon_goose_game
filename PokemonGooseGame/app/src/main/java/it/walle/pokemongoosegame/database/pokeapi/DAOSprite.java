@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.ImageRequest;
 
@@ -11,24 +12,30 @@ import it.walle.pokemongoosegame.volley.RequestQueueHolder;
 
 public class DAOSprite {
 
-    private static DAOSprite ref;
-    public static DAOSprite getReference(Context context){
-        if (ref == null){
-            ref = new DAOSprite(context);
-        }
-        return ref;
-    }
 
     private Context context;
+    private RequestQueue requestQueue;
 
-    public DAOSprite(Context context) {
+    public DAOSprite(Context context, RequestQueue requestQueue) {
         this.context = context;
+        this.requestQueue = requestQueue;
+    }
+
+    public DAOSprite(Context context){
+        this(context, RequestQueueHolder.getInstance(context).getRequestQueue());
     }
 
     public void loadSprite(String spritePointer, Response.Listener<Bitmap> listener, Response.ErrorListener errorListener){
-        RequestQueueHolder
-                .getInstance(context)
-                .getRequestQueue()
+        this.loadSprite(
+                spritePointer,
+                listener,
+                errorListener,
+                this.requestQueue
+        );
+    }
+
+    private void loadSprite(String spritePointer, Response.Listener<Bitmap> listener, Response.ErrorListener errorListener, RequestQueue requestQueue){
+        requestQueue
                 .add(
                         new ImageRequest(
                                 spritePointer,

@@ -27,6 +27,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.Volley;
+import com.google.android.material.badge.BadgeDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -140,6 +143,9 @@ public class AddPlayerActivity extends AppCompatActivity {
             this.rvPokemonList.setLayoutManager(new LinearLayoutManager(addPlayerActivity, LinearLayoutManager.HORIZONTAL, false));
             this.rvPokemonListAdapter = new RecyclerView.Adapter<PokemonHolder>() {
 
+                // Uses a different queue from the one used to query pokemon to speed up sprite loading
+                private DAOSprite daoSprite = new DAOSprite(addPlayerActivity, Volley.newRequestQueue(addPlayerActivity));
+
                 @NonNull
                 @Override
                 public PokemonHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -181,7 +187,8 @@ public class AddPlayerActivity extends AppCompatActivity {
                         spritePointer = currentPokemon.getSprites().getFront_default();
                     }
 
-                    DAOSprite.getReference(addPlayerActivity).loadSprite(spritePointer, new Response.Listener<Bitmap>() {
+                    holder.ivSprite.setImageDrawable(ContextCompat.getDrawable(addPlayerActivity, R.drawable.pikpng_com_pokeball_png_589803));
+                    daoSprite.loadSprite(spritePointer, new Response.Listener<Bitmap>() {
                         @Override
                         public void onResponse(Bitmap response) {
                             holder.ivSprite.setImageBitmap(response.copy(Bitmap.Config.ARGB_8888, true));

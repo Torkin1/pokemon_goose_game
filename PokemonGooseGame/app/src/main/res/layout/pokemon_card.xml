@@ -25,7 +25,7 @@
             android:layout_height="50pt"
             android:contentDescription="@string/FRONT_SPRITE_DESCRIPTION"
             android:padding="2pt"
-            app:srcCompat="@drawable/pikpng_com_pokeball_png_589803">
+            >
 
         </ImageView>
 
