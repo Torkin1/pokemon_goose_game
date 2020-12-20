@@ -22,6 +22,7 @@ import it.walle.pokemongoosegame.entity.board.cell.Cell;
 import it.walle.pokemongoosegame.entity.board.cell.YellowCell;
 import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGParams;
 import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
+import it.walle.pokemongoosegame.entity.effect.Win;
 import it.walle.pokemongoosegame.entity.effect.YellowEffect;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
@@ -179,7 +180,8 @@ public class BoardFactoryPG extends BoardFactory {
             board.getCells().add(cell);
         }
 
-        // TODO: Adds winning entry effect to the last cell on the board
+        // Adds winning entry effect to the last cell on the board
+        board.getCells().get(board.getCells().size() - 1).setEntryEffect(new Win());
 
         // If list of types is available, sets a random type to every cell
         try {

@@ -165,7 +165,6 @@ public class AddPlayerActivity extends AppCompatActivity {
                     holder.llTypes.removeAllViews();
                     for (TypePointerPokemon t : currentPokemon.getTypes()) {
                         try {
-
                             int typeDrawableId = TypeDrawableGetter.getReference().getTypeDrawableId(t.getType().getName());
                             ImageView ivType = new ImageView(addPlayerActivity);
                             ivType.setImageDrawable(ContextCompat.getDrawable(addPlayerActivity, typeDrawableId));
@@ -372,7 +371,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
 
-                    // If no player has been added, fires add player
+                    // If no player has been added, prompts user to add one
                     if (controllerSelectPokemon.getAddNewPlayerBeans().isEmpty()){
                         (new ToastWithIcon(
                                 addPlayerActivity,
@@ -381,7 +380,10 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 getString(R.string.ALERT_NO_PLAYER_ADDED_MSG),
                                 Toast.LENGTH_LONG
                         )).show();
-                    } else if (addPlayerActivity.getCreateBoardPGBean() == null){
+                    }
+
+                    // If no board configuration has been added, prompts user to add one
+                    else if (addPlayerActivity.getCreateBoardPGBean() == null){
                         (new ToastWithIcon(
                                 addPlayerActivity,
                                 ContextCompat
@@ -391,6 +393,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                         )).show();
                     }
                     else {
+
                         // Creates a new game
                         CreateGameBean createGameBean = new CreateGameBean();
                         createGameBean.setCreateBoardBean(addPlayerActivity.getCreateBoardPGBean());

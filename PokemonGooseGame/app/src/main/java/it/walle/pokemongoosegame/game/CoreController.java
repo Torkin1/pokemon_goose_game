@@ -100,6 +100,8 @@ public class CoreController {
     }
 
     public void chooseWinner(WinnerBean bean){
+
+        // Removes the player from the game and adds it to the winner list, returning their score
         Player winner = this.game.getPlayerByUsername(bean.getWinnerUsername());
 
         this.game.getGamers().remove(winner);
@@ -281,7 +283,7 @@ public class CoreController {
                 .getCells()
                 .get(bean.getBoardIndex());
 
-        //Check if in the cell there are an effect or not. If there are, do entry effect
+        //Check if in the cell there are an effect or not. If there are, do stay effect
         if(cell.getStayEffect() != null){
             InvocationContext invocationContext =
                     this.setInvocationContext(
