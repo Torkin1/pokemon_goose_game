@@ -17,7 +17,7 @@ public class BitmapBank {
         this.res = res;
         background = BitmapFactory.decodeResource(res, R.drawable.bg_large);
 
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_normal);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_Cell);
 
         pawn = BitmapFactory.decodeResource(res, R.drawable.crab_with_a_knife);
 
@@ -91,19 +91,19 @@ public class BitmapBank {
 
 
     public void setCellResBlue() {
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_blue);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_BlueCell);
         cell = scaleCell(cell);
 
     }
 
     public void setCellResYellow() {
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_yellow);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_YellowCell);
         cell = scaleCell(cell);
 
     }
 
     public void setCellRes() {
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_normal);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_Cell);
         cell = scaleCell(cell);
 
     }

@@ -11,9 +11,10 @@
     app:cardBackgroundColor="@android:color/transparent">
 
     <LinearLayout
+        android:id="@+id/llCell"
         android:layout_width="@dimen/cell_dim"
         android:layout_height="@dimen/cell_dim"
-        android:background="@drawable/cell_bg_normal"
+        android:background="@drawable/cell_bg_Cell"
         android:orientation="vertical">
 
         <LinearLayout
