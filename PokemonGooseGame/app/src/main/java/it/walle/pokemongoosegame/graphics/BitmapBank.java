@@ -1,6 +1,5 @@
 package it.walle.pokemongoosegame.graphics;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,12 +12,12 @@ public class BitmapBank {
     Bitmap background, pawn, board, cell;
     Resources res;
 
-    public BitmapBank(Resources res, Context context) {
+    public BitmapBank(Resources res) {
         //Now I take normal iamges and covert them to bitmaps
         this.res = res;
         background = BitmapFactory.decodeResource(res, R.drawable.bg_large);
 
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_Cell);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_normal);
 
         pawn = BitmapFactory.decodeResource(res, R.drawable.crab_with_a_knife);
 
@@ -27,13 +26,13 @@ public class BitmapBank {
 
         cell = scaleCell(cell);
         //scale the board
-        board = scaleBoard(board, context);
+        board = scaleBoard(board);
 
         //to scale the pawn  image
         pawn = scalePawn(pawn);
 
         //to scale the bg  image
-        background = scaleImage(background, context);//care, if is a moving bg, check the smoothness, can tell a lot
+        background = scaleImage(background);//care, if is a moving bg, check the smoothness, can tell a lot
 
     }
 
@@ -92,26 +91,26 @@ public class BitmapBank {
 
 
     public void setCellResBlue() {
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_BlueCell);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_blue);
         cell = scaleCell(cell);
 
     }
 
     public void setCellResYellow() {
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_YellowCell);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_yellow);
         cell = scaleCell(cell);
 
     }
 
     public void setCellRes() {
-        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_Cell);
+        cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_normal);
         cell = scaleCell(cell);
 
     }
 
 
     //scale the image checking the devices sizes
-    public Bitmap scaleImage(Bitmap bitmap, Context context) {
+    public Bitmap scaleImage(Bitmap bitmap) {
         float widthHeightRatio = getBackgroundWidth() / getBackgroundHeight();
         /*
          * We'll multiply widthHeightRatio with screenHeight to get scaled width of the bitmap
@@ -119,11 +118,11 @@ public class BitmapBank {
          * when possibile
          * */
 
-        int backgroundScaleWidth = (int) widthHeightRatio * AppConstants.getInstance(context).SCREEN_HEIGHT;
-        return Bitmap.createScaledBitmap(bitmap, AppConstants.getInstance(context).SCREEN_WIDTH, AppConstants.getInstance(context).SCREEN_HEIGHT, false);//chiamo il metodo nel costruttore
+        int backgroundScaleWidth = (int) widthHeightRatio * AppConstants.SCREEN_HEIGHT;
+        return Bitmap.createScaledBitmap(bitmap, AppConstants.SCREEN_WIDTH, AppConstants.SCREEN_HEIGHT, false);//chiamo il metodo nel costruttore
     }
 
-    private Bitmap scaleBoard(Bitmap board, Context context) {
+    private Bitmap scaleBoard(Bitmap board) {
 //        float widthHeigthRatio = getBoardWidth() / getBoardHeight();
 
 //        int boardScaledWidth = (int) widthHeigthRatio * AppConstants.SCREEN_HEIGHT;
@@ -131,8 +130,9 @@ public class BitmapBank {
 //        int boardScaledHeight = (int) widthHeigthRatio * AppConstants.SCREEN_WIDTH;
 //        return Bitmap.createScaledBitmap(board, boardScaledWidth, boardScaledHeight, false);
 
+        System.out.println("Sono in scale board ed la dim del mennu è: " + AppConstants.LEFT_GAME_MENU_WIDTH + " La width dello schermo è di: " + AppConstants.SCREEN_WIDTH);
 
-        return Bitmap.createScaledBitmap(board, AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH * 2 + 20, AppConstants.getInstance(context).SCREEN_HEIGHT - 120, false);
+        return Bitmap.createScaledBitmap(board, AppConstants.SCREEN_WIDTH - AppConstants.LEFT_GAME_MENU_WIDTH * 2 + 20, AppConstants.SCREEN_HEIGHT - 120, false);
     }
 
     private Bitmap scalePawn(Bitmap pawn) {

@@ -1,25 +1,21 @@
 package it.walle.pokemongoosegame;
 
-import android.content.Context;
 import android.graphics.Canvas;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
 import it.walle.pokemongoosegame.graphics.AppConstants;
-import it.walle.pokemongoosegame.graphics.GameEngine;
 
 public class GameThread extends Thread{
     SurfaceHolder surfaceHolder;//ref to the surfaceHolder
     boolean isRunning;//flag to detect if the Thread is running or not
     long startTime, loopTime; //loop and start time duration
     long DELAY = 33; //delay in millisecs, etrween screen refresh
-    Context context;
 
-    public  GameThread(SurfaceHolder surfaceHolder, Context context){
+    public  GameThread(SurfaceHolder surfaceHolder){
         //Passing a surfaceholder as param on the constructor
         this.surfaceHolder = surfaceHolder;
-        this.context = context;
         isRunning = true; //means that i started the thread!
     }//It will do an ovveride of the run method and the start will call it from GameView.
 
@@ -35,8 +31,6 @@ public class GameThread extends Thread{
         //loop until the boolean is false
 
         while (isRunning){
-
-            // TODO: call update methods only if there are some updates
             startTime = SystemClock.uptimeMillis();
             //locking the canvas
             Canvas canvas = surfaceHolder.lockCanvas(null);
@@ -45,11 +39,11 @@ public class GameThread extends Thread{
                     //add here all the elements that have to be on screen
 //                    AppConstants.getGameEngine().updateAndDrawBoard(canvas);
 
-                    GameEngine.getInstance(context).updateAndDrawBackgroundImage(canvas, context);
+                    AppConstants.getGameEngine().updateAndDrawBackgroundImage(canvas);
 //                    if(AppConstants.DRAWABLE)
-                        GameEngine.getInstance(context).updateAndDrawCell(canvas, context);
+                        AppConstants.getGameEngine().updateAndDrawCell(canvas);
 
-                    GameEngine.getInstance(context).updateAndDrawPawn(canvas, context);
+                    AppConstants.getGameEngine().updateAndDrawPawn(canvas);
 
                     //unlock canvas
                     surfaceHolder.unlockCanvasAndPost(canvas);

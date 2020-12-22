@@ -3,6 +3,7 @@ package it.walle.pokemongoosegame.graphics;
 import android.content.SharedPreferences;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import java.util.Random;
 
@@ -21,13 +23,10 @@ import it.walle.pokemongoosegame.GameThread;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
-import it.walle.pokemongoosegame.game.CoreController;
-import it.walle.pokemongoosegame.game.ThrowDicesBean;
 
 public class GameView extends AppCompatActivity {
 
     private GameThread gameThread;
-    private static final String TAG = GameView.class.getSimpleName();
 
 
     //per gli effetti sonori
@@ -61,6 +60,7 @@ public class GameView extends AppCompatActivity {
 
     RelativeLayout game_menu_layout;//getting the realtive layout
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +68,14 @@ public class GameView extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         SurfaceView surface = (SurfaceView) findViewById(R.id.surface);
 
-        // TODO: per favore  spiegare perchè questo codice è commentato, o cancellare se è inutile
-
 //        createCell(AppConstants.LEFT_GAME_MENU_WIDTH + 10, AppConstants.SCREEN_HEIGHT-AppConstants.LEFT_GAME_MENU_WIDTH,10,10);
 //        createCell(AppConstants.LEFT_GAME_MENU_WIDTH*2 +220, AppConstants.SCREEN_HEIGHT-AppConstants.LEFT_GAME_MENU_WIDTH,10,10);
 
         //fare FullScreen l'activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        gameThread = new GameThread(surface.getHolder());//now i can lock and unlock the canvas, draw and start the game
+
 
         dice_res = findViewById(R.id.text_dice_result);
         up_page_arrow = findViewById(R.id.page_up_img);
@@ -93,15 +94,14 @@ public class GameView extends AppCompatActivity {
         up_page_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollBoardPage(1);
-                AppConstants.isDrawable = !AppConstants.isDrawable;
+                pageUp();
             }
         });
 
         down_page_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollBoardPage(- 1);
+                pageDown();
             }
         });
 
@@ -109,15 +109,16 @@ public class GameView extends AppCompatActivity {
 
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                // TODO: per favore  spiegare perchè questo codice è commentato, o cancellare se è inutile
 //                holder.setFixedSize(AppConstants.getBitmapBank().getBoardWidth() , AppConstants.getBitmapBank().getBoardHeight()- 90);
                 surfaceHolder = holder;
                 surfaceHolder.setSizeFromLayout();
                 // Do some drawing when surface is ready
                 if (!gameThread.isRunning()) {
-                    gameThread = new GameThread(surfaceHolder, GameView.this);
+                    gameThread = new GameThread(surfaceHolder);
+                    gameThread.start();
+                } else {
+                    gameThread.start();
                 }
-                gameThread.start();
             }
 
             @Override
@@ -148,42 +149,65 @@ public class GameView extends AppCompatActivity {
 
     }
 
-    private void updateArrowVisibility(){
-        // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
-        // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
-        if (((GameEngine.getInstance(this).getCurrentBoardPage() + 1) * AppConstants.getInstance(this).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
+    private void pageUp() {
+        if (AppConstants.DISPLAYED_SCREEN >= 1) {
+            setPageDown();
+            down_page_arrow.setClickable(true);
+        }
+
+        AppConstants.DISPLAYED_SCREEN = AppConstants.DISPLAYED_SCREEN + 1;//Doing ++ doesn't work use the + 1 method
+        if (AppConstants.TOTAL_SCREENS < AppConstants.DISPLAYED_SCREEN)
+            AppConstants.TOTAL_SCREENS = AppConstants.DISPLAYED_SCREEN;
+        if ((AppConstants.TOTAL_CELLS - (AppConstants.DONE_CELLS + AppConstants.CELLS_IN_A_SCREEN * 2)) <= 0) {
             up_page_arrow.setClickable(false);
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
-        } else
-        {
-            up_page_arrow.setClickable(true);
-            up_page_arrow.setImageResource(R.drawable.up_arrow);
         }
 
-        // If it's the first board page disables the arrow down button
-        if (GameEngine.getInstance(this).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()){
+        AppConstants.DRAWABLE = !AppConstants.DRAWABLE;
+        System.out.println("page up... " + "Ciao gli screen sono: " + AppConstants.TOTAL_SCREENS + " Ti trovi al: " + AppConstants.DISPLAYED_SCREEN);
+
+
+    }
+
+    private void pageDown() {
+
+        AppConstants.DISPLAYED_SCREEN = AppConstants.DISPLAYED_SCREEN - 1;
+        if (AppConstants.DISPLAYED_SCREEN == 1)
             down_page_arrow.setClickable(false);
+
+
+        up_page_arrow.setClickable(true);
+        setPageUp();
+        
+
+        if (AppConstants.DISPLAYED_SCREEN >= 1)
+            AppConstants.DONE_CELLS = AppConstants.DONE_CELLS - AppConstants.CELLS_IN_A_SCREEN;
+        if (AppConstants.DISPLAYED_SCREEN == 1)
             down_page_arrow.setImageResource(R.drawable.down_arrow_off);
-        } else {
-            down_page_arrow.setClickable(true);
-            down_page_arrow.setImageResource(R.drawable.down_arrow);
-        }
+
+        System.out.println("page down... " + "Ciao gli screen sono: " + AppConstants.TOTAL_SCREENS + " Ti trovi al: " + AppConstants.DISPLAYED_SCREEN);
+
+
     }
 
-    private void scrollBoardPage(int pages){
-        GameEngine.getInstance(this).setCurrentBoardPage(GameEngine.getInstance(this).getCurrentBoardPage() + pages);
-        updateArrowVisibility();
+    public void setPageUp() {
+        up_page_arrow.setImageResource(R.drawable.up_arrow);
     }
 
+    public void setPageDown() {
+        down_page_arrow.setImageResource(R.drawable.down_arrow);
+    }
 
+    public void createCell(int left, int top, int right, int bottom) {
+        CardView.LayoutParams lp = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.MATCH_PARENT);
+        lp.setMarginStart(AppConstants.LEFT_GAME_MENU_WIDTH);
+        lp.setMargins(left, top, right, bottom);
+        View secondLayerView = LayoutInflater.from(this).inflate(R.layout.cell_holder, null, false);
+        addContentView(secondLayerView, lp);
+    }
 
     private void rotateDice() {
-        ThrowDicesBean throwDicesBean = new ThrowDicesBean();
-        throwDicesBean.setNumOfFaces(6);
-        throwDicesBean.setNumOfDices(1);
-        CoreController.getReference().throwDices(throwDicesBean);
-
-        int i = throwDicesBean.getExitNumbers().get(0);
+        int i = random.nextInt(5) + 1;
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
         diceImage.startAnimation(anim);
         dice_res.setText(String.format(d_res + "%d", i));
@@ -210,8 +234,6 @@ public class GameView extends AppCompatActivity {
     }
 
 }
-
-// TODO: per favore spiegare perchè questo codice è commentato, o cancellare se è inutile
 
 //        //with this i chage the context!
 //    public GameView(Context context) {

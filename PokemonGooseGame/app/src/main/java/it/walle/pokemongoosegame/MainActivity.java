@@ -63,6 +63,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        AppConstants.initialization(this.getApplicationContext());
+
 
         //The main should be fullScreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
