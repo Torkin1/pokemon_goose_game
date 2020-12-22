@@ -45,11 +45,11 @@ public class GameThread extends Thread{
                     //add here all the elements that have to be on screen
 //                    AppConstants.getGameEngine().updateAndDrawBoard(canvas);
 
-                    GameEngine.getInstance().updateAndDrawBackgroundImage(canvas, context);
+                    GameEngine.getInstance(context).updateAndDrawBackgroundImage(canvas, context);
 //                    if(AppConstants.DRAWABLE)
-                        GameEngine.getInstance().updateAndDrawCell(canvas, context);
+                        GameEngine.getInstance(context).updateAndDrawCell(canvas, context);
 
-                    GameEngine.getInstance().updateAndDrawPawn(canvas, context);
+                    GameEngine.getInstance(context).updateAndDrawPawn(canvas, context);
 
                     //unlock canvas
                     surfaceHolder.unlockCanvasAndPost(canvas);

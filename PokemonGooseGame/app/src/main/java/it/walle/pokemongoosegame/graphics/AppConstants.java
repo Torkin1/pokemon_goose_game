@@ -60,7 +60,7 @@ public class AppConstants {
         float menu_dp_width = 90f;
         this.LEFT_GAME_MENU_WIDTH = (int) convertDpToPixel(menu_dp_width, context);
 
-        bitmapBank = new BitmapBank(context.getResources());//nella bitmalbank nel costruttore ricevo delle res
+        bitmapBank = new BitmapBank(context.getResources(), context);//nella bitmalbank nel costruttore ricevo delle res
 
         //Want to get the realitve layout so i could get its dimension
 

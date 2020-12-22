@@ -10,9 +10,9 @@ import it.walle.pokemongoosegame.game.CoreController;
 public class GameEngine {
 
     private static GameEngine ref = null;
-    public static GameEngine getInstance(){
+    public static GameEngine getInstance(Context context){
         if (ref == null){
-            ref = new GameEngine();
+            ref = new GameEngine(context);
         }
         return  ref;
     }
@@ -30,9 +30,9 @@ public class GameEngine {
     private int width_margin, height_margin;
 
 
-    public GameEngine() {
+    public GameEngine(Context context) {
         backgroundImg = new Background();//initialize bg
-        poke_pawn = new PokePawn();//initilialize pawn
+        poke_pawn = new PokePawn(context);//initilialize pawn
         board = new Board();//initilize the board
         cell = new Cell();
 

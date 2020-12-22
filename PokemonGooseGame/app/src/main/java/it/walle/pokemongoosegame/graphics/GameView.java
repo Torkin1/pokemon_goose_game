@@ -151,7 +151,7 @@ public class GameView extends AppCompatActivity {
     private void updateArrowVisibility(){
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
         // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
-        if (((GameEngine.getInstance().getCurrentBoardPage() + 1) * AppConstants.getInstance(this).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
+        if (((GameEngine.getInstance(this).getCurrentBoardPage() + 1) * AppConstants.getInstance(this).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
             up_page_arrow.setClickable(false);
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
         } else
@@ -161,7 +161,7 @@ public class GameView extends AppCompatActivity {
         }
 
         // If it's the first board page disables the arrow down button
-        if (GameEngine.getInstance().getCurrentBoardPage() == 0 && down_page_arrow.isClickable()){
+        if (GameEngine.getInstance(this).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()){
             down_page_arrow.setClickable(false);
             down_page_arrow.setImageResource(R.drawable.down_arrow_off);
         } else {
@@ -171,7 +171,7 @@ public class GameView extends AppCompatActivity {
     }
 
     private void scrollBoardPage(int pages){
-        GameEngine.getInstance().setCurrentBoardPage(GameEngine.getInstance().getCurrentBoardPage() + pages);
+        GameEngine.getInstance(this).setCurrentBoardPage(GameEngine.getInstance(this).getCurrentBoardPage() + pages);
         updateArrowVisibility();
     }
 
