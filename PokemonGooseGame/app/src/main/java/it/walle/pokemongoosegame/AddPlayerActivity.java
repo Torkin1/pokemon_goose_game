@@ -35,12 +35,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import it.walle.pokemongoosegame.boardfactory.BlueCellSettings;
 import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.CreateBoardPGBean;
 import it.walle.pokemongoosegame.database.local.LocalDatabase;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
 import it.walle.pokemongoosegame.entity.Game;
+import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGParams;
 import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGSettings;
+import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowCellStartingIndex;
+import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.TypePointerPokemon;
 import it.walle.pokemongoosegame.game.AddNewPlayerBean;
@@ -321,16 +325,83 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                                                     .etBoardType
                                                                                     .setText(type);
 
-                                                                            BoardPGSettings boardPGSettings =
+                                                                            LiveData<BoardPGSettings> boardPGSettingsLiveData =
                                                                                     ((LocalDatabase) LocalDatabase
                                                                                             .getReference(AddPlayerActivity.this))
                                                                                             .BoardPGParamsDAO()
-                                                                                            .getBoardPGSettingsByName(name)
-                                                                                            .getValue();
+                                                                                            .getBoardPGSettingsByName(name);
 
-                                                                            CreateBoardPGBean createBoardPGBean = new CreateBoardPGBean();
-                                                                            createBoardPGBean.setBoardSettings(boardPGSettings);
-                                                                            AddPlayerActivity.this.createBoardPGBean = createBoardPGBean;
+                                                                            Observer<BoardPGSettings> boardPGSettingsObserver = new Observer<BoardPGSettings>() {
+                                                                                @Override
+                                                                                public void onChanged(BoardPGSettings boardPGSettings) {
+                                                                                    LiveData<BoardPGParams> boardPGParamsLiveData =
+                                                                                            ((LocalDatabase) LocalDatabase
+                                                                                                    .getReference(AddPlayerActivity.this))
+                                                                                                    .BoardPGParamsDAO()
+                                                                                                    .getBoardPGParamByName(name);
+
+                                                                                    Observer<BoardPGParams> boardPGParamsObserver = new Observer<BoardPGParams>() {
+                                                                                        @Override
+                                                                                        public void onChanged(BoardPGParams boardPGParams) {
+                                                                                            boardPGSettings.setBoardPGParams(boardPGParams);
+                                                                                        }
+                                                                                    };
+
+                                                                                    boardPGParamsLiveData.observe((LifecycleOwner) AddPlayerActivity.this, boardPGParamsObserver);
+
+                                                                                    LiveData<List<BlueCellSettings>> blueCellSettingsLiveData =
+                                                                                            ((LocalDatabase) LocalDatabase
+                                                                                                    .getReference(AddPlayerActivity.this))
+                                                                                                    .BlueCellSettingsDAO()
+                                                                                                    .getBlueCellSettingsByBoardSettingsName(name);
+
+                                                                                    Observer<List<BlueCellSettings>> blueCellSettingsObserver = new Observer<List<BlueCellSettings>>() {
+                                                                                        @Override
+                                                                                        public void onChanged(List<BlueCellSettings> blueCellSettingsList) {
+                                                                                            boardPGSettings.setBlueCellSettings(blueCellSettingsList);
+                                                                                        }
+                                                                                    };
+
+                                                                                    blueCellSettingsLiveData.observe((LifecycleOwner) AddPlayerActivity.this, blueCellSettingsObserver);
+
+
+                                                                                    LiveData<List<WhatYellowCellStartingIndex>> whatYellowCellStartingIndexLiveData =
+                                                                                            ((LocalDatabase) LocalDatabase
+                                                                                                    .getReference(AddPlayerActivity.this))
+                                                                                                    .WhatYellowCellStartingIndexDAO()
+                                                                                                    .getAllYellowCellStartingIndexesByBoardSettingsName(name);
+
+                                                                                    Observer<List<WhatYellowCellStartingIndex>> whatYellowCellStartingIndexObserver = new Observer<List<WhatYellowCellStartingIndex>>() {
+                                                                                        @Override
+                                                                                        public void onChanged(List<WhatYellowCellStartingIndex> whatYellowCellStartingIndexList) {
+                                                                                            boardPGSettings.setYellowCellStartingIndexes(whatYellowCellStartingIndexList);
+                                                                                        }
+                                                                                    };
+
+                                                                                    whatYellowCellStartingIndexLiveData.observe((LifecycleOwner) AddPlayerActivity.this, whatYellowCellStartingIndexObserver);
+
+                                                                                    LiveData<List<WhatYellowEffectName>> whatYellowEffectNameLiveData =
+                                                                                            ((LocalDatabase) LocalDatabase
+                                                                                                    .getReference(AddPlayerActivity.this))
+                                                                                                    .WhatYellowEffectNameDAO()
+                                                                                                    .getYellowEffectNamesByBoardSettingsName(name);
+
+                                                                                    Observer<List<WhatYellowEffectName>> whatYellowEffectNameObserver = new Observer<List<WhatYellowEffectName>>() {
+                                                                                        @Override
+                                                                                        public void onChanged(List<WhatYellowEffectName> whatYellowEffectNameList) {
+                                                                                            boardPGSettings.setYellowEffectNames(whatYellowEffectNameList);
+                                                                                        }
+                                                                                    };
+
+                                                                                    whatYellowEffectNameLiveData.observe((LifecycleOwner) AddPlayerActivity.this, whatYellowEffectNameObserver);
+
+                                                                                    CreateBoardPGBean createBoardPGBean = new CreateBoardPGBean();
+                                                                                    createBoardPGBean.setBoardSettings(boardPGSettings);
+                                                                                    AddPlayerActivity.this.createBoardPGBean = createBoardPGBean;
+                                                                                }
+                                                                            };
+
+                                                                            boardPGSettingsLiveData.observe((LifecycleOwner) AddPlayerActivity.this, boardPGSettingsObserver);
                                                                         }
                                                                     }
 
