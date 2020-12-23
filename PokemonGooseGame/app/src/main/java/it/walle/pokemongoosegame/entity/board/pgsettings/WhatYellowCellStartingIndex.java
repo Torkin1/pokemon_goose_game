@@ -4,10 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity()
+@Entity(primaryKeys = {"boardSettingsName", "index"})
 public class WhatYellowCellStartingIndex {
-    @PrimaryKey @NonNull
+    @NonNull
     private String boardSettingsName;           // Name of the boardSettings associated object
+    @NonNull
     private int index;                          // The starting index
 
     public String getBoardSettingsName() {
