@@ -26,14 +26,15 @@ public class ControllerSelectPokemon{
         this.addNewPlayerBeans = addNewPlayerBeans;
     }
 
-    public ControllerSelectPokemon(Context context){
-        this.daoPokemon = DAOPokemon.getReference(context);
+    public ControllerSelectPokemon(){
+        this.daoPokemon = DAOPokemon.getReference();
     }
 
     public void loadPokemon(LoadPokemonBean bean) {
 
         this.daoPokemon
                 .loadPokemonByName(
+                        bean.getContext(),
                         bean.getPokemonName(),
                         bean.getListener(),
                         bean.getErrorListener()
@@ -43,16 +44,23 @@ public class ControllerSelectPokemon{
     public void loadAllPokemons(LoadPokemonBean bean) {
 
         // Queries all pokemon pointers
-        daoPokemon.loadAllPokemonPointers(new Response.Listener<EntityPack>() {
+        daoPokemon.loadAllPokemonPointers(
+                bean.getContext(),
+                new Response.Listener<EntityPack>() {
             @Override
             public void onResponse(EntityPack response) {
                 for (EntityPointer ep : response.getResults()){
 
                     // Queries the pokemon pointed by ep using the listener passed as input
-                    daoPokemon.loadPokemonByName(ep.getName(), bean.getListener(), bean.getErrorListener());
+                    if (bean.getPokemonRequestQueue() != null){
+                        daoPokemon.loadPokemonByName(bean.getContext(), ep.getName(), bean.getListener(), bean.getErrorListener(), bean.getPokemonRequestQueue());
+                    } else {
+                        daoPokemon.loadPokemonByName(bean.getContext(), ep.getName(), bean.getListener(), bean.getErrorListener());
+                    }
                 }
             }
-        }, null);
+        },
+                null);
     }
 
     //FIXME: SelectPokemonBean has no method called getPlayer
@@ -69,6 +77,7 @@ public class ControllerSelectPokemon{
     public void getNumOfPokemons(GetNumOfPokemonBean bean){
         daoPokemon
                 .getNumOfPokemon(
+                        bean.getContext(),
                         bean.getListener(),
                         bean.getErrorListener()
                 );

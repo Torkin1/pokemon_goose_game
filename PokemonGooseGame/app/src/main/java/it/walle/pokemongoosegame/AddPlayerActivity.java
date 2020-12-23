@@ -2,6 +2,7 @@ package it.walle.pokemongoosegame;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ import it.walle.pokemongoosegame.game.AddNewPlayerBean;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.CreateGameBean;
 import it.walle.pokemongoosegame.game.GameFactory;
+import it.walle.pokemongoosegame.graphics.GameView;
 import it.walle.pokemongoosegame.graphics.ToastWithIcon;
 import it.walle.pokemongoosegame.selectPokemon.ControllerSelectPokemon;
 import it.walle.pokemongoosegame.selectPokemon.LoadPokemonBean;
@@ -475,10 +477,13 @@ public class AddPlayerActivity extends AppCompatActivity {
                             @Override
                             public void onChanged(Game game) {
 
+                                Log.d("burp", "onChanged called with object game");
+
                                 // Sets up game controller with newly created game
                                 CoreController.getReference().setGame(game);
 
-                                // TODO: starts next activity
+                                // starts next activity
+                                startActivity(new Intent(addPlayerActivity, GameView.class));
                             }
                         });
                         GameFactory.getReference().createGame(createGameBean);
@@ -555,7 +560,7 @@ public class AddPlayerActivity extends AppCompatActivity {
 
     public AddPlayerActivity(){
 
-        this.controllerSelectPokemon = new ControllerSelectPokemon(this);
+        this.controllerSelectPokemon = new ControllerSelectPokemon();
         this.allPokemons = new Vector<>();
         this.currentlySelectedPokemonIndex = RecyclerView.NO_POSITION;
     }
@@ -573,6 +578,8 @@ public class AddPlayerActivity extends AppCompatActivity {
 
         // Populates allPokemons
         LoadPokemonBean loadPokemonBean = new LoadPokemonBean();
+        loadPokemonBean.setContext(this);
+        loadPokemonBean.setPokemonRequestQueue(Volley.newRequestQueue(this));
         loadPokemonBean.setListener(new Response.Listener<Pokemon>() {
             @Override
             public void onResponse(Pokemon response) {

@@ -1,6 +1,7 @@
 package it.walle.pokemongoosegame.createboardsettings;
 
 import android.content.Context;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,6 @@ import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowCellStartingI
 import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
 
 public class CreateBoardSettings {
-    private Context context;
     private BoardPGParams boardPGParams;
     private List<BlueCellSettings> blueCellSettingsList;
     private List<WhatYellowCellStartingIndex> whatYellowCellStartingIndexList;
@@ -27,14 +27,6 @@ public class CreateBoardSettings {
         return ref;
     }
 
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
     private CreateBoardSettings(CreateBoardSettingsBean bean) {
         this.boardPGParams = new BoardPGParams();
         this.blueCellSettingsList = new ArrayList<>();
@@ -43,14 +35,11 @@ public class CreateBoardSettings {
         this.bean = bean;
     }
 
-    public void storeBoardSettings(){
+    public void storeBoardSettings(Context context){
         BoardSettingsDao
                 .getReference()
-                .setContext(context);
-
-        BoardSettingsDao
-                .getReference()
-                .storeBoard(boardPGParams,
+                .storeBoard(context,
+                        boardPGParams,
                         blueCellSettingsList,
                         whatYellowCellStartingIndexList,
                         whatYellowEffectNameList);

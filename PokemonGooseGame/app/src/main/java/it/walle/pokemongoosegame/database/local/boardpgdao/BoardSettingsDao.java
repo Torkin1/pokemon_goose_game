@@ -1,10 +1,13 @@
 package it.walle.pokemongoosegame.database.local.boardpgdao;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 
 import androidx.annotation.NonNull;
 
 import java.util.List;
+import java.util.Observer;
 
 import it.walle.pokemongoosegame.boardfactory.BlueCellSettings;
 import it.walle.pokemongoosegame.database.local.LocalDatabase;
@@ -15,7 +18,6 @@ import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
 public class BoardSettingsDao {
 
     private static BoardSettingsDao ref = null;
-    private Context context;
 
     public static BoardSettingsDao getReference(){
         if (ref == null){
@@ -24,42 +26,68 @@ public class BoardSettingsDao {
         return ref;
     }
 
+    public static final int MSG_OK = 0;     // The operation to the db was a success
+
     private BoardSettingsDao(){}
 
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    public void storeBoard(@NonNull BoardPGParams boardPGParams,
+    public void storeBoard(Context context,
+                           @NonNull BoardPGParams boardPGParams,
                            List<BlueCellSettings> blueCellSettingsList,
                            List<WhatYellowCellStartingIndex> whatYellowCellStartingIndexList,
-                           List<WhatYellowEffectName> whatYellowEffectNameList)
+                           List<WhatYellowEffectName> whatYellowEffectNameList
+    ){
+        this.storeBoard(context,
+                boardPGParams,
+                blueCellSettingsList,
+                whatYellowCellStartingIndexList,
+                whatYellowEffectNameList,
+                null);
+    }
+
+    public void storeBoard(Context context,
+                           @NonNull BoardPGParams boardPGParams,
+                           List<BlueCellSettings> blueCellSettingsList,
+                           List<WhatYellowCellStartingIndex> whatYellowCellStartingIndexList,
+                           List<WhatYellowEffectName> whatYellowEffectNameList,
+                           Handler handler  // Set this if you want to wait for the store to finish
+    )
     {
 
-        ((LocalDatabase) LocalDatabase.getReference(context))
-                .BoardPGParamsDAO()
-                .storeBoardPGParams(boardPGParams);
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ((LocalDatabase) LocalDatabase.getReference(context))
+                        .BoardPGParamsDAO()
+                        .storeBoardPGParams(boardPGParams);
 
-        for (int i = 0; i < blueCellSettingsList.size(); i++){
-            ((LocalDatabase) LocalDatabase.getReference(context))
-                    .BlueCellSettingsDAO()
-                    .storeBlueCellSettingsToBoardCellSettings(blueCellSettingsList.get(i));
-        }
+                for (int i = 0; i < blueCellSettingsList.size(); i++){
+                    ((LocalDatabase) LocalDatabase.getReference(context))
+                            .BlueCellSettingsDAO()
+                            .storeBlueCellSettingsToBoardCellSettings(blueCellSettingsList.get(i));
+                }
 
-        for (int i = 0; i < whatYellowCellStartingIndexList.size(); i++) {
-            ((LocalDatabase) LocalDatabase.getReference(context))
-                    .WhatYellowCellStartingIndexDAO()
-                    .storeYellowCellStartingIndexToBoardSettings(whatYellowCellStartingIndexList.get(i));
-        }
+                for (int i = 0; i < whatYellowCellStartingIndexList.size(); i++) {
+                    ((LocalDatabase) LocalDatabase.getReference(context))
+                            .WhatYellowCellStartingIndexDAO()
+                            .storeYellowCellStartingIndexToBoardSettings(whatYellowCellStartingIndexList.get(i));
+                }
 
-        for (int i = 0; i < whatYellowEffectNameList.size(); i++) {
-            ((LocalDatabase) LocalDatabase.getReference(context))
-                    .WhatYellowEffectNameDAO()
-                    .storeYellowEffectNameToBoardSettings(whatYellowEffectNameList.get(i));
-        }
+                for (int i = 0; i < whatYellowEffectNameList.size(); i++) {
+                    ((LocalDatabase) LocalDatabase.getReference(context))
+                            .WhatYellowEffectNameDAO()
+                            .storeYellowEffectNameToBoardSettings(whatYellowEffectNameList.get(i));
+                }
+
+                // Notices the handler that the job is done
+                if (handler != null){
+                    Message msg = Message.obtain();
+                    msg.setTarget(handler);
+                    msg.what = MSG_OK;
+                    msg.sendToTarget();
+                }
+
+            }
+        })).start();
+
     }
 }

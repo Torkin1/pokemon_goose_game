@@ -1,10 +1,13 @@
 package it.walle.pokemongoosegame.selectPokemon;
 
+import android.content.Context;
+
 import com.android.volley.Response;
 
 import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
 
 public class GetNumOfPokemonBean {
+    private Context context;
     private Response.Listener<CountPokemon> listener;
     private Response.ErrorListener errorListener;
 
@@ -22,5 +25,13 @@ public class GetNumOfPokemonBean {
 
     public void setErrorListener(Response.ErrorListener errorListener) {
         this.errorListener = errorListener;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }
