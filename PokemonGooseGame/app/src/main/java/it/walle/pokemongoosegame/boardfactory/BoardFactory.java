@@ -3,9 +3,12 @@ package it.walle.pokemongoosegame.boardfactory;
 import android.content.Context;
 import android.util.Log;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.UnableToCreateBoardException;
+import it.walle.pokemongoosegame.entity.board.Board;
 
 public abstract class BoardFactory {
 
@@ -34,7 +37,13 @@ public abstract class BoardFactory {
         BoardFactoryType type = null;
         try {
             type = inferBoardFactoryType(createBoardBean);
-            return (BoardFactory) Class.forName(type.getBoardFactoryTypeName()).getDeclaredConstructor(Context.class, type.getCreateBoardBeanType()).newInstance(context, createBoardBean);
+
+            // makes temporarily accessible the  private constructor of actual board factory and calls it
+            Constructor<? extends BoardFactory> boardFactoryConstructor = (Constructor<? extends BoardFactory>) Class.forName(type.getBoardFactoryTypeName()).getDeclaredConstructor(Context.class, type.getCreateBoardBeanType());
+            boardFactoryConstructor.setAccessible(true);
+            BoardFactory boardFactory = boardFactoryConstructor.newInstance(context, createBoardBean);
+            boardFactoryConstructor.setAccessible(false);
+            return boardFactory;
         } catch (InstantiationException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             Log.e(LOG_TAG, e.getMessage(), e);
         }
