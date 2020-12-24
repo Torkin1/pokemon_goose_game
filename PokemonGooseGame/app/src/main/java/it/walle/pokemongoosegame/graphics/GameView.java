@@ -23,10 +23,13 @@ import it.walle.pokemongoosegame.GameThread;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
+import it.walle.pokemongoosegame.game.CoreController;
+import it.walle.pokemongoosegame.game.ThrowDicesBean;
 
 public class GameView extends AppCompatActivity {
 
     private GameThread gameThread;
+    private static final String TAG = GameView.class.getSimpleName();
 
 
     //per gli effetti sonori
@@ -60,7 +63,6 @@ public class GameView extends AppCompatActivity {
 
     RelativeLayout game_menu_layout;//getting the realtive layout
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +70,15 @@ public class GameView extends AppCompatActivity {
         setContentView(R.layout.activity_game);
         SurfaceView surface = (SurfaceView) findViewById(R.id.surface);
 
+        // TODO: per favore  spiegare perchè questo codice è commentato, o cancellare se è inutile
+
 //        createCell(AppConstants.LEFT_GAME_MENU_WIDTH + 10, AppConstants.SCREEN_HEIGHT-AppConstants.LEFT_GAME_MENU_WIDTH,10,10);
 //        createCell(AppConstants.LEFT_GAME_MENU_WIDTH*2 +220, AppConstants.SCREEN_HEIGHT-AppConstants.LEFT_GAME_MENU_WIDTH,10,10);
 
         //fare FullScreen l'activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        gameThread = new GameThread(surface.getHolder());//now i can lock and unlock the canvas, draw and start the game
+        gameThread = new GameThread(surface.getHolder(), this);//now i can lock and unlock the canvas, draw and start the game
 
 
         dice_res = findViewById(R.id.text_dice_result);
@@ -90,7 +94,6 @@ public class GameView extends AppCompatActivity {
                 rotateDice();
             }
         });
-
         up_page_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -105,20 +108,43 @@ public class GameView extends AppCompatActivity {
             }
         });
 
+        //TODO redo this arrow control
+
+//        up_page_arrow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                scrollBoardPage(1);
+//                AppConstants.isDrawable = !AppConstants.isDrawable;
+//            }
+//        });
+//
+//        down_page_arrow.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                scrollBoardPage(- 1);
+//            }
+//        });
+
         surface.getHolder().addCallback(new SurfaceHolder.Callback() {
 
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+                // TODO: per favore  spiegare perchè questo codice è commentato, o cancellare se è inutile
 //                holder.setFixedSize(AppConstants.getBitmapBank().getBoardWidth() , AppConstants.getBitmapBank().getBoardHeight()- 90);
                 surfaceHolder = holder;
                 surfaceHolder.setSizeFromLayout();
                 // Do some drawing when surface is ready
+
+                System.out.println("Sono prima dell'If di surfaceCreateded il valore di GameView.this è " + GameView.this + " e" +
+                        "l'holder è " + surfaceHolder);
+
+                System.out.println("gameThread.isRunning e': " + gameThread.isRunning() );
+
                 if (!gameThread.isRunning()) {
-                    gameThread = new GameThread(surfaceHolder);
-                    gameThread.start();
-                } else {
-                    gameThread.start();
+                    gameThread = new GameThread(surfaceHolder, GameView.this);
                 }
+                gameThread.start();
+
             }
 
             @Override
@@ -149,6 +175,7 @@ public class GameView extends AppCompatActivity {
 
     }
 
+
     private void pageUp() {
         if (AppConstants.DISPLAYED_SCREEN >= 1) {
             setPageDown();
@@ -158,12 +185,12 @@ public class GameView extends AppCompatActivity {
         AppConstants.DISPLAYED_SCREEN = AppConstants.DISPLAYED_SCREEN + 1;//Doing ++ doesn't work use the + 1 method
         if (AppConstants.TOTAL_SCREENS < AppConstants.DISPLAYED_SCREEN)
             AppConstants.TOTAL_SCREENS = AppConstants.DISPLAYED_SCREEN;
-        if ((AppConstants.TOTAL_CELLS - (AppConstants.DONE_CELLS + AppConstants.CELLS_IN_A_SCREEN * 2)) <= 0) {
+        if ((AppConstants.TOTAL_CELLS - (AppConstants.DONE_CELLS + AppConstants.getInstance(this).CELLS_IN_A_SCREEN * 2)) <= 0) {
             up_page_arrow.setClickable(false);
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
         }
 
-        AppConstants.DRAWABLE = !AppConstants.DRAWABLE;
+        AppConstants.getInstance(this).isDrawable = !AppConstants.getInstance(this).isDrawable ;
         System.out.println("page up... " + "Ciao gli screen sono: " + AppConstants.TOTAL_SCREENS + " Ti trovi al: " + AppConstants.DISPLAYED_SCREEN);
 
 
@@ -178,10 +205,10 @@ public class GameView extends AppCompatActivity {
 
         up_page_arrow.setClickable(true);
         setPageUp();
-        
+
 
         if (AppConstants.DISPLAYED_SCREEN >= 1)
-            AppConstants.DONE_CELLS = AppConstants.DONE_CELLS - AppConstants.CELLS_IN_A_SCREEN;
+            AppConstants.DONE_CELLS = AppConstants.DONE_CELLS - AppConstants.getInstance(this).CELLS_IN_A_SCREEN;
         if (AppConstants.DISPLAYED_SCREEN == 1)
             down_page_arrow.setImageResource(R.drawable.down_arrow_off);
 
@@ -198,16 +225,44 @@ public class GameView extends AppCompatActivity {
         down_page_arrow.setImageResource(R.drawable.down_arrow);
     }
 
-    public void createCell(int left, int top, int right, int bottom) {
-        CardView.LayoutParams lp = new CardView.LayoutParams(CardView.LayoutParams.MATCH_PARENT, CardView.LayoutParams.MATCH_PARENT);
-        lp.setMarginStart(AppConstants.LEFT_GAME_MENU_WIDTH);
-        lp.setMargins(left, top, right, bottom);
-        View secondLayerView = LayoutInflater.from(this).inflate(R.layout.cell_holder, null, false);
-        addContentView(secondLayerView, lp);
+    //TODO redo this arrow control
+/*
+    private void updateArrowVisibility(){
+        // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
+        // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
+        if (((GameEngine.getInstance(this).getCurrentBoardPage() + 1) * AppConstants.getInstance(this).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
+            up_page_arrow.setClickable(false);
+            up_page_arrow.setImageResource(R.drawable.up_arrow_off);
+        } else
+        {
+            up_page_arrow.setClickable(true);
+            up_page_arrow.setImageResource(R.drawable.up_arrow);
+        }
+
+        // If it's the first board page disables the arrow down button
+        if (GameEngine.getInstance(this).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()){
+            down_page_arrow.setClickable(false);
+            down_page_arrow.setImageResource(R.drawable.down_arrow_off);
+        } else {
+            down_page_arrow.setClickable(true);
+            down_page_arrow.setImageResource(R.drawable.down_arrow);
+        }
     }
 
+    private void scrollBoardPage(int pages){
+        GameEngine.getInstance(this).setCurrentBoardPage(GameEngine.getInstance(this).getCurrentBoardPage() + pages);
+        updateArrowVisibility();
+    }
+*/
+
+
     private void rotateDice() {
-        int i = random.nextInt(5) + 1;
+        ThrowDicesBean throwDicesBean = new ThrowDicesBean();
+        throwDicesBean.setNumOfFaces(6);
+        throwDicesBean.setNumOfDices(1);
+        CoreController.getReference().throwDices(throwDicesBean);
+
+        int i = throwDicesBean.getExitNumbers().get(0);
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
         diceImage.startAnimation(anim);
         dice_res.setText(String.format(d_res + "%d", i));
@@ -235,97 +290,3 @@ public class GameView extends AppCompatActivity {
 
 }
 
-//        //with this i chage the context!
-//    public GameView(Context context) {
-//        super(context);
-//        initView(); //class that will initiliazie surfaceview and the threads
-//    }
-//
-//    void initView(){
-//        SurfaceHolder surfaceHolder = getHolder();
-//        surfaceHolder.addCallback(this);
-//        setFocusable(true);
-//        gameThread = new GameThread(surfaceHolder);//now i can lock and unlock the canvas, draw and start the game
-//    }
-//
-//    @Override
-//    public void surfaceCreated(SurfaceHolder holder) {
-//        //if there is no gameThread I'll create one, otherwise I'll start
-//        if(!gameThread.isRunning()){
-//            gameThread = new GameThread(holder);
-//            gameThread.start();
-//        }
-//        else {
-//            gameThread.start();
-//        }
-//
-//    }
-//
-//    @Override
-//    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-//        //don't use it yet
-//
-//    }
-//
-//    @Override
-//    public void surfaceDestroyed(SurfaceHolder holder) {
-//        //I'll stop the thread
-//        if(gameThread.isRunning()){
-//            gameThread.setIsRunning(false);
-//            boolean retry = true;
-//            while (retry){
-//                try {
-//                    gameThread.join();//waits the thread to die
-//                    retry = false;
-//
-//                }catch (InterruptedException e){
-//
-//                }
-//            }
-//
-//        }
-//
-//    }
-
-//    public GameView(GameActivity activity, int screenX, int screenY) {
-//        super(activity);
-//        this.activity = activity;
-//
-//        //nascode le preferenze alle altre app
-//        prefs = activity.getSharedPreferences("game", Context.MODE_PRIVATE);
-//
-//
-//        //inizilizzo il suono
-//        AudioAttributes audioAttributes = new AudioAttributes.Builder()
-//                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-//                .setUsage(AudioAttributes.USAGE_GAME)
-//                .build();
-//        soundPool = new SoundPool.Builder()
-//                .setAudioAttributes(audioAttributes)
-//                .build();
-//
-//
-//        //prendere da  file
-//        sound_back = soundPool.load(activity, R.raw.back_sound_poke, 1);
-//        sound_click = soundPool.load(activity, R.raw.beep_sound_poke, 1);
-//
-//        this.screenX = screenX;
-//        this.screenY = screenY;
-//        //calcolo il valore dello screenRatio
-//        screenRatioX = 1920f / screenX; //dim schermo in pixel
-//        screenRatioY = 1080f / screenY;
-//
-//        background1 = new Background(screenX, screenY, getResources());
-//
-//        paint = new Paint();
-//
-//        paint.setTextSize(128);//pixels
-//        paint.setColor(Color.WHITE);
-//
-//        //Creo una variabile random da usare per dado e/o altre funzionalità e casualità
-//        random = new Random();
-//
-//    }
-
-
-//}

@@ -1,5 +1,7 @@
 package it.walle.pokemongoosegame.graphics;
 
+import android.content.Context;
+
 import it.walle.pokemongoosegame.graphics.AppConstants;
 
 public class PokePawn {
@@ -9,11 +11,11 @@ public class PokePawn {
     int pokePawnImageX = 0, pokePawnImageY = 0, pokePawnImgVelocity;
     public static int maxFrame; //pawns total movemnts (if possible implemet or delete it)
 
-    public PokePawn() {
+    public PokePawn(Context context) {
 
 //        System.out.println("creato il pokepawn");
-        pokePawnImageX = (AppConstants.getBitmapBank().getBoardWidth() - AppConstants.LEFT_GAME_MENU_WIDTH) / 10;
-        pokePawnImageY = AppConstants.getBitmapBank().getBoardHeight() - 120;
+        pokePawnImageX = (AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH) / 10;
+        pokePawnImageY = AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH - 120;
         maxFrame = 3;
         pokePawnImgVelocity = 0;
     }

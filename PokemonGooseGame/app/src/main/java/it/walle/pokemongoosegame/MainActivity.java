@@ -88,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             this.firstBoot();
         }
 
-        AppConstants.initialization(this.getApplicationContext());
-
 
         //The main should be fullScreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
