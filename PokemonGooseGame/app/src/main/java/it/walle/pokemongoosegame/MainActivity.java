@@ -62,31 +62,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private boolean mIsBound = false;//music controller
     private MusicService mServ;
 
-    private void firstBoot(){
-
-        // This is the first boot, we write it down
-        this
-                .getPreferences(Context.MODE_PRIVATE)
-                .edit()
-                .putBoolean(this.firstBootSharedPrefName, false)
-                .apply();
-
-        // Stores a default board configuration in the db
-        Bootstrap.getReference().createDefaultBoard(this);
-
-        /*
-            Code to be performed on first boot goes here
-        * */
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // If it's first boot do some setup
-        if (this.getPreferences(Context.MODE_PRIVATE).getBoolean(firstBootSharedPrefName, true)){
-            this.firstBoot();
-        }
+        Bootstrap.getReference().doOnBoot(this);
 
 
         //The main should be fullScreen

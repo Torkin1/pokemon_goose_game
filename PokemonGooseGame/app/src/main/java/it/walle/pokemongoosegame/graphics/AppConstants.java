@@ -1,10 +1,13 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
+
+import it.walle.pokemongoosegame.Bootstrap;
 
 public class AppConstants {
 
@@ -26,7 +29,7 @@ public class AppConstants {
             SCREEN_HEIGHT,
             CELL_MARGIN = 15,
             LEFT_GAME_MENU_WIDTH,
-            CELLS_IN_A_SCREEN = 21,      // TODO: set value in constructor
+            CELLS_IN_A_SCREEN,      // TODO: set value in constructor
             VELOCITY_WHILE_MOVING;
 
 
@@ -47,7 +50,6 @@ public class AppConstants {
     }
 
     public AppConstants(Context context) {
-        // TODO: move tthis in constructor method
 
         //setting screen measure and the height and width variable, for any device
         WindowManager windowManager = (WindowManager) context.getSystemService(context.WINDOW_SERVICE);
@@ -66,6 +68,10 @@ public class AppConstants {
         AppConstants.gravity = 0; //se voglio la gravità va messa la velocità della pawn nella sua classe e inizializzata nel costruttore della sua classe
 
         this.VELOCITY_WHILE_MOVING = -10;
+
+        // Sets max number of cells in a screen
+        SharedPreferences appSettings = context.getSharedPreferences(Bootstrap.SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        CELLS_IN_A_SCREEN = appSettings.getInt(Bootstrap.CELLS_IN_A_SCREEN_SHARED_PREF_NAME, - 1);
 
 
 //        CELLS_IN_A_SCREEN = CellsOnTheScreen();

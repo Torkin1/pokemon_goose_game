@@ -6,7 +6,6 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import it.walle.pokemongoosegame.graphics.AppConstants;
 import it.walle.pokemongoosegame.graphics.GameEngine;
 
 public class GameThread extends Thread {
@@ -51,9 +50,12 @@ public class GameThread extends Thread {
                     //TODO draw only if necessary
 //                    if(AppConstants.DRAWABLE)
 
-                    GameEngine.getInstance(context).updateAndDrawCell(canvas, context);
 
-                    GameEngine.getInstance(context).updateAndDrawPawn(canvas, context);
+                    // FIXME: Quando ridisegna il background, non disegna il tabellone e la pedina se questi non vengono ridisegnati in continuazione
+                    GameEngine.getInstance(context).updateAndDrawBoard(canvas, context);
+                    GameEngine.getInstance(context).updateAndDrawBoard(canvas, context);
+
+
 
                     //unlock canvas
                     surfaceHolder.unlockCanvasAndPost(canvas);

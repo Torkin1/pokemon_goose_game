@@ -4,6 +4,12 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
+
+import java.util.concurrent.Semaphore;
+
+import it.walle.pokemongoosegame.entity.board.Board;
+import it.walle.pokemongoosegame.game.CoreController;
 
 public class GameEngine {
 
@@ -26,7 +32,6 @@ public class GameEngine {
     BitmapBank bitmapBank;
 
     private int width_margin, height_margin;
-
 
     public GameEngine(Context context) {
         System.out.println("Nel Costruttore di GameEngine ");
@@ -55,6 +60,7 @@ public class GameEngine {
 
     public void setCurrentBoardPage(int currentBoardPage) {
         this.currentBoardPage = currentBoardPage;
+        Log.d("Burp", "page changed to " + this.getCurrentBoardPage());
     }
 
     public void updateAndDrawBackgroundImage(Canvas canvas, Context context) {
@@ -92,7 +98,7 @@ public class GameEngine {
             }//questo mi porta a creare un mdoo per salire, in GameEngine, una costante Jump che cambia lo stato (vedere tutto ciò che lega il gameState
         }//in appContents creo la VELOCITY_WHEN_JUMPED;
 
-        if (AppConstants.getInstance(context).DISPLAYED_SCREEN == AppConstants.getInstance(context).PAWNS_SCREEN) {
+        if (AppConstants.DISPLAYED_SCREEN == AppConstants.PAWNS_SCREEN) {
 
             canvas.drawBitmap(bitmapBank.getPawn(),
                     width_margin + (AppConstants.getInstance(context).CELL_MARGIN),
@@ -103,10 +109,7 @@ public class GameEngine {
         }
     }
 
-
-    // TODO: #95
-
-    public void updateAndDrawCell(Canvas canvas, Context context) {
+    public void updateAndDrawBoard(Canvas canvas, Context context) {
 
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
@@ -115,7 +118,6 @@ public class GameEngine {
 
         paint.setColor(Color.BLACK);
         paint.setTextSize(30);
-        int counter = AppConstants.getInstance(context).DONE_CELLS;
         int cell_path_direction, page_number_cell_path_direction;
 
         int cols = (AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH -
@@ -132,18 +134,25 @@ public class GameEngine {
         cell.setCellImgX(width_margin);
         cell.setCellImgY(height_margin);
 
-        // TODO: Draws cells of current board page
+        int cellStartIndex = currentBoardPage * AppConstants.getInstance(context).CELLS_IN_A_SCREEN;
+        int cellEndIndex = cellStartIndex + AppConstants.getInstance(context).CELLS_IN_A_SCREEN;
+        int cellIndex = cellStartIndex;
+
+        Board board = CoreController.getReference().getBoard();
+
+        // Draws cells of current board page
         for (int j = 0; j < rows; j++) {
             for (int i = 0; i < cols; i++) {
-                if (counter < AppConstants.getInstance(context).TOTAL_CELLS) {
-                    counter++;
-                    // TODO: Draws cell of corresponding type
-                    if (counter == 12 || counter == 22 || counter == 32 || counter == 42 || counter == 52 || counter == 62)
-                        bitmapBank.setCellResBlue();
-                    else if (counter == 17 || counter == 27 || counter == 37 || counter == 47 || counter == 57 || counter == 67)
-                        bitmapBank.setCellResYellow();
-                    else
-                        bitmapBank.setCellRes();
+                if (cellIndex < board.getCells().size()) {
+
+                    // Draws cell color
+                    bitmapBank
+                            .setCellRes(
+                                    board
+                                            .getCells()
+                                            .get(cellIndex)
+                                            .getClass()
+                            );
 
                     // gives the board a "snake" orientation
                     if (j % 2 == 0) {
@@ -161,21 +170,26 @@ public class GameEngine {
                                     (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * j, null);
 
                     // Draws cell number
-                    canvas.drawText(String.valueOf(counter), page_number_cell_path_direction,
+                    canvas.drawText(String.valueOf(cellIndex), page_number_cell_path_direction,
                             AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN* 4 - (bitmapBank.getCellWidth() + height_margin) -
                                     (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * j, paint);
 
+                    cellIndex ++;
+
+                } else{
+
+                    // There are no more cells to be drawn, cycle must end
+                    i = cols;
+                    j = rows;
                 }
             }
 
         }
-        // TODO: move CELLS_IN_A_SCREEN calculations in AppConstants constructor
-
 
 
         if (!AppConstants.isDrawable) {
             System.out.println("è tutto falso dice: " + AppConstants.isDrawable);
-            AppConstants.getInstance(context).DONE_CELLS = counter;
+            AppConstants.DONE_CELLS = cellIndex;
             AppConstants.isDrawable = !AppConstants.isDrawable;
 
 

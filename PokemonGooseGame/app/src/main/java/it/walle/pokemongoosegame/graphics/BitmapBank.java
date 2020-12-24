@@ -4,11 +4,16 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import it.walle.pokemongoosegame.R;
+import it.walle.pokemongoosegame.entity.board.cell.Cell;
+import it.walle.pokemongoosegame.utils.DrawableGetter;
+import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
 public class BitmapBank {
 
+    private static final String TAG = BitmapBank.class.getSimpleName();
     //bg reff
     Bitmap background, pawn, cell;
     Resources res;
@@ -90,10 +95,22 @@ public class BitmapBank {
 
     }
 
-    public void setCellRes() {
+    public void setCellResNormal() {
         cell = BitmapFactory.decodeResource(res, R.drawable.cell_bg_normal);
         cell = scaleCell(cell);
 
+    }
+
+
+
+    public void setCellRes(Class<? extends Cell> cellClass){
+        try {
+            cell = BitmapFactory.decodeResource(res, DrawableGetter.getReference().getCellBgDrawableId(cellClass));
+            cell = scaleCell(cell);
+        } catch (DrawableNotFoundException e) {
+            Log.e(TAG, e.getMessage(), e);
+            setCellResNormal();
+        }
     }
 
 

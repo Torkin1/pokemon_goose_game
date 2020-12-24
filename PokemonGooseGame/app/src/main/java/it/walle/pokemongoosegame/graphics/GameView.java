@@ -3,6 +3,7 @@ package it.walle.pokemongoosegame.graphics;
 import android.content.SharedPreferences;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -52,7 +53,7 @@ public class GameView extends AppCompatActivity {
     private SharedPreferences prefs;
 
     //the dice image
-    ImageView diceImage, up_page_arrow, down_page_arrow;
+    private ImageView diceImage, up_page_arrow, down_page_arrow;
 
     //random number
     Random random = new Random();
@@ -94,6 +95,7 @@ public class GameView extends AppCompatActivity {
                 rotateDice();
             }
         });
+        /*
         up_page_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,23 +109,26 @@ public class GameView extends AppCompatActivity {
                 pageDown();
             }
         });
+        */
+
 
         //TODO redo this arrow control
 
-//        up_page_arrow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                scrollBoardPage(1);
-//                AppConstants.isDrawable = !AppConstants.isDrawable;
-//            }
-//        });
-//
-//        down_page_arrow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                scrollBoardPage(- 1);
-//            }
-//        });
+        up_page_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Burp", "Burp");
+                scrollBoardPage(1);
+                AppConstants.isDrawable = !AppConstants.isDrawable;
+            }
+        });
+
+        down_page_arrow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollBoardPage(- 1);
+            }
+        });
 
         surface.getHolder().addCallback(new SurfaceHolder.Callback() {
 
@@ -159,7 +164,7 @@ public class GameView extends AppCompatActivity {
                             retry = false;
 
                         } catch (InterruptedException e) {
-
+                            Log.e(TAG, e.getMessage(), e);
                         }
                     }
                 }
@@ -175,7 +180,7 @@ public class GameView extends AppCompatActivity {
 
     }
 
-
+/*
     private void pageUp() {
         if (AppConstants.DISPLAYED_SCREEN >= 1) {
             setPageDown();
@@ -190,7 +195,7 @@ public class GameView extends AppCompatActivity {
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
         }
 
-        AppConstants.getInstance(this).isDrawable = !AppConstants.getInstance(this).isDrawable ;
+        AppConstants.isDrawable = !AppConstants.isDrawable ;
         System.out.println("page up... " + "Ciao gli screen sono: " + AppConstants.TOTAL_SCREENS + " Ti trovi al: " + AppConstants.DISPLAYED_SCREEN);
 
 
@@ -216,7 +221,7 @@ public class GameView extends AppCompatActivity {
 
 
     }
-
+*/
     public void setPageUp() {
         up_page_arrow.setImageResource(R.drawable.up_arrow);
     }
@@ -226,7 +231,7 @@ public class GameView extends AppCompatActivity {
     }
 
     //TODO redo this arrow control
-/*
+
     private void updateArrowVisibility(){
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
         // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
@@ -250,10 +255,12 @@ public class GameView extends AppCompatActivity {
     }
 
     private void scrollBoardPage(int pages){
+        Log.d("Burp", "board page was: " + GameEngine.getInstance(this).getCurrentBoardPage());
         GameEngine.getInstance(this).setCurrentBoardPage(GameEngine.getInstance(this).getCurrentBoardPage() + pages);
+        Log.d("Burp", "board page is: " + GameEngine.getInstance(this).getCurrentBoardPage());
         updateArrowVisibility();
     }
-*/
+
 
 
     private void rotateDice() {

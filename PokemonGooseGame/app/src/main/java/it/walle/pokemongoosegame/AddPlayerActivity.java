@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,9 +26,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.badge.BadgeDrawable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,8 +52,8 @@ import it.walle.pokemongoosegame.graphics.GameView;
 import it.walle.pokemongoosegame.graphics.ToastWithIcon;
 import it.walle.pokemongoosegame.selectPokemon.ControllerSelectPokemon;
 import it.walle.pokemongoosegame.selectPokemon.LoadPokemonBean;
-import it.walle.pokemongoosegame.utils.TypeDrawableGetter;
-import it.walle.pokemongoosegame.utils.TypeDrawableNotFoundException;
+import it.walle.pokemongoosegame.utils.DrawableGetter;
+import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
 public class AddPlayerActivity extends AppCompatActivity {
 
@@ -171,12 +167,12 @@ public class AddPlayerActivity extends AppCompatActivity {
                     holder.llTypes.removeAllViews();
                     for (TypePointerPokemon t : currentPokemon.getTypes()) {
                         try {
-                            int typeDrawableId = TypeDrawableGetter.getReference().getTypeDrawableId(t.getType().getName());
+                            int typeDrawableId = DrawableGetter.getReference().getTypeDrawableId(t.getType().getName());
                             ImageView ivType = new ImageView(addPlayerActivity);
                             ivType.setImageDrawable(ContextCompat.getDrawable(addPlayerActivity, typeDrawableId));
                             ivType.setLayoutParams(new LinearLayout.LayoutParams(100, 100));
                             holder.llTypes.addView(ivType);
-                        } catch (TypeDrawableNotFoundException e) {
+                        } catch (DrawableNotFoundException e) {
                             Log.e(TAG, e.getMessage(), e);
                         }
 
