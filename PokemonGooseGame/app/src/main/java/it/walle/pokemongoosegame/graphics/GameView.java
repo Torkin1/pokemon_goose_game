@@ -1,10 +1,10 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
@@ -16,11 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 
 import java.util.Random;
 
-import it.walle.pokemongoosegame.GameThread;
+import it.walle.pokemongoosegame.BackgroundThread;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
@@ -29,9 +28,17 @@ import it.walle.pokemongoosegame.game.ThrowDicesBean;
 
 public class GameView extends AppCompatActivity {
 
-    private GameThread gameThread;
-    private static final String TAG = GameView.class.getSimpleName();
+    // Threads for drawing elements on surface views
+    private BackgroundThread backgroundThread;
+    private BoardThread boardThread;
+    private PawnThread pawnThread;
 
+    private
+    SurfaceView svBackground;
+    SurfaceView svBoard;
+    SurfaceView svPawn;
+
+    private static final String TAG = GameView.class.getSimpleName();
 
     //per gli effetti sonori
     private SoundPool soundPool;
@@ -42,21 +49,11 @@ public class GameView extends AppCompatActivity {
     //per tenere il punteggio è dummy, preferibilmente creare un oggetto
     private int score = 0;
 
-    private Board board;
-    private Pokemon pokemon;
-
-    //a common holder for the surface to call it from the methods
-    SurfaceHolder surfaceHolder;
-
-
     //usato per tenere i dati del gioco, si aggiorna ogni nuvoa versione!
     private SharedPreferences prefs;
 
     //the dice image
     private ImageView diceImage, up_page_arrow, down_page_arrow;
-
-    //random number
-    Random random = new Random();
 
     //a text view for the result fo the dice
     TextView dice_res;
@@ -66,21 +63,27 @@ public class GameView extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        Log.d("Burp", "on create called");
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_game);
-        SurfaceView surface = (SurfaceView) findViewById(R.id.surface);
 
-        // TODO: per favore  spiegare perchè questo codice è commentato, o cancellare se è inutile
+        svBackground = (SurfaceView) findViewById(R.id.svBackground);
+        svBoard = findViewById(R.id.svBoard);
+        svPawn = findViewById(R.id.svPawn);
 
-//        createCell(AppConstants.LEFT_GAME_MENU_WIDTH + 10, AppConstants.SCREEN_HEIGHT-AppConstants.LEFT_GAME_MENU_WIDTH,10,10);
-//        createCell(AppConstants.LEFT_GAME_MENU_WIDTH*2 +220, AppConstants.SCREEN_HEIGHT-AppConstants.LEFT_GAME_MENU_WIDTH,10,10);
+        // Sets board surface transparent and on top of background and svPawn transparent and on top of board
+        svBoard.setZOrderMediaOverlay(true);
+        svBoard.getHolder().setFormat(PixelFormat.TRANSPARENT);
+
+        // Sets pawns surface transparent and on top of board
+        svPawn.setZOrderMediaOverlay(true);
+        svPawn.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
         //fare FullScreen l'activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-        gameThread = new GameThread(surface.getHolder(), this);//now i can lock and unlock the canvas, draw and start the game
-
 
         dice_res = findViewById(R.id.text_dice_result);
         up_page_arrow = findViewById(R.id.page_up_img);
@@ -95,21 +98,6 @@ public class GameView extends AppCompatActivity {
                 rotateDice();
             }
         });
-        /*
-        up_page_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pageUp();
-            }
-        });
-
-        down_page_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pageDown();
-            }
-        });
-        */
 
 
         //TODO redo this arrow control
@@ -130,12 +118,72 @@ public class GameView extends AppCompatActivity {
             }
         });
 
-        surface.getHolder().addCallback(new SurfaceHolder.Callback() {
+
+        // Starts drawing threads for background, board and pawn
+        svBackground.getHolder().addCallback(new SurfaceHolder.Callback() {
 
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
-                // TODO: per favore  spiegare perchè questo codice è commentato, o cancellare se è inutile
-//                holder.setFixedSize(AppConstants.getBitmapBank().getBoardWidth() , AppConstants.getBitmapBank().getBoardHeight()- 90);
+                svBackground.getHolder().setSizeFromLayout();
+                // Do some drawing when surface is ready
+
+                backgroundThread = new BackgroundThread(svBackground.getHolder(), GameView.this);
+                backgroundThread.start();
+
+
+
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                //I'll stop the thread
+                if (backgroundThread.isRunning()) {
+                    backgroundThread.setIsRunning(false);
+                }
+
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                //TODO
+            }
+        });
+
+
+        svBoard.getHolder().addCallback(new SurfaceHolder.Callback() {
+
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+                svBoard.getHolder().setSizeFromLayout();
+                // Do some drawing when surface is ready
+                boardThread = new BoardThread(svBoard.getHolder(), GameView.this);
+                boardThread.start();
+
+            }
+
+            @Override
+            public void surfaceDestroyed(SurfaceHolder holder) {
+                if (boardThread.isRunning()){
+                    boardThread.setIsRunning(false);
+                    boardThread.interrupt();
+                }
+
+            }
+
+            @Override
+            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                //TODO
+            }
+        });
+
+        // TODO: Uncomment this when code for drawing pawns is implemented.
+        /*
+        svPawn.getHolder().addCallback(new SurfaceHolder.Callback() {
+
+            @Override
+            public void surfaceCreated(SurfaceHolder holder) {
+
                 surfaceHolder = holder;
                 surfaceHolder.setSizeFromLayout();
                 // Do some drawing when surface is ready
@@ -145,22 +193,22 @@ public class GameView extends AppCompatActivity {
 
                 System.out.println("gameThread.isRunning e': " + gameThread.isRunning() );
 
-                if (!gameThread.isRunning()) {
-                    gameThread = new GameThread(surfaceHolder, GameView.this);
+                if (!pawnThread.isRunning()) {
+                    pawnThread = new PawnThread(svPawn.getHolder(), GameView.this);
                 }
-                gameThread.start();
+                pawnThread.start();
 
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
                 //I'll stop the thread
-                if (gameThread.isRunning()) {
-                    gameThread.setIsRunning(false);
+                if (pawnThread.isRunning()) {
+                    pawnThread.setIsRunning(false);
                     boolean retry = true;
                     while (retry) {
                         try {
-                            gameThread.join();//waits the thread to die
+                            pawnThread.join();//waits the thread to die
                             retry = false;
 
                         } catch (InterruptedException e) {
@@ -176,61 +224,9 @@ public class GameView extends AppCompatActivity {
                 //TODO
             }
         });
-
-
-    }
-
-/*
-    private void pageUp() {
-        if (AppConstants.DISPLAYED_SCREEN >= 1) {
-            setPageDown();
-            down_page_arrow.setClickable(true);
-        }
-
-        AppConstants.DISPLAYED_SCREEN = AppConstants.DISPLAYED_SCREEN + 1;//Doing ++ doesn't work use the + 1 method
-        if (AppConstants.TOTAL_SCREENS < AppConstants.DISPLAYED_SCREEN)
-            AppConstants.TOTAL_SCREENS = AppConstants.DISPLAYED_SCREEN;
-        if ((AppConstants.TOTAL_CELLS - (AppConstants.DONE_CELLS + AppConstants.getInstance(this).CELLS_IN_A_SCREEN * 2)) <= 0) {
-            up_page_arrow.setClickable(false);
-            up_page_arrow.setImageResource(R.drawable.up_arrow_off);
-        }
-
-        AppConstants.isDrawable = !AppConstants.isDrawable ;
-        System.out.println("page up... " + "Ciao gli screen sono: " + AppConstants.TOTAL_SCREENS + " Ti trovi al: " + AppConstants.DISPLAYED_SCREEN);
-
+         */
 
     }
-
-    private void pageDown() {
-
-        AppConstants.DISPLAYED_SCREEN = AppConstants.DISPLAYED_SCREEN - 1;
-        if (AppConstants.DISPLAYED_SCREEN == 1)
-            down_page_arrow.setClickable(false);
-
-
-        up_page_arrow.setClickable(true);
-        setPageUp();
-
-
-        if (AppConstants.DISPLAYED_SCREEN >= 1)
-            AppConstants.DONE_CELLS = AppConstants.DONE_CELLS - AppConstants.getInstance(this).CELLS_IN_A_SCREEN;
-        if (AppConstants.DISPLAYED_SCREEN == 1)
-            down_page_arrow.setImageResource(R.drawable.down_arrow_off);
-
-        System.out.println("page down... " + "Ciao gli screen sono: " + AppConstants.TOTAL_SCREENS + " Ti trovi al: " + AppConstants.DISPLAYED_SCREEN);
-
-
-    }
-*/
-    public void setPageUp() {
-        up_page_arrow.setImageResource(R.drawable.up_arrow);
-    }
-
-    public void setPageDown() {
-        down_page_arrow.setImageResource(R.drawable.down_arrow);
-    }
-
-    //TODO redo this arrow control
 
     private void updateArrowVisibility(){
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
@@ -255,13 +251,9 @@ public class GameView extends AppCompatActivity {
     }
 
     private void scrollBoardPage(int pages){
-        Log.d("Burp", "board page was: " + GameEngine.getInstance(this).getCurrentBoardPage());
         GameEngine.getInstance(this).setCurrentBoardPage(GameEngine.getInstance(this).getCurrentBoardPage() + pages);
-        Log.d("Burp", "board page is: " + GameEngine.getInstance(this).getCurrentBoardPage());
         updateArrowVisibility();
     }
-
-
 
     private void rotateDice() {
         ThrowDicesBean throwDicesBean = new ThrowDicesBean();
@@ -273,6 +265,7 @@ public class GameView extends AppCompatActivity {
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
         diceImage.startAnimation(anim);
         dice_res.setText(String.format(d_res + "%d", i));
+
         switch (i) {
             case 1:
                 diceImage.setImageResource(R.drawable.dice1);
@@ -295,5 +288,16 @@ public class GameView extends AppCompatActivity {
         }
     }
 
+
+    @Override
+    protected void onResume() {
+        Log.d("Burp", "on resume called");
+        super.onResume();
+
+        // Restarts threads
+        backgroundThread = new BackgroundThread(svBackground.getHolder(), this);
+        boardThread = new BoardThread(svBoard.getHolder(), this);
+
+    }
 }
 

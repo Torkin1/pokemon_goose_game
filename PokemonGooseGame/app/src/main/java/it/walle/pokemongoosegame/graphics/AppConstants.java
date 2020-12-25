@@ -29,7 +29,7 @@ public class AppConstants {
             SCREEN_HEIGHT,
             CELL_MARGIN = 15,
             LEFT_GAME_MENU_WIDTH,
-            CELLS_IN_A_SCREEN,      // TODO: set value in constructor
+            CELLS_IN_A_SCREEN,
             VELOCITY_WHILE_MOVING;
 
 
@@ -38,9 +38,7 @@ public class AppConstants {
     public static int
             DISPLAYED_SCREEN = 1,       // TODO: DISPLAYED_SCREEN deve essere messo come attributo di game engine
             PAWNS_SCREEN = 1,           // TODO: move this in a Pawn object
-            DONE_CELLS = 0,
-            TOTAL_CELLS = 69,
-            TOTAL_SCREENS = 1;
+            DONE_CELLS = 0;
 
     //for gravity when the pawn has to move up
     static int gravity;                 // TODO: move this in a Pawn object
@@ -74,17 +72,8 @@ public class AppConstants {
         CELLS_IN_A_SCREEN = appSettings.getInt(Bootstrap.CELLS_IN_A_SCREEN_SHARED_PREF_NAME, - 1);
 
 
-//        CELLS_IN_A_SCREEN = CellsOnTheScreen();
     }
 
-//    private int CellsOnTheScreen(){
-//        int cols = (SCREEN_WIDTH - LEFT_GAME_MENU_WIDTH -
-//                CELL_MARGIN) / getBitmapBank().getCellWidth();
-//
-//        int rows = (SCREEN_HEIGHT - CELL_MARGIN) / getBitmapBank().getCellHeight();
-//
-//        return cols*rows;
-//    }
 
 
 }

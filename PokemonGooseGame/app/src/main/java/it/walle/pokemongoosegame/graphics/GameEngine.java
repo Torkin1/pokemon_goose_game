@@ -31,20 +31,20 @@ public class GameEngine {
     private int xspeedtemp;
     BitmapBank bitmapBank;
 
+    // Used by threads to do updates only when necessary
+    private final Semaphore boardSemaphore, pawnSemaphore;
+
     private int width_margin, height_margin;
 
     public GameEngine(Context context) {
-        System.out.println("Nel Costruttore di GameEngine ");
         bitmapBank = new BitmapBank(context.getResources(), context);
-
         backgroundImg = new Background();//initialize bg
-        System.out.println("Nel Costruttore di GameEngine dopo bg ");
-
         poke_pawn = new PokePawn(context);//initilialize pawn
-        System.out.println("Nel Costruttore di GameEngine dopo la pawn");
-
         cell = new Cell(context);
-        System.out.println("Nel Costruttore di GameEngine dopo la cell");
+
+        // Initializes semaphores
+        boardSemaphore = new Semaphore(1);
+        pawnSemaphore = new Semaphore(1);
 
 //TODO define a speed, tip: Use the cell dimension
 //        xspeed = AppConstants.getBitmapBank().getBoardWidth() / 10;
@@ -54,6 +54,14 @@ public class GameEngine {
 
     }
 
+    public Semaphore getBoardSemaphore() {
+        return boardSemaphore;
+    }
+
+    public Semaphore getPawnSemaphore() {
+        return pawnSemaphore;
+    }
+
     public int getCurrentBoardPage() {
         return currentBoardPage;
     }
@@ -61,6 +69,7 @@ public class GameEngine {
     public void setCurrentBoardPage(int currentBoardPage) {
         this.currentBoardPage = currentBoardPage;
         Log.d("Burp", "page changed to " + this.getCurrentBoardPage());
+        boardSemaphore.release();
     }
 
     public void updateAndDrawBackgroundImage(Canvas canvas, Context context) {

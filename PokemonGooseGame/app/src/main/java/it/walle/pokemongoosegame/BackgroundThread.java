@@ -6,20 +6,22 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
+import java.util.concurrent.Semaphore;
+
 import it.walle.pokemongoosegame.graphics.GameEngine;
 
-public class GameThread extends Thread {
-    SurfaceHolder surfaceHolder;//ref to the surfaceHolder
-    boolean isRunning;//flag to detect if the Thread is running or not
+public class BackgroundThread extends Thread {
+    private static final String TAG = BackgroundThread.class.getSimpleName();
+    final SurfaceHolder surfaceHolder;//ref to the surfaceHolder
+    private boolean isRunning = false;//flag to detect if the Thread is running or not
     long startTime, loopTime; //loop and start time duration
     long DELAY = 33; //delay in millisecs, etrween screen refresh
     Context context;
 
-    public GameThread(SurfaceHolder surfaceHolder, Context context) {
+    public BackgroundThread(SurfaceHolder surfaceHolder, Context context) {
         //Passing a surfaceholder as param on the constructor
         this.surfaceHolder = surfaceHolder;
         this.context = context;
-        isRunning = true; //means that i started the thread!
     }//It will do an ovveride of the run method and the start will call it from GameView.
 
     @Override
@@ -32,9 +34,9 @@ public class GameThread extends Thread {
         //chiamo lo sleep() fino alla fine del dealy così è liscia l'animazione
 
         //loop until the boolean is false
-        System.out.println("Sono prima del while");
-
+        isRunning = true;
         while (isRunning) {
+
 
             // TODO: call update methods only if there are some updates
             startTime = SystemClock.uptimeMillis();
@@ -44,18 +46,8 @@ public class GameThread extends Thread {
             if (canvas != null) {
                 synchronized (surfaceHolder) {
 
-
+                    // Updates background
                     GameEngine.getInstance(context).updateAndDrawBackgroundImage(canvas, context);
-
-                    //TODO draw only if necessary
-//                    if(AppConstants.DRAWABLE)
-
-
-                    // FIXME: Quando ridisegna il background, non disegna il tabellone e la pedina se questi non vengono ridisegnati in continuazione
-                    GameEngine.getInstance(context).updateAndDrawBoard(canvas, context);
-                    GameEngine.getInstance(context).updateAndDrawBoard(canvas, context);
-
-
 
                     //unlock canvas
                     surfaceHolder.unlockCanvasAndPost(canvas);
@@ -68,10 +60,11 @@ public class GameThread extends Thread {
                 try {
                     Thread.sleep(DELAY - loopTime);
                 } catch (InterruptedException e) {
-                    Log.e("Interrupted", "Interrupted while sleeping");
+                    Log.e(TAG, "Interrupted while sleeping");
                 }
             }
         }
+        Log.d("Burp", "I'm dying lol");
     }
 
     //return whether the thread is running
