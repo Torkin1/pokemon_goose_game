@@ -1,14 +1,10 @@
-package it.walle.pokemongoosegame;
+package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
-
-import java.util.concurrent.Semaphore;
-
-import it.walle.pokemongoosegame.graphics.GameEngine;
 
 public class BackgroundThread extends Thread {
     private static final String TAG = BackgroundThread.class.getSimpleName();
@@ -35,6 +31,8 @@ public class BackgroundThread extends Thread {
 
         //loop until the boolean is false
         isRunning = true;
+        Log.d(TAG, "I've just have born");
+
         while (isRunning) {
 
 
@@ -64,7 +62,7 @@ public class BackgroundThread extends Thread {
                 }
             }
         }
-        Log.d("Burp", "I'm dying lol");
+        Log.d(TAG, "I'm dying lol");
     }
 
     //return whether the thread is running

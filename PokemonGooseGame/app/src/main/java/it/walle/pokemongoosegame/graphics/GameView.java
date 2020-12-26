@@ -17,12 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Random;
-
-import it.walle.pokemongoosegame.BackgroundThread;
 import it.walle.pokemongoosegame.R;
-import it.walle.pokemongoosegame.entity.board.Board;
-import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.ThrowDicesBean;
 
@@ -64,8 +59,6 @@ public class GameView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        Log.d("Burp", "on create called");
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_game);
@@ -99,9 +92,6 @@ public class GameView extends AppCompatActivity {
             }
         });
 
-
-        //TODO redo this arrow control
-
         up_page_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,17 +120,11 @@ public class GameView extends AppCompatActivity {
                 backgroundThread = new BackgroundThread(svBackground.getHolder(), GameView.this);
                 backgroundThread.start();
 
-
-
-
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                //I'll stop the thread
-                if (backgroundThread.isRunning()) {
-                    backgroundThread.setIsRunning(false);
-                }
+
 
             }
 
@@ -164,10 +148,6 @@ public class GameView extends AppCompatActivity {
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                if (boardThread.isRunning()){
-                    boardThread.setIsRunning(false);
-                    boardThread.interrupt();
-                }
 
             }
 
@@ -178,44 +158,23 @@ public class GameView extends AppCompatActivity {
         });
 
         // TODO: Uncomment this when code for drawing pawns is implemented.
-        /*
+
         svPawn.getHolder().addCallback(new SurfaceHolder.Callback() {
 
             @Override
             public void surfaceCreated(SurfaceHolder holder) {
+                svPawn.getHolder().setSizeFromLayout();
 
-                surfaceHolder = holder;
-                surfaceHolder.setSizeFromLayout();
                 // Do some drawing when surface is ready
 
-                System.out.println("Sono prima dell'If di surfaceCreateded il valore di GameView.this è " + GameView.this + " e" +
-                        "l'holder è " + surfaceHolder);
-
-                System.out.println("gameThread.isRunning e': " + gameThread.isRunning() );
-
-                if (!pawnThread.isRunning()) {
-                    pawnThread = new PawnThread(svPawn.getHolder(), GameView.this);
-                }
-                pawnThread.start();
+               pawnThread = new PawnThread(svPawn.getHolder(), GameView.this);
+               pawnThread.start();
 
             }
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {
-                //I'll stop the thread
-                if (pawnThread.isRunning()) {
-                    pawnThread.setIsRunning(false);
-                    boolean retry = true;
-                    while (retry) {
-                        try {
-                            pawnThread.join();//waits the thread to die
-                            retry = false;
 
-                        } catch (InterruptedException e) {
-                            Log.e(TAG, e.getMessage(), e);
-                        }
-                    }
-                }
 
             }
 
@@ -224,14 +183,13 @@ public class GameView extends AppCompatActivity {
                 //TODO
             }
         });
-         */
 
     }
 
     private void updateArrowVisibility(){
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
         // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
-        if (((GameEngine.getInstance(this).getCurrentBoardPage() + 1) * AppConstants.getInstance(this).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
+        if (((GameEngine.getInstance(this).getCurrentBoardPage() + 1) * GameEngine.getInstance(this).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
             up_page_arrow.setClickable(false);
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
         } else
@@ -290,13 +248,34 @@ public class GameView extends AppCompatActivity {
 
 
     @Override
+    protected void onPause() {
+
+        if (backgroundThread.isRunning()) {
+            backgroundThread.setIsRunning(false);
+        }
+
+        if (boardThread.isRunning()){
+            boardThread.setIsRunning(false);
+            boardThread.interrupt();
+        }
+
+        if (pawnThread.isRunning()){
+            pawnThread.setIsRunning(false);
+            pawnThread.interrupt();
+        }
+
+        super.onPause();
+    }
+
+    @Override
     protected void onResume() {
         Log.d("Burp", "on resume called");
         super.onResume();
 
-        // Restarts threads
+        // creates new instances of updater threads in order to be restarted
         backgroundThread = new BackgroundThread(svBackground.getHolder(), this);
         boardThread = new BoardThread(svBoard.getHolder(), this);
+        pawnThread = new PawnThread(svPawn.getHolder(), this);
 
     }
 }

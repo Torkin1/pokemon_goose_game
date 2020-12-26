@@ -3,15 +3,21 @@ package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
 
-public class Cell {
+import it.walle.pokemongoosegame.entity.board.cell.Cell;
 
-    int cellImgX = 0, cellImgY = 0;
+public class GraphicCell {
 
+    private int cellImgX = 0, cellImgY = 0;
+    private int cellIndex;
+/*
     public Cell(Context context) {
         cellImgX = AppConstants.getInstance(context).CELL_MARGIN + AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH;
         cellImgY = AppConstants.getInstance(context).SCREEN_HEIGHT - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH - AppConstants.getInstance(context).CELL_MARGIN;
 
     }
+
+ */
+
     //setters and getters
 
     public int getCellImgX(){
@@ -20,7 +26,7 @@ public class Cell {
 
 
     public int getCellImgY(){
-        return cellImgX;
+        return cellImgY;
     }
 
     public void setCellImgX(int x){
@@ -30,5 +36,13 @@ public class Cell {
 
     public void setCellImgY(int y){
         this.cellImgY = y;
+    }
+
+    public int getCellIndex() {
+        return cellIndex;
+    }
+
+    public void setCellIndex(int cellIndex) {
+        this.cellIndex = cellIndex;
     }
 }

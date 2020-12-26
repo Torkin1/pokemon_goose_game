@@ -1,6 +1,7 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 
 import it.walle.pokemongoosegame.graphics.AppConstants;
 
@@ -8,16 +9,15 @@ public class PokePawn {
 
     //declaring the new pawn res
 
-    int pokePawnImageX = 0, pokePawnImageY = 0, pokePawnImgVelocity;
-    public static int maxFrame; //pawns total movemnts (if possible implemet or delete it)
+    private int pokePawnImageX = 0, pokePawnImageY = 0, pokePawnImgVelocity;
+    private Drawable sprite;
 
-    public PokePawn(Context context) {
+    public Drawable getSprite() {
+        return sprite;
+    }
 
-//        System.out.println("creato il pokepawn");
-        pokePawnImageX = (AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH) / 10;
-        pokePawnImageY = AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH - 120;
-        maxFrame = 3;
-        pokePawnImgVelocity = 0;
+    public void setSprite(Drawable sprite) {
+        this.sprite = sprite;
     }
 
     //getter method for getting the x-coordinated

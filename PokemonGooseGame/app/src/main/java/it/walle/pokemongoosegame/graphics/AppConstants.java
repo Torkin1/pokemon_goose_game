@@ -13,7 +13,7 @@ public class AppConstants {
 
     private static AppConstants ref = null;
 
-    public static AppConstants getInstance(Context context){
+    public synchronized static AppConstants getInstance(Context context){
         if (ref == null){
             ref = new AppConstants(context.getApplicationContext());
         }
@@ -29,8 +29,8 @@ public class AppConstants {
             SCREEN_HEIGHT,
             CELL_MARGIN = 15,
             LEFT_GAME_MENU_WIDTH,
-            CELLS_IN_A_SCREEN,
-            VELOCITY_WHILE_MOVING;
+            VELOCITY_WHILE_MOVING,
+            PAWN_JUMP_Y = 3;        // Used to calculate delta Y of pawn while moving up
 
 
     public static boolean isDrawable = true;
@@ -69,8 +69,7 @@ public class AppConstants {
 
         // Sets max number of cells in a screen
         SharedPreferences appSettings = context.getSharedPreferences(Bootstrap.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        CELLS_IN_A_SCREEN = appSettings.getInt(Bootstrap.CELLS_IN_A_SCREEN_SHARED_PREF_NAME, - 1);
-
+        // CELLS_IN_A_SCREEN = appSettings.getInt(Bootstrap.CELLS_IN_A_SCREEN_SHARED_PREF_NAME, - 1);
 
     }
 

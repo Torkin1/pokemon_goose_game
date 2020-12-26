@@ -24,7 +24,7 @@ public class CoreController {
     private final static String TAG = CoreController.class.getName();
 
     private static CoreController ref = null;
-    public static CoreController getReference(){
+    public synchronized static CoreController getReference(){
         if (ref == null){
             ref = new CoreController();
         }
@@ -86,6 +86,10 @@ public class CoreController {
         // Changes the current player to the next player and updates next player index
         this.game.setCurrentPlayerIndex(i);
         this.game.setNextPlayerIndex((old + 1) % this.game.getGamers().size());
+    }
+
+    public Player getPlayerByUsername(String username){
+        return game.getPlayerByUsername(username);
     }
 
     public void setNextPlayer(String username){

@@ -2,25 +2,26 @@ package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class PawnThread extends Thread {
     private static final String TAG = PawnThread.class.getSimpleName();
     final SurfaceHolder surfaceHolder;//ref to the surfaceHolder
-    boolean isRunning;//flag to detect if the Thread is running or not
+    private boolean isRunning;//flag to detect if the Thread is running or not
     Context context;
 
     public PawnThread(SurfaceHolder surfaceHolder, Context context) {
         //Passing a surfaceholder as param on the constructor
         this.surfaceHolder = surfaceHolder;
         this.context = context;
-        isRunning = true; //means that i started the thread!
     }//It will do an ovveride of the run method and the start will call it from GameView.
 
     @Override
     public void run() {
+
+        isRunning = true;
+        Log.d(TAG, "I've just have born");
 
         while (isRunning) {
 
@@ -29,8 +30,10 @@ public class PawnThread extends Thread {
             if (canvas != null) {
                 synchronized (surfaceHolder) {
                     try {
+
+                        // Updates pawns position if there are some changes
                         GameEngine.getInstance(context).getPawnSemaphore().acquire();
-                        GameEngine.getInstance(context).updateAndDrawPawn(canvas, context);
+                        GameEngine.getInstance(context).updateAndDrawPawns(canvas, context);
                     } catch (InterruptedException e) {
                         Log.e(TAG, e.getMessage(), e);
                     }
@@ -40,6 +43,8 @@ public class PawnThread extends Thread {
                 }
             }
         }
+        Log.d(TAG, "I'm dying lol");
+
     }
 
     //return whether the thread is running
