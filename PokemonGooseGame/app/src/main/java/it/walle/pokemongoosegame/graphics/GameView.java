@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.game.CoreController;
+import it.walle.pokemongoosegame.game.MoveBean;
 import it.walle.pokemongoosegame.game.ThrowDicesBean;
 
 public class GameView extends AppCompatActivity {
@@ -88,7 +89,20 @@ public class GameView extends AppCompatActivity {
         diceImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                rotateDice();
+
+                // Rolls dice
+                ThrowDicesBean throwDicesBean = new ThrowDicesBean();
+                throwDicesBean.setNumOfFaces(6);
+                throwDicesBean.setNumOfDices(1);
+                CoreController.getReference().throwDices(throwDicesBean);
+                int res = throwDicesBean.getExitNumbers().get(0);
+
+                // displays roll result
+                rotateDice(res);
+
+                // Moves pawn
+                // TODO: This is probably not the best place where to place the movement of the player, since in this way we are assuming that every time the dice is rolled the current player pawn must be moved
+                movePlayer(CoreController.getReference().getCurrentPlayerUsername(), res);
             }
         });
 
@@ -186,6 +200,38 @@ public class GameView extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onPause() {
+
+        // kills surface updater threads
+        if (backgroundThread.isRunning()) {
+            backgroundThread.setIsRunning(false);
+        }
+
+        if (boardThread.isRunning()){
+            boardThread.setIsRunning(false);
+            boardThread.interrupt();
+        }
+
+        if (pawnThread.isRunning()){
+            pawnThread.setIsRunning(false);
+            pawnThread.interrupt();
+        }
+
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // creates new instances of updater threads in order to be restarted
+        backgroundThread = new BackgroundThread(svBackground.getHolder(), this);
+        boardThread = new BoardThread(svBoard.getHolder(), this);
+        pawnThread = new PawnThread(svPawn.getHolder(), this);
+
+    }
+
     private void updateArrowVisibility(){
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
         // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
@@ -209,17 +255,14 @@ public class GameView extends AppCompatActivity {
     }
 
     private void scrollBoardPage(int pages){
+
+        // Updates current board page adding pages to it
         GameEngine.getInstance(this).setCurrentBoardPage(GameEngine.getInstance(this).getCurrentBoardPage() + pages);
         updateArrowVisibility();
     }
 
-    private void rotateDice() {
-        ThrowDicesBean throwDicesBean = new ThrowDicesBean();
-        throwDicesBean.setNumOfFaces(6);
-        throwDicesBean.setNumOfDices(1);
-        CoreController.getReference().throwDices(throwDicesBean);
+    private void rotateDice(int i) {
 
-        int i = throwDicesBean.getExitNumbers().get(0);
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
         diceImage.startAnimation(anim);
         dice_res.setText(String.format(d_res + "%d", i));
@@ -246,37 +289,29 @@ public class GameView extends AppCompatActivity {
         }
     }
 
+    private void movePlayer(String ownerUsername, int steps){
 
-    @Override
-    protected void onPause() {
+        int currentPosition = CoreController.getReference().getPlayerByUsername(ownerUsername).getCurrentPosition();
 
-        if (backgroundThread.isRunning()) {
-            backgroundThread.setIsRunning(false);
-        }
+        // Moves player out of starting cell
+        MoveBean moveFromCellBean = new MoveBean();
+        moveFromCellBean.setPlayerUsername(ownerUsername);
+        moveFromCellBean.setBoardIndex(currentPosition);
+        CoreController.getReference().moveFromCell(moveFromCellBean);
 
-        if (boardThread.isRunning()){
-            boardThread.setIsRunning(false);
-            boardThread.interrupt();
-        }
+        // Moves player in target cell
+        MoveBean moveInCellBean = new MoveBean();
+        moveInCellBean.setPlayerUsername(ownerUsername);
+        moveInCellBean.setBoardIndex(currentPosition + steps);
+        CoreController.getReference().moveInCell(moveInCellBean);
 
-        if (pawnThread.isRunning()){
-            pawnThread.setIsRunning(false);
-            pawnThread.interrupt();
-        }
+        // updates pawn positions
+        GameEngine.getInstance(this).getPawnSemaphore().release();
 
-        super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        Log.d("Burp", "on resume called");
-        super.onResume();
-
-        // creates new instances of updater threads in order to be restarted
-        backgroundThread = new BackgroundThread(svBackground.getHolder(), this);
-        boardThread = new BoardThread(svBoard.getHolder(), this);
-        pawnThread = new PawnThread(svPawn.getHolder(), this);
 
     }
+
+
+
 }
 

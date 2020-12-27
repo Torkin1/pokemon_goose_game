@@ -240,23 +240,32 @@ public class CoreController {
 
     public void moveInCell(MoveBean bean){
 
+        int newPos = bean.getBoardIndex();
+
+        // If target cell index exceeds index of last cell, player must go back
+        int lastCellIndex = game.getBoard().getCells().size() - 1;
+        int delta = bean.getBoardIndex() - lastCellIndex;
+        if (delta > 0){
+            newPos = lastCellIndex - delta;
+        }
+
         //Set the new position of the player
         Player player = this.game
                         .getPlayerByUsername(bean.getPlayerUsername());
 
-        player.setCurrentPosition(bean.getBoardIndex());
+        player.setCurrentPosition(newPos);
 
         Cell cell = this.game
                 .getBoard()
                 .getCells()
-                .get(bean.getBoardIndex());
+                .get(newPos);
 
         //Check if in the cell there are an effect or not. If there are, do entry effect
-        if(cell.getEntryEffect() == null){
+        if(cell.getEntryEffect() != null){
             InvocationContext invocationContext =
                     this.setInvocationContext(
                             bean.getPlayerUsername(),
-                            bean.getBoardIndex()
+                            newPos
                     );
 
             cell.getEntryEffect().doEffect(invocationContext);

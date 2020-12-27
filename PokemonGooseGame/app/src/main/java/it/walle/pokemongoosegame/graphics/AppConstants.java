@@ -69,7 +69,8 @@ public class AppConstants {
 
         // Sets max number of cells in a screen
         SharedPreferences appSettings = context.getSharedPreferences(Bootstrap.SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        // CELLS_IN_A_SCREEN = appSettings.getInt(Bootstrap.CELLS_IN_A_SCREEN_SHARED_PREF_NAME, - 1);
+
+        // Initializes pawn base position constants
 
     }
 
