@@ -4,16 +4,17 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 public class PawnThread extends Thread {
     private static final String TAG = PawnThread.class.getSimpleName();
-    final SurfaceHolder surfaceHolder;//ref to the surfaceHolder
+    final SurfaceView surfaceView;//ref to the surfaceHolder
     private boolean isRunning;//flag to detect if the Thread is running or not
     Context context;
 
-    public PawnThread(SurfaceHolder surfaceHolder, Context context) {
+    public PawnThread(SurfaceView surfaceView, Context context) {
         //Passing a surfaceholder as param on the constructor
-        this.surfaceHolder = surfaceHolder;
+        this.surfaceView = surfaceView;
         this.context = context;
     }//It will do an ovveride of the run method and the start will call it from GameView.
 
@@ -26,19 +27,19 @@ public class PawnThread extends Thread {
         while (isRunning) {
 
             //locking the canvas
-            Canvas canvas = surfaceHolder.lockCanvas();
+            Canvas canvas = surfaceView.getHolder().lockCanvas();
             if (canvas != null) {
-                synchronized (surfaceHolder) {
+                synchronized (surfaceView.getHolder()) {
                     try {
 
                         // Updates pawns position if there are some changes
-                        GameEngine.getInstance(context).getPawnSemaphore().acquire();
-                        GameEngine.getInstance(context).updateAndDrawPawns(canvas, context);
+                        GameEngine.getInstance(context, surfaceView).getPawnSemaphore().acquire();
+                        GameEngine.getInstance(context, surfaceView).updateAndDrawPawns(canvas, context);
                     } catch (InterruptedException e) {
                         Log.e(TAG, e.getMessage(), e);
                     }
                     //unlock canvas
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+                    surfaceView.getHolder().unlockCanvasAndPost(canvas);
 
                 }
             }

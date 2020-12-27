@@ -5,18 +5,19 @@ import android.graphics.Canvas;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
 public class BackgroundThread extends Thread {
     private static final String TAG = BackgroundThread.class.getSimpleName();
-    final SurfaceHolder surfaceHolder;//ref to the surfaceHolder
+    final SurfaceView surfaceView;//ref to the surfaceHolder
     private boolean isRunning = false;//flag to detect if the Thread is running or not
     long startTime, loopTime; //loop and start time duration
     long DELAY = 33; //delay in millisecs, etrween screen refresh
     Context context;
 
-    public BackgroundThread(SurfaceHolder surfaceHolder, Context context) {
+    public BackgroundThread(SurfaceView surfaceView, Context context) {
         //Passing a surfaceholder as param on the constructor
-        this.surfaceHolder = surfaceHolder;
+        this.surfaceView = surfaceView;
         this.context = context;
     }//It will do an ovveride of the run method and the start will call it from GameView.
 
@@ -40,15 +41,15 @@ public class BackgroundThread extends Thread {
             startTime = SystemClock.uptimeMillis();
             //locking the canvas
 
-            Canvas canvas = surfaceHolder.lockCanvas(null);
+            Canvas canvas = surfaceView.getHolder().lockCanvas(null);
             if (canvas != null) {
-                synchronized (surfaceHolder) {
+                synchronized (surfaceView.getHolder()) {
 
                     // Updates background
-                    GameEngine.getInstance(context).updateAndDrawBackgroundImage(canvas, context);
+                    GameEngine.getInstance(context, surfaceView).updateAndDrawBackgroundImage(canvas, context);
 
                     //unlock canvas
-                    surfaceHolder.unlockCanvasAndPost(canvas);
+                    surfaceView.getHolder().unlockCanvasAndPost(canvas);
 
                 }
             }

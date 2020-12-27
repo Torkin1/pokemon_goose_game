@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
+import android.view.SurfaceView;
 
 import com.android.volley.Response;
 
@@ -27,9 +28,9 @@ public class GameEngine {
     private final static String TAG = GameEngine.class.getSimpleName();
 
     private static GameEngine ref = null;
-    public synchronized static GameEngine getInstance(Context context){
+    public synchronized static GameEngine getInstance(Context context, SurfaceView svBoard){
         if (ref == null){
-            ref = new GameEngine(context);
+            ref = new GameEngine(context, svBoard);
         }
         return  ref;
     }
@@ -43,12 +44,9 @@ public class GameEngine {
             CELLS_IN_A_ROW,
             CELLS_IN_A_COL,
             WIDTH_MARGIN,
-            HEIGHT_MARGIN;
-
-    // Pawn screen constants
-    public final int
-        PAWN_BASE_X,
-        PAWN_BASE_Y;
+            HEIGHT_MARGIN,
+            BOARD_WIDTH,
+    BOARD_HEIGHT;
 
     Background backgroundImg;
     static int gameState;
@@ -67,14 +65,19 @@ public class GameEngine {
     private final Semaphore boardSemaphore, pawnSemaphore;
 
 
-    public GameEngine(Context context) {
+    public GameEngine(Context context, SurfaceView svBoard) {
         bitmapBank = new BitmapBank(context.getResources(), context);
         backgroundImg = new Background();//initialize bg
 
+        BOARD_HEIGHT = svBoard.getHeight();
+        BOARD_WIDTH = svBoard.getWidth();
+
         // initializes board screen constants
-        CELLS_IN_A_ROW = (AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH -
+        // SCREEN_WIDTH = canvas.getWidth();
+        // Log.d(TAG, "canvas width is " + SCREEN_WIDTH);
+        CELLS_IN_A_ROW = (BOARD_WIDTH -
                 AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellWidth();
-        CELLS_IN_A_COL = (AppConstants.getInstance(context).SCREEN_HEIGHT - AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellHeight();
+        CELLS_IN_A_COL = (BOARD_HEIGHT - AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellHeight();
         CELLS_IN_A_SCREEN = CELLS_IN_A_COL * CELLS_IN_A_ROW;
 
         // initializes displayed board cells
@@ -84,14 +87,10 @@ public class GameEngine {
         boardSemaphore = new Semaphore(0);
         pawnSemaphore = new Semaphore(0);
 
-        // Initializes pawn screen constants to bottom left corner of surface view
-        PAWN_BASE_X = AppConstants.getInstance(context).CELL_MARGIN;
-        PAWN_BASE_Y = AppConstants.getInstance(context).SCREEN_HEIGHT - bitmapBank.getCellWidth();
-
-        WIDTH_MARGIN = (AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH -
+        WIDTH_MARGIN = (BOARD_WIDTH -
                 CELLS_IN_A_ROW * (AppConstants.getInstance(context).CELL_MARGIN + bitmapBank.getCellWidth())) / 2;
 
-        HEIGHT_MARGIN = (AppConstants.getInstance(context).SCREEN_HEIGHT - CELLS_IN_A_COL * (AppConstants.getInstance(context).CELL_MARGIN +
+        HEIGHT_MARGIN = (BOARD_HEIGHT - CELLS_IN_A_COL * (AppConstants.getInstance(context).CELL_MARGIN +
                 bitmapBank.getCellHeight())) / 2;
 
 //TODO define a speed, tip: Use the cell dimension
@@ -259,7 +258,7 @@ public class GameEngine {
     }
 
     private int calculateYByRow(Context context, GraphicCell graphicCell, int row){
-        return AppConstants.getInstance(context).SCREEN_HEIGHT - (bitmapBank.getCellWidth() + graphicCell.getCellImgY()) -
+        return BOARD_HEIGHT - (bitmapBank.getCellWidth() + graphicCell.getCellImgY()) -
                 (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * row;
     }
 
@@ -338,7 +337,7 @@ public class GameEngine {
                             canvas.drawText(
                                     String.valueOf(cellIndex),
                                     page_number_cell_path_direction,
-                                    AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) - (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
+                                    BOARD_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) - (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
                                     paint
                             );
 

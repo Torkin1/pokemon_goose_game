@@ -131,7 +131,7 @@ public class GameView extends AppCompatActivity {
                 svBackground.getHolder().setSizeFromLayout();
                 // Do some drawing when surface is ready
 
-                backgroundThread = new BackgroundThread(svBackground.getHolder(), GameView.this);
+                backgroundThread = new BackgroundThread(svBackground, GameView.this);
                 backgroundThread.start();
 
             }
@@ -155,7 +155,7 @@ public class GameView extends AppCompatActivity {
             public void surfaceCreated(SurfaceHolder holder) {
                 svBoard.getHolder().setSizeFromLayout();
                 // Do some drawing when surface is ready
-                boardThread = new BoardThread(svBoard.getHolder(), GameView.this);
+                boardThread = new BoardThread(svBoard, GameView.this);
                 boardThread.start();
 
             }
@@ -181,7 +181,7 @@ public class GameView extends AppCompatActivity {
 
                 // Do some drawing when surface is ready
 
-               pawnThread = new PawnThread(svPawn.getHolder(), GameView.this);
+               pawnThread = new PawnThread(svPawn, GameView.this);
                pawnThread.start();
 
             }
@@ -226,16 +226,16 @@ public class GameView extends AppCompatActivity {
         super.onResume();
 
         // creates new instances of updater threads in order to be restarted
-        backgroundThread = new BackgroundThread(svBackground.getHolder(), this);
-        boardThread = new BoardThread(svBoard.getHolder(), this);
-        pawnThread = new PawnThread(svPawn.getHolder(), this);
+        backgroundThread = new BackgroundThread(svBackground, this);
+        boardThread = new BoardThread(svBoard, this);
+        pawnThread = new PawnThread(svPawn, this);
 
     }
 
     private void updateArrowVisibility(){
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
         // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
-        if (((GameEngine.getInstance(this).getCurrentBoardPage() + 1) * GameEngine.getInstance(this).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
+        if (((GameEngine.getInstance(this, svBoard).getCurrentBoardPage() + 1) * GameEngine.getInstance(this, svBoard).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
             up_page_arrow.setClickable(false);
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
         } else
@@ -245,7 +245,7 @@ public class GameView extends AppCompatActivity {
         }
 
         // If it's the first board page disables the arrow down button
-        if (GameEngine.getInstance(this).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()){
+        if (GameEngine.getInstance(this, svBoard).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()){
             down_page_arrow.setClickable(false);
             down_page_arrow.setImageResource(R.drawable.down_arrow_off);
         } else {
@@ -257,7 +257,7 @@ public class GameView extends AppCompatActivity {
     private void scrollBoardPage(int pages){
 
         // Updates current board page adding pages to it
-        GameEngine.getInstance(this).setCurrentBoardPage(GameEngine.getInstance(this).getCurrentBoardPage() + pages);
+        GameEngine.getInstance(this, svBoard).setCurrentBoardPage(GameEngine.getInstance(this, svBoard).getCurrentBoardPage() + pages);
         updateArrowVisibility();
     }
 
@@ -306,7 +306,7 @@ public class GameView extends AppCompatActivity {
         CoreController.getReference().moveInCell(moveInCellBean);
 
         // updates pawn positions
-        GameEngine.getInstance(this).getPawnSemaphore().release();
+        GameEngine.getInstance(this, svBoard).getPawnSemaphore().release();
 
 
     }
