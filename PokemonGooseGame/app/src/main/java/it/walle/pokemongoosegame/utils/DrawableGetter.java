@@ -45,4 +45,10 @@ public class DrawableGetter {
         String drawableBgName = DRAWABLE_BG_BASE_NAME + cellClass.getSimpleName().toLowerCase();
         return getDrawableId(drawableBgName);
     }
+
+    public int getDiceDrawableId(int face) throws DrawableNotFoundException {
+        final String DRAWABLE_DICE_BASE_NAME = "dice";
+        String diceDrawableName = DRAWABLE_DICE_BASE_NAME + face;
+        return getDrawableId(diceDrawableName);
+    }
 }
