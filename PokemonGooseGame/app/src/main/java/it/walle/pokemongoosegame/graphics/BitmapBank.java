@@ -127,22 +127,9 @@ public class BitmapBank {
         return Bitmap.createScaledBitmap(bitmap, AppConstants.getInstance(context).SCREEN_WIDTH, AppConstants.getInstance(context).SCREEN_HEIGHT, false);//chiamo il metodo nel costruttore
     }
 
-    private Bitmap scaleBoard(Bitmap board, Context context) {
-//        float widthHeigthRatio = getBoardWidth() / getBoardHeight();
 
-//        int boardScaledWidth = (int) widthHeigthRatio * AppConstants.SCREEN_HEIGHT;
-
-//        int boardScaledHeight = (int) widthHeigthRatio * AppConstants.SCREEN_WIDTH;
-//        return Bitmap.createScaledBitmap(board, boardScaledWidth, boardScaledHeight, false);
-
-
-        return Bitmap.createScaledBitmap(board, AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH * 2 + 20, AppConstants.getInstance(context).SCREEN_HEIGHT - 120, false);
-    }
 
     private Bitmap scalePawn(Bitmap pawn) {
-
-
-//        return Bitmap.createScaledBitmap(pawn, (AppConstants.SCREEN_WIDTH) / 10, (AppConstants.SCREEN_HEIGHT - 120) / 5, false);
         return Bitmap.createScaledBitmap(pawn, cell.getWidth(), cell.getHeight(), false);
     }
 
@@ -150,4 +137,7 @@ public class BitmapBank {
         return Bitmap.createScaledBitmap(cell, cell.getWidth() * 2, cell.getWidth() * 2, false);
     }
 
+    public Bitmap scaleTypeIcon(Bitmap typeIcon){
+        return Bitmap.createScaledBitmap(typeIcon, cell.getWidth()/5, cell.getHeight()/5, false);
+    }
 }

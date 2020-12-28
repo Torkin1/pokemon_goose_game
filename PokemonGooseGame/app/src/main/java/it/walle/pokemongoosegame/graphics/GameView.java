@@ -183,8 +183,8 @@ public class GameView extends AppCompatActivity {
 
                pawnThread = new PawnThread(svPawn, GameView.this);
                pawnThread.start();
-
             }
+
 
             @Override
             public void surfaceDestroyed(SurfaceHolder holder) {

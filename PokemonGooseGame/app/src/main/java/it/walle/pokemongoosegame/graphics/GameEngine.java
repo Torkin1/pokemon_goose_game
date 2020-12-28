@@ -10,6 +10,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.SurfaceView;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import com.android.volley.Response;
 
 import java.util.HashMap;
@@ -22,6 +24,8 @@ import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.PlayerNotInGameException;
+import it.walle.pokemongoosegame.utils.DrawableGetter;
+import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
 public class GameEngine {
 
@@ -294,6 +298,11 @@ public class GameEngine {
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
 
+                        //Initialzing the needed variable inside the cycle
+                        int typeDrawableId = 0;
+                        String id_name = board.getCells().get(cellIndex).getType();
+                        System.out.println("Before the try typeDrawableId is: " + typeDrawableId + " The name of the type is: " + id_name);
+
                         // Initializes cell with starting position values
                         GraphicCell graphicCell = new GraphicCell();
                         graphicCell.setCellImgX(WIDTH_MARGIN);
@@ -326,6 +335,7 @@ public class GameEngine {
                             graphicCell.setCellImgX(cell_path_direction);
                             graphicCell.setCellImgY(calculateYByRow(context, graphicCell, i));
 
+                            //TODO Chose the type of cell that has to be drawn (blue, yellow or normale)
                             // Draws cell
                             canvas.drawBitmap(
                                     bitmapBank.getCell(),
@@ -333,13 +343,45 @@ public class GameEngine {
                                     graphicCell.getCellImgY(),
                                     null);
 
+                            //Draws the description if needed
+                            //TODO Add the controls if is needed a title and to not go out of the cell
+                            canvas.drawText("Title", page_number_cell_path_direction,
+                                    AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) -
+                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i, paint);
+
                             // Draws cell number
-                            canvas.drawText(
-                                    String.valueOf(cellIndex),
-                                    page_number_cell_path_direction,
-                                    BOARD_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) - (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
-                                    paint
-                            );
+                            canvas.drawText(String.valueOf(cellIndex),
+                                    (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
+                                    AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 -
+                                            (bitmapBank.getCellWidth() - HEIGHT_MARGIN + AppConstants.getInstance(context).CELL_MARGIN) -
+                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
+                                    paint);
+
+                            //Draws type icon
+                            if (id_name != null) {
+
+                                try {
+                                    System.out.println("Nel Try per typeDrawableId = " + typeDrawableId);
+                                    typeDrawableId = DrawableGetter.getReference().getTypeDrawableId(id_name);
+                                    System.out.println("Nel Try dopo che e' typeDrawableId = " + typeDrawableId);
+
+                                } catch (DrawableNotFoundException e) {
+                                    Log.e(TAG, e.getMessage(), e);
+                                }
+
+                                Bitmap type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
+
+                                type_icon = bitmapBank.scaleTypeIcon(type_icon);
+                                System.out.println("Type_icon is: " + type_icon);
+
+                                canvas.drawBitmap(type_icon,
+                                            page_number_cell_path_direction,
+                                        AppConstants.getInstance(context).SCREEN_HEIGHT  - bitmapBank.getCellWidth()/4 -
+                                                AppConstants.getInstance(context).CELL_MARGIN - HEIGHT_MARGIN  -
+                                                (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
+                                        null);
+
+                            }
 
                             // Stores drawn cell in displayed cells matrix
                             displayedCells[i][colToOccupy] = graphicCell;

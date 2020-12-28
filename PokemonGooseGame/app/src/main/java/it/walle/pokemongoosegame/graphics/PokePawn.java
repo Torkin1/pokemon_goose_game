@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable;
 
 import it.walle.pokemongoosegame.graphics.AppConstants;
 
-public class PokePawn {
+public class  PokePawn {
 
     //declaring the new pawn res
 
