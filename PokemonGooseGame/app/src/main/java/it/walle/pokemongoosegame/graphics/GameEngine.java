@@ -2,6 +2,7 @@ package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -13,12 +14,14 @@ import android.view.SurfaceView;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.function.BiConsumer;
 
+import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.Board;
@@ -104,23 +107,8 @@ public class GameEngine {
         gameState = 0;//Game not started, so have to change it later
 
         // Creates a pawn for every player
-        DAOSprite daoSprite = new DAOSprite(context);
         for (Player p : CoreController.getReference().getPlayers()){
             PokePawn pawn = new PokePawn();
-
-            // When sprite is ready stores a reference to it in the pawn
-            // FIXME: sprite is not drawn on screen (disegna solo quel granchio di merda)
-            daoSprite
-                    .loadSprite(
-                                    p.getPokemon().getSprites().getFront_default(),
-                                    new Response.Listener<Bitmap>() {
-                                        @Override
-                                        public void onResponse(Bitmap response) {
-                                            pawn.setSprite(new BitmapDrawable(context.getResources(), response));
-                                        }
-                                    },
-                                    null
-                            );
 
             // puts prepared pawn alongside other ones
             pawns.put(p.getUsername(), pawn);
@@ -200,6 +188,8 @@ public class GameEngine {
         // Clears previously drawn board
         canvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
+        Semaphore spriteSemaphore = new Semaphore(0);
+
         // locks displayed cells matrix
         synchronized (displayedCells){
 
@@ -225,18 +215,64 @@ public class GameEngine {
                                     findOccupiedDisplayedCellBean.getCell().getCellImgY()
                             );
 
-                            // draws pawn
-                            canvas.drawBitmap(bitmapBank.getPawn(),
-                                    pokePawn.getX(),
-                                    pokePawn.getY(),
-                                    null);
+                            // When sprite is ready stores a reference to it in the pawn
+                            // FIXME: sprite is not drawn on screen (disegna solo quel granchio di merda)
+                            if (pokePawn.getSprite() == null){
+                                DAOSprite daoSprite = new DAOSprite(context);
+                                Player player = CoreController.getReference().getPlayerByUsername(playerUsername);
+                                daoSprite
+                                        .loadSprite(
+                                                player.getPokemon().getSprites().getFront_default(),
+                                                new Response.Listener<Bitmap>() {
+                                                    @Override
+                                                    public void onResponse(Bitmap response) {
+
+                                                        // sets pawn sprite with pokemon sprite and draws pawn
+                                                        pokePawn.setSprite(bitmapBank.scalePawn(response));
+                                                        canvas.drawBitmap(pokePawn.getSprite(),
+                                                                pokePawn.getX(),
+                                                                pokePawn.getY(),
+                                                                null);
+                                                        spriteSemaphore.release();
+                                                    }
+                                                },
+                                                new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.e(TAG, error.getMessage(), error);
+                                                        spriteSemaphore.release();
+                                                    }
+                                                }
+                                        );
+                            } else {
+
+                                // draws pawn
+                                canvas.drawBitmap(pokePawn.getSprite(),
+                                        pokePawn.getX(),
+                                        pokePawn.getY(),
+                                        null);
+                                spriteSemaphore.release();
+                            }
+
+                        } else {
+                            // pawns is not on screen, no needed to update, releases token
+                            spriteSemaphore.release();
                         }
+
+
 
                     } catch (PlayerNotInGameException e){
                         // Player not in players, no need to draw its pawn
                     }
                     }
             });
+            try{
+
+                // waits for listeners to download sprites if they were fired
+                spriteSemaphore.acquire(pawns.size());
+            } catch (InterruptedException e){
+                Log.e(TAG, e.getMessage(), e);
+            }
 
         }
 

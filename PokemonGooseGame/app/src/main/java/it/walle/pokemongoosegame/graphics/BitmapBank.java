@@ -129,7 +129,7 @@ public class BitmapBank {
 
 
 
-    private Bitmap scalePawn(Bitmap pawn) {
+    public Bitmap scalePawn(Bitmap pawn) {
         return Bitmap.createScaledBitmap(pawn, cell.getWidth(), cell.getHeight(), false);
     }
 

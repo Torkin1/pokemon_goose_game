@@ -1,6 +1,7 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
 import it.walle.pokemongoosegame.graphics.AppConstants;
@@ -10,13 +11,13 @@ public class  PokePawn {
     //declaring the new pawn res
 
     private int pokePawnImageX = 0, pokePawnImageY = 0, pokePawnImgVelocity;
-    private Drawable sprite;
+    private Bitmap sprite;
 
-    public Drawable getSprite() {
+    public Bitmap getSprite() {
         return sprite;
     }
 
-    public void setSprite(Drawable sprite) {
+    public void setSprite(Bitmap sprite) {
         this.sprite = sprite;
     }
 
