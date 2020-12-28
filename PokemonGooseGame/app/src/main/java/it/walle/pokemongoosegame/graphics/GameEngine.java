@@ -77,8 +77,6 @@ public class GameEngine {
         BOARD_WIDTH = svBoard.getWidth();
 
         // initializes board screen constants
-        // SCREEN_WIDTH = canvas.getWidth();
-        // Log.d(TAG, "canvas width is " + SCREEN_WIDTH);
         CELLS_IN_A_ROW = (BOARD_WIDTH -
                 AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellWidth();
         CELLS_IN_A_COL = (BOARD_HEIGHT - AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellHeight();
@@ -193,7 +191,6 @@ public class GameEngine {
 
     public void updateAndDrawPawns(Canvas canvas, Context context) {
         //Implement the feature where I check the pokeomn and position
-        //as dummy I'll use a constant, but the position and wichi scree should be passed as Parameter!
 
         // Updates position of every pawn
         BitmapBank bitmapBank = new BitmapBank(context.getResources(), context);
@@ -201,8 +198,8 @@ public class GameEngine {
         // Clears previously drawn board
         canvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
+        // locks displayed cells matrix
         synchronized (displayedCells){
-            // locks displayed cells matrix
 
             // Updates position of every pawn
             pawns.forEach(new BiConsumer<String, PokePawn>() {
@@ -211,34 +208,20 @@ public class GameEngine {
 
                     // Updates pawn position only if it's on current board screen
                     try {
-                        if (CoreController.getReference().getPlayerByUsername(playerUsername).getCurrentPosition() / CELLS_IN_A_SCREEN == currentBoardPage) {
 
-                            // gets Graphic cell position of corresponding board cell occupied by the player owning the pawn
-                            FindOccupiedDisplayedCellBean findOccupiedDisplayedCellBean = new FindOccupiedDisplayedCellBean();
-                            findOccupiedDisplayedCellBean.setPlayerUsername(playerUsername);
-                            Log.d(TAG, "before calling find cell ");
-                            findOccupiedDisplayedCell(findOccupiedDisplayedCellBean);
-                            Log.d(TAG, "cell in bean has index " + findOccupiedDisplayedCellBean.getCell().getCellIndex());
+                        // gets Graphic cell position of corresponding board cell occupied by the player owning the pawn
+                        FindOccupiedDisplayedCellBean findOccupiedDisplayedCellBean = new FindOccupiedDisplayedCellBean();
+                        findOccupiedDisplayedCellBean.setPlayerUsername(playerUsername);
+                        findOccupiedDisplayedCell(findOccupiedDisplayedCellBean);
 
+                        if (findOccupiedDisplayedCellBean.getCell() != null){
                             // Updates position of pawn
                             pokePawn.setX(
-                                /*calculateXByCol(
-                                        context,
-                                        findOccupiedDisplayedCellBean.getCell(),
-                                        findOccupiedDisplayedCellBean.getCol()
-                                )
-                                 */
                                     findOccupiedDisplayedCellBean.getCell().getCellImgX()
                             );
                             pokePawn.setY(
-                                /*calculateYByRow(
-                                        context,
-                                        findOccupiedDisplayedCellBean.getCell(),
-                                        findOccupiedDisplayedCellBean.getRow()
-                                )*/
                                     findOccupiedDisplayedCellBean.getCell().getCellImgY()
                             );
-                            Log.d(TAG, "pawn creation: used row " + findOccupiedDisplayedCellBean.getRow() + " , Y is " + pokePawn.getY());
 
                             // draws pawn
                             canvas.drawBitmap(bitmapBank.getPawn(),
@@ -246,6 +229,7 @@ public class GameEngine {
                                     pokePawn.getY(),
                                     null);
                         }
+
                     } catch (PlayerNotInGameException e){
                         // Player not in players, no need to draw its pawn
                     }
@@ -281,7 +265,7 @@ public class GameEngine {
 
             int cellIndex = currentBoardPage * CELLS_IN_A_SCREEN;
 
-
+            // locks displayed cells matrix
             synchronized (displayedCells){
                 int cols = displayedCells[0].length;
                 int rows = displayedCells.length;
@@ -298,7 +282,7 @@ public class GameEngine {
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
 
-                        // Checks if
+                        // Checks if there are more cells to be drawn
                         if (cellIndex < board.getCells().size()) {
 
                             // Sets cell color
@@ -309,11 +293,6 @@ public class GameEngine {
                                                     .get(cellIndex)
                                                     .getClass()
                                     );
-
-                            //Initialzing the needed variable inside the cycle
-                            int typeDrawableId = 0;
-                            String id_name = board.getCells().get(cellIndex).getType();
-                            System.out.println("Before the try typeDrawableId is: " + typeDrawableId + " The name of the type is: " + id_name);
 
                             // Initializes cell with starting position values
                             GraphicCell graphicCell = new GraphicCell();
@@ -336,7 +315,6 @@ public class GameEngine {
                             graphicCell.setCellImgX(cell_path_direction);
                             graphicCell.setCellImgY(calculateYByRow(context, graphicCell, i));
 
-                            //TODO Chose the type of cell that has to be drawn (blue, yellow or normale)
                             // Draws cell
                             canvas.drawBitmap(
                                     bitmapBank.getCell(),
@@ -358,29 +336,26 @@ public class GameEngine {
                                             (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
                                     paint);
 
-                            //Draws type icon
+                            //Draws type icon if it's available
+                            int typeDrawableId = 0;
+                            String id_name = board.getCells().get(cellIndex).getType();
                             if (id_name != null) {
 
                                 try {
-                                    System.out.println("Nel Try per typeDrawableId = " + typeDrawableId);
                                     typeDrawableId = DrawableGetter.getReference().getTypeDrawableId(id_name);
-                                    System.out.println("Nel Try dopo che e' typeDrawableId = " + typeDrawableId);
+                                    Bitmap type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
+                                    type_icon = bitmapBank.scaleTypeIcon(type_icon);
+                                    canvas.drawBitmap(type_icon,
+                                            page_number_cell_path_direction,
+                                            AppConstants.getInstance(context).SCREEN_HEIGHT  - bitmapBank.getCellWidth()/4 -
+                                                    AppConstants.getInstance(context).CELL_MARGIN - HEIGHT_MARGIN  -
+                                                    (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
+                                            null);
 
                                 } catch (DrawableNotFoundException e) {
                                     Log.e(TAG, e.getMessage(), e);
                                 }
 
-                                Bitmap type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
-
-                                type_icon = bitmapBank.scaleTypeIcon(type_icon);
-                                System.out.println("Type_icon is: " + type_icon);
-
-                                canvas.drawBitmap(type_icon,
-                                            page_number_cell_path_direction,
-                                        AppConstants.getInstance(context).SCREEN_HEIGHT  - bitmapBank.getCellWidth()/4 -
-                                                AppConstants.getInstance(context).CELL_MARGIN - HEIGHT_MARGIN  -
-                                                (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
-                                        null);
 
                             }
 

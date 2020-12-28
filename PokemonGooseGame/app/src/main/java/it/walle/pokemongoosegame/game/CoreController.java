@@ -41,11 +41,11 @@ public class CoreController {
         this.game = game;
     }
 
-    public Board getBoard(){
+    public synchronized Board getBoard(){
         return this.game.getBoard();
     }
 
-    public List<Player> getPlayers(){
+    public synchronized List<Player> getPlayers(){
         return this.game.getGamers();
     }
 
@@ -88,7 +88,7 @@ public class CoreController {
         this.game.setNextPlayerIndex((old + 1) % this.game.getGamers().size());
     }
 
-    public Player getPlayerByUsername(String username){
+    public synchronized Player getPlayerByUsername(String username){
         return game.getPlayerByUsername(username);
     }
 
