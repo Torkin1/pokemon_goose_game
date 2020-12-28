@@ -298,16 +298,7 @@ public class GameEngine {
                 for (int i = 0; i < rows; i++) {
                     for (int j = 0; j < cols; j++) {
 
-                        //Initialzing the needed variable inside the cycle
-                        int typeDrawableId = 0;
-                        String id_name = board.getCells().get(cellIndex).getType();
-                        System.out.println("Before the try typeDrawableId is: " + typeDrawableId + " The name of the type is: " + id_name);
-
-                        // Initializes cell with starting position values
-                        GraphicCell graphicCell = new GraphicCell();
-                        graphicCell.setCellImgX(WIDTH_MARGIN);
-                        graphicCell.setCellImgY(HEIGHT_MARGIN);
-
+                        // Checks if
                         if (cellIndex < board.getCells().size()) {
 
                             // Sets cell color
@@ -318,6 +309,16 @@ public class GameEngine {
                                                     .get(cellIndex)
                                                     .getClass()
                                     );
+
+                            //Initialzing the needed variable inside the cycle
+                            int typeDrawableId = 0;
+                            String id_name = board.getCells().get(cellIndex).getType();
+                            System.out.println("Before the try typeDrawableId is: " + typeDrawableId + " The name of the type is: " + id_name);
+
+                            // Initializes cell with starting position values
+                            GraphicCell graphicCell = new GraphicCell();
+                            graphicCell.setCellImgX(WIDTH_MARGIN);
+                            graphicCell.setCellImgY(HEIGHT_MARGIN);
 
                             // gives the board a "snake" orientation
                             int colToOccupy;
