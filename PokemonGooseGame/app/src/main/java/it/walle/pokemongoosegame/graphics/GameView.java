@@ -118,7 +118,8 @@ public class GameView extends AppCompatActivity {
         down_page_arrow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                scrollBoardPage(- 1);
+                if (GameEngine.getInstance(getApplicationContext(), svBoard).getCurrentBoardPage() != 0)
+                    scrollBoardPage(-1);
             }
         });
 
@@ -181,8 +182,8 @@ public class GameView extends AppCompatActivity {
 
                 // Do some drawing when surface is ready
 
-               pawnThread = new PawnThread(svPawn, GameView.this);
-               pawnThread.start();
+                pawnThread = new PawnThread(svPawn, GameView.this);
+                pawnThread.start();
             }
 
 
@@ -208,12 +209,12 @@ public class GameView extends AppCompatActivity {
             backgroundThread.setIsRunning(false);
         }
 
-        if (boardThread.isRunning()){
+        if (boardThread.isRunning()) {
             boardThread.setIsRunning(false);
             boardThread.interrupt();
         }
 
-        if (pawnThread.isRunning()){
+        if (pawnThread.isRunning()) {
             pawnThread.setIsRunning(false);
             pawnThread.interrupt();
         }
@@ -232,20 +233,19 @@ public class GameView extends AppCompatActivity {
 
     }
 
-    private void updateArrowVisibility(){
+    private void updateArrowVisibility() {
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
         // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
-        if (((GameEngine.getInstance(this, svBoard).getCurrentBoardPage() + 1) * GameEngine.getInstance(this, svBoard).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()){
+        if (((GameEngine.getInstance(this, svBoard).getCurrentBoardPage() + 1) * GameEngine.getInstance(this, svBoard).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()) {
             up_page_arrow.setClickable(false);
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
-        } else
-        {
+        } else {
             up_page_arrow.setClickable(true);
             up_page_arrow.setImageResource(R.drawable.up_arrow);
         }
 
         // If it's the first board page disables the arrow down button
-        if (GameEngine.getInstance(this, svBoard).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()){
+        if (GameEngine.getInstance(this, svBoard).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()) {
             down_page_arrow.setClickable(false);
             down_page_arrow.setImageResource(R.drawable.down_arrow_off);
         } else {
@@ -254,7 +254,7 @@ public class GameView extends AppCompatActivity {
         }
     }
 
-    private void scrollBoardPage(int pages){
+    private void scrollBoardPage(int pages) {
 
         // Updates current board page adding pages to it
         GameEngine.getInstance(this, svBoard).setCurrentBoardPage(GameEngine.getInstance(this, svBoard).getCurrentBoardPage() + pages);
@@ -289,7 +289,7 @@ public class GameView extends AppCompatActivity {
         }
     }
 
-    private void movePlayer(String ownerUsername, int steps){
+    private void movePlayer(String ownerUsername, int steps) {
 
         int currentPosition = CoreController.getReference().getPlayerByUsername(ownerUsername).getCurrentPosition();
 
@@ -310,7 +310,6 @@ public class GameView extends AppCompatActivity {
 
 
     }
-
 
 
 }
