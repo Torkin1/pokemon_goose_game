@@ -22,6 +22,8 @@ import java.util.function.BiConsumer;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.Board;
+import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
+import it.walle.pokemongoosegame.entity.board.cell.Cell;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.PlayerNotInGameException;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
@@ -285,14 +287,10 @@ public class GameEngine {
                         // Checks if there are more cells to be drawn
                         if (cellIndex < board.getCells().size()) {
 
+                            Cell boardCell = board.getCells().get(cellIndex);
+
                             // Sets cell color
-                            bitmapBank
-                                    .setCellRes(
-                                            board
-                                                    .getCells()
-                                                    .get(cellIndex)
-                                                    .getClass()
-                                    );
+                            bitmapBank.setCellRes(boardCell.getClass());
 
                             // Initializes cell with starting position values
                             GraphicCell graphicCell = new GraphicCell();
@@ -322,13 +320,16 @@ public class GameEngine {
                                     graphicCell.getCellImgY(),
                                     null);
 
-                            //Draws the description if needed
-                            //TODO Add the controls if is needed a title and to not go out of the cell
-                            canvas.drawText("Title", page_number_cell_path_direction,
-                                    AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) -
-                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i, paint);
+                            //Draws the title if the cell it's a kind of BlueCell
+                            if (boardCell instanceof BlueCell){
+                                BlueCell boardBlueCell = (BlueCell) boardCell;
+                                canvas.drawText(boardBlueCell.getTitle(), page_number_cell_path_direction,
+                                        AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) -
+                                                (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i, paint);
+                            }
 
-                            // Draws cell number
+
+                            // Draws cell board index
                             canvas.drawText(String.valueOf(cellIndex),
                                     (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
                                     AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 -
@@ -336,7 +337,7 @@ public class GameEngine {
                                             (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
                                     paint);
 
-                            //Draws type icon if it's available
+                            // Draws type icon, if it's available
                             int typeDrawableId = 0;
                             String id_name = board.getCells().get(cellIndex).getType();
                             if (id_name != null) {
