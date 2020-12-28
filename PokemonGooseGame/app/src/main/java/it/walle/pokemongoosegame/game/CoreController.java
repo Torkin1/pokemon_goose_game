@@ -65,27 +65,12 @@ public class CoreController {
         this.game.setPlate(val);
     }
 
-    public void nextTurn(NextTurnBean bean){
-
-        // Initialize structures to count how may turns a player spent idle
-        for (Player p : this.game.getGamers()){
-           bean.getWhoWaited().put(p.getUsername(), 0);
-       }
-
-        // Saves current player index for later use
-        int old = this.game.getCurrentPlayerIndex();
-
-        // Updates next player index to the following player in the list with no idle turns, writing how many turns a player spent idle in the bean
-        Player p;
-        int i;
-        for (i = this.game.getNextPlayerIndex(); (p = this.game.getGamers().get(i)).getNumOfIdleTurns() != 0; i = (i + 1) % this.game.getGamers().size()) {
-            p.setIdleTurns(p.getNumOfIdleTurns() - 1);
-            bean.getWhoWaited().replace(p.getUsername(), bean.getWhoWaited().get(p.getUsername()) + 1);
-        }
+    public void nextTurn(){
 
         // Changes the current player to the next player and updates next player index
-        this.game.setCurrentPlayerIndex(i);
-        this.game.setNextPlayerIndex((old + 1) % this.game.getGamers().size());
+        int newPlayerIndex = game.getNextPlayerIndex();
+        this.game.setCurrentPlayerIndex(newPlayerIndex);
+        this.game.setNextPlayerIndex((newPlayerIndex + 1) % this.game.getGamers().size());
     }
 
     public synchronized Player getPlayerByUsername(String username){
@@ -113,6 +98,18 @@ public class CoreController {
 
         int score = this.calculateScore(winner);
         bean.setScore(score);
+    }
+
+    public void skipTurn(SkipTurnBean bean){
+
+        // If player has turns to skip, make the player skip the turn and decrements player number of idle turns
+        Player player = game.getPlayerByUsername(bean.getPlayerUsername());
+        if (player.getNumOfIdleTurns() > 0){
+            player.setIdleTurns(player.getNumOfIdleTurns() - 1);
+            bean.setHasSkipped(true);
+        } else {
+            bean.setHasSkipped(false);
+        }
     }
 
     private int calculateScore(Player player){
@@ -171,6 +168,8 @@ public class CoreController {
     }
 
     public void throwDices(ThrowDicesBean bean){
+
+        // Generates a number of casual values using params specified in bean
         ArrayList<Integer> exitNumbers = new ArrayList<>();
         for(int i = 0; i < bean.getNumOfDices(); i++){
             exitNumbers.add(i, (int) (Math.random() * bean.getNumOfFaces() + 1));

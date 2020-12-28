@@ -8,11 +8,11 @@ import it.walle.pokemongoosegame.game.PlayerNotInGameException;
 
 public class Game{
 
-    private List<Player> gamers = new ArrayList<>();                    // All players in the game
+    private final List<Player> gamers = new ArrayList<>();              // All players in the game
     private Board board;                                                // Board used in the game
-    private Integer plate = 0;                                              // The plate of the game
-    private int currentPlayerIndex;                                     // Current player index
-    private int nextPlayerIndex;                                        // Next Player index
+    private Integer plate = 0;                                          // The plate of the game
+    private int currentPlayerIndex = 0;                                 // Current player index
+    private int nextPlayerIndex = currentPlayerIndex + 1;               // Next Player index
     private final List<Player> winners = new ArrayList<>();             // If a player wins the game is added to this list. Only cool guys allowed
     private final List<Player> losers = new ArrayList<>();              // If a player lose the game is added to this list. Only bad players allowed
 
