@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 import android.view.SurfaceView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.android.volley.Response;
@@ -27,6 +28,7 @@ import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.PlayerNotInGameException;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
@@ -37,11 +39,12 @@ public class GameEngine {
     private final static String TAG = GameEngine.class.getSimpleName();
 
     private static GameEngine ref = null;
-    public synchronized static GameEngine getInstance(Context context, SurfaceView svBoard){
-        if (ref == null){
+
+    public synchronized static GameEngine getInstance(Context context, SurfaceView svBoard) {
+        if (ref == null) {
             ref = new GameEngine(context, svBoard);
         }
-        return  ref;
+        return ref;
     }
 
     private int currentBoardPage = 0;    // Current drawn board page
@@ -55,13 +58,15 @@ public class GameEngine {
             WIDTH_MARGIN,
             HEIGHT_MARGIN,
             BOARD_WIDTH,
-    BOARD_HEIGHT;
+            BOARD_HEIGHT,
+            MAX_HEALTH_POKEMON = 100;
 
     Background backgroundImg;
     static int gameState;
     static int xspeed, yspeed;
     private int xspeedtemp;
     BitmapBank bitmapBank;
+    private Pokemon pokemon;
 
     // Pawns used to track players board position
     private final Map<String, PokePawn> pawns = new HashMap<>();
@@ -77,6 +82,8 @@ public class GameEngine {
     public GameEngine(Context context, SurfaceView svBoard) {
         bitmapBank = new BitmapBank(context.getResources(), context);
         backgroundImg = new Background();//initialize bg
+
+        pokemon = new Pokemon();
 
         BOARD_HEIGHT = svBoard.getHeight();
         BOARD_WIDTH = svBoard.getWidth();
@@ -107,7 +114,7 @@ public class GameEngine {
         gameState = 0;//Game not started, so have to change it later
 
         // Creates a pawn for every player
-        for (Player p : CoreController.getReference().getPlayers()){
+        for (Player p : CoreController.getReference().getPlayers()) {
             PokePawn pawn = new PokePawn();
 
             // puts prepared pawn alongside other ones
@@ -159,24 +166,24 @@ public class GameEngine {
         }
     }
 
-    private void findOccupiedDisplayedCell(FindOccupiedDisplayedCellBean bean){
+    private void findOccupiedDisplayedCell(FindOccupiedDisplayedCellBean bean) {
 
-            // Finds displayed cell currently occupied by the player with its board screen coordinates
-            int playerPosition = CoreController.getReference().getPlayerByUsername(bean.getPlayerUsername()).getCurrentPosition();
-            GraphicCell currentCell;
-            boolean found = false;
-            for (int r = 0; r < displayedCells.length && !found; r ++){
-                for (int c = 0; c < displayedCells[0].length; c ++){
-                    currentCell = displayedCells[r][c];
-                    if (currentCell != null && currentCell.getCellIndex() == playerPosition){
-                        bean.setCell(currentCell);
-                        bean.setCol(c);
-                        bean.setRow(r);
-                        found = true;
-                        break;
-                    }
+        // Finds displayed cell currently occupied by the player with its board screen coordinates
+        int playerPosition = CoreController.getReference().getPlayerByUsername(bean.getPlayerUsername()).getCurrentPosition();
+        GraphicCell currentCell;
+        boolean found = false;
+        for (int r = 0; r < displayedCells.length && !found; r++) {
+            for (int c = 0; c < displayedCells[0].length; c++) {
+                currentCell = displayedCells[r][c];
+                if (currentCell != null && currentCell.getCellIndex() == playerPosition) {
+                    bean.setCell(currentCell);
+                    bean.setCol(c);
+                    bean.setRow(r);
+                    found = true;
+                    break;
                 }
             }
+        }
     }
 
     public void updateAndDrawPawns(Canvas canvas, Context context) {
@@ -188,10 +195,29 @@ public class GameEngine {
         // Clears previously drawn board
         canvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
+        //Initializing the health bar under the pokemon
+        int hbar_width, hbar_height = 20, margin = 2;
+        Paint borderPaint, healthPaint;
+
+        //Giving to the border and hp bg defined colors
+        borderPaint = new Paint();
+        healthPaint = new Paint();
+
+        int borderColor = ContextCompat.getColor(context, R.color.healthBarBorder);
+        int healthColor = ContextCompat.getColor(context, R.color.healthBarHealth);
+
+        borderPaint.setColor(borderColor);
+        healthPaint.setColor(healthColor);
+
+
+        //defin the sprite semaphore
         Semaphore spriteSemaphore = new Semaphore(0);
 
         // locks displayed cells matrix
-        synchronized (displayedCells){
+        synchronized (displayedCells) {
+
+            //hBar variables
+            hbar_width = bitmapBank.getCellWidth();
 
             // Updates position of every pawn
             pawns.forEach(new BiConsumer<String, PokePawn>() {
@@ -206,7 +232,7 @@ public class GameEngine {
                         findOccupiedDisplayedCellBean.setPlayerUsername(playerUsername);
                         findOccupiedDisplayedCell(findOccupiedDisplayedCellBean);
 
-                        if (findOccupiedDisplayedCellBean.getCell() != null){
+                        if (findOccupiedDisplayedCellBean.getCell() != null) {
                             // Updates position of pawn
                             pokePawn.setX(
                                     findOccupiedDisplayedCellBean.getCell().getCellImgX()
@@ -217,7 +243,7 @@ public class GameEngine {
 
                             // When sprite is ready stores a reference to it in the pawn
                             // FIXME: sprite is not drawn on screen (disegna solo quel granchio di merda)
-                            if (pokePawn.getSprite() == null){
+                            if (pokePawn.getSprite() == null) {
                                 DAOSprite daoSprite = new DAOSprite(context);
                                 Player player = CoreController.getReference().getPlayerByUsername(playerUsername);
                                 daoSprite
@@ -251,6 +277,46 @@ public class GameEngine {
                                         pokePawn.getX(),
                                         pokePawn.getY(),
                                         null);
+
+
+                                //Distance, position and hp percentage variables
+                                float x = (float) pokePawn.getX();
+                                float y = (float) pokePawn.getY();
+                                float distanceToPlayer = 30;
+                                Log.d(TAG, "The currentHp is " + pokemon.getCurrentHp());
+
+                                //TODO MAX_HEALTH_POKEMON has to be worked differently probably, the setCurrent hp should be initiliazide as max hp, not 0
+                                //So its possible end the game when current hp = 0.
+                                //TODO Implement a mechanism and logic to make the pokemon lose hp, not like now any time they move.
+                                if (pokemon.getCurrentHp() <= 0 || pokemon.getCurrentHp() > 100)
+                                    pokemon.setCurrentHp(MAX_HEALTH_POKEMON);
+                                if (pokePawn.getX() != 0)
+                                    pokemon.setCurrentHp(pokemon.getCurrentHp() - 10);
+
+                                Log.d(TAG, "The currentHp after the increase is " + pokemon.getCurrentHp());
+                                float healthPointPercentage = (float) pokemon.getCurrentHp() / MAX_HEALTH_POKEMON;
+
+                                //draw Border
+                                float borderLeft, borderTop, borderRight, borderBottom;
+                                borderLeft = x - (float)hbar_width / 2;
+                                borderRight = x + (float)hbar_width / 2;
+                                borderBottom = y + distanceToPlayer;
+                                borderTop = borderBottom - hbar_height;
+
+                                canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2), borderTop, borderRight + (float)bitmapBank.getCellHeight() / 2, borderBottom, borderPaint);
+
+                                // Draw health
+                                float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
+                                healthWidth = hbar_width - 4 * margin;
+                                healthHeight = hbar_height - 4 * margin;
+                                healthLeft = borderLeft + 2 * margin;
+                                healthRight = healthLeft + healthWidth * healthPointPercentage;
+                                healthBottom = borderBottom - 2 * margin;
+                                healthTop = healthBottom - healthHeight;
+
+                                canvas.drawRect(healthLeft + (float)bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float)bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
+
+
                                 spriteSemaphore.release();
                             }
 
@@ -260,17 +326,16 @@ public class GameEngine {
                         }
 
 
-
-                    } catch (PlayerNotInGameException e){
+                    } catch (PlayerNotInGameException e) {
                         // Player not in players, no need to draw its pawn
                     }
-                    }
+                }
             });
-            try{
+            try {
 
                 // waits for listeners to download sprites if they were fired
                 spriteSemaphore.acquire(pawns.size());
-            } catch (InterruptedException e){
+            } catch (InterruptedException e) {
                 Log.e(TAG, e.getMessage(), e);
             }
 
@@ -278,12 +343,12 @@ public class GameEngine {
 
     }
 
-    private int calculateXByCol(Context context, GraphicCell graphicCell, int colToOccupy){
+    private int calculateXByCol(Context context, GraphicCell graphicCell, int colToOccupy) {
 
         return graphicCell.getCellImgX() + (AppConstants.getInstance(context).CELL_MARGIN + bitmapBank.getCellWidth()) * colToOccupy;
     }
 
-    private int calculateYByRow(Context context, GraphicCell graphicCell, int row){
+    private int calculateYByRow(Context context, GraphicCell graphicCell, int row) {
         return BOARD_HEIGHT - (bitmapBank.getCellWidth() + graphicCell.getCellImgY()) -
                 (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * row;
     }
@@ -291,135 +356,140 @@ public class GameEngine {
     public void updateAndDrawBoard(Canvas canvas, Context context) {
 
 
-            Paint paint = new Paint();
-            paint.setColor(Color.WHITE);
-            paint.setStyle(Paint.Style.FILL);
+        Paint paint = new Paint();
+        paint.setColor(Color.WHITE);
+        paint.setStyle(Paint.Style.FILL);
 
-            paint.setColor(Color.BLACK);
-            paint.setTextSize(30);
-            int cell_path_direction, page_number_cell_path_direction;
+        paint.setColor(Color.BLACK);
+        paint.setTextSize(30);
+        int cell_path_direction, page_number_cell_path_direction;
 
-            Board board = CoreController.getReference().getBoard();
+        Board board = CoreController.getReference().getBoard();
 
-            int cellIndex = currentBoardPage * CELLS_IN_A_SCREEN;
+        int cellIndex = currentBoardPage * CELLS_IN_A_SCREEN;
 
-            // locks displayed cells matrix
-            synchronized (displayedCells){
-                int cols = displayedCells[0].length;
-                int rows = displayedCells.length;
+        // locks displayed cells matrix
+        synchronized (displayedCells) {
+            int cols = displayedCells[0].length;
+            int rows = displayedCells.length;
 
-                // clears state of displayed cells matrix
-                for (int r = 0; r < rows; r ++){
-                    displayedCells[r] = new GraphicCell[cols];
-                }
+            // clears state of displayed cells matrix
+            for (int r = 0; r < rows; r++) {
+                displayedCells[r] = new GraphicCell[cols];
+            }
 
-                // Clears previously drawn board
-                canvas.drawColor(0, PorterDuff.Mode.CLEAR);
+            // Clears previously drawn board
+            canvas.drawColor(0, PorterDuff.Mode.CLEAR);
 
-                // Draws cells of current board page
-                for (int i = 0; i < rows; i++) {
-                    for (int j = 0; j < cols; j++) {
+            // Draws cells of current board page
+            for (int i = 0; i < rows; i++) {
+                for (int j = 0; j < cols; j++) {
 
-                        // Checks if there are more cells to be drawn
-                        if (cellIndex < board.getCells().size()) {
+                    // Checks if there are more cells to be drawn
+                    if (cellIndex < board.getCells().size()) {
 
-                            Cell boardCell = board.getCells().get(cellIndex);
+                        Cell boardCell = board.getCells().get(cellIndex);
 
-                            // Sets cell color
-                            bitmapBank.setCellRes(boardCell.getClass());
+                        // Sets cell color
+                        bitmapBank.setCellRes(boardCell.getClass());
 
-                            // Initializes cell with starting position values
-                            GraphicCell graphicCell = new GraphicCell();
-                            graphicCell.setCellImgX(WIDTH_MARGIN);
-                            graphicCell.setCellImgY(HEIGHT_MARGIN);
+                        // Initializes cell with starting position values
+                        GraphicCell graphicCell = new GraphicCell();
+                        graphicCell.setCellImgX(WIDTH_MARGIN);
+                        graphicCell.setCellImgY(HEIGHT_MARGIN);
 
-                            // gives the board a "snake" orientation
-                            int colToOccupy;
-                            if (i % 2 == 0) {
-                                colToOccupy = j;
-                            } else {
-                                colToOccupy = cols - 1 - j;
+                        // gives the board a "snake" orientation
+                        int colToOccupy;
+                        if (i % 2 == 0) {
+                            colToOccupy = j;
+                        } else {
+                            colToOccupy = cols - 1 - j;
+                        }
+                        cell_path_direction = calculateXByCol(context, graphicCell, colToOccupy);
+                        page_number_cell_path_direction = graphicCell.getCellImgX() + AppConstants.getInstance(context).CELL_MARGIN * 2 + (AppConstants.getInstance(context).CELL_MARGIN +
+                                bitmapBank.getCellWidth()) * colToOccupy;
+
+                        // Sets graphic cell fields with newly calculated values
+                        graphicCell.setCellIndex(cellIndex);
+                        graphicCell.setCellImgX(cell_path_direction);
+                        graphicCell.setCellImgY(calculateYByRow(context, graphicCell, i));
+
+                        // Draws cell
+                        canvas.drawBitmap(
+                                bitmapBank.getCell(),
+                                graphicCell.getCellImgX(),
+                                graphicCell.getCellImgY(),
+                                null);
+
+                        //Draws the title if the cell it's a kind of BlueCell
+                        if (boardCell instanceof BlueCell) {
+                            BlueCell boardBlueCell = (BlueCell) boardCell;
+                            canvas.drawText(boardBlueCell.getTitle(), page_number_cell_path_direction,
+                                    AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) -
+                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i, paint);
+                        }
+
+
+                        // Draws cell board index
+                        canvas.drawText(String.valueOf(cellIndex),
+                                (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
+                                AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 -
+                                        (bitmapBank.getCellWidth() - HEIGHT_MARGIN + AppConstants.getInstance(context).CELL_MARGIN) -
+                                        (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
+                                paint);
+
+                        // Draws type icon, if it's available
+                        int typeDrawableId = 0;
+                        String id_name = board.getCells().get(cellIndex).getType();
+                        if (id_name != null) {
+
+                            try {
+                                System.out.println("Nel Try per typeDrawableId = " + typeDrawableId);
+                                typeDrawableId = DrawableGetter.getReference().getTypeDrawableId(id_name);
+                                System.out.println("Nel Try dopo che e' typeDrawableId = " + typeDrawableId);
+
+                            } catch (DrawableNotFoundException e) {
+                                Log.e(TAG, e.getMessage(), e);
                             }
-                            cell_path_direction = calculateXByCol(context, graphicCell, colToOccupy);
-                            page_number_cell_path_direction = graphicCell.getCellImgX() + AppConstants.getInstance(context).CELL_MARGIN * 2 + (AppConstants.getInstance(context).CELL_MARGIN +
-                                    bitmapBank.getCellWidth()) * colToOccupy;
 
-                            // Sets graphic cell fields with newly calculated values
-                            graphicCell.setCellIndex(cellIndex);
-                            graphicCell.setCellImgX(cell_path_direction);
-                            graphicCell.setCellImgY(calculateYByRow(context, graphicCell, i));
+                            Bitmap type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
 
-                            // Draws cell
-                            canvas.drawBitmap(
-                                    bitmapBank.getCell(),
-                                    graphicCell.getCellImgX(),
-                                    graphicCell.getCellImgY(),
+                            type_icon = bitmapBank.scaleTypeIcon(type_icon);
+                            System.out.println("Type_icon is: " + type_icon);
+
+                            canvas.drawBitmap(type_icon,
+                                    page_number_cell_path_direction,
+                                    AppConstants.getInstance(context).SCREEN_HEIGHT -
+                                            (bitmapBank.getCellWidth() - HEIGHT_MARGIN) -
+                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
                                     null);
 
-                            //Draws the title if the cell it's a kind of BlueCell
-                            if (boardCell instanceof BlueCell){
-                                BlueCell boardBlueCell = (BlueCell) boardCell;
-                                canvas.drawText(boardBlueCell.getTitle(), page_number_cell_path_direction,
-                                        AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) -
-                                                (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i, paint);
-                            }
-
-
-                            // Draws cell board index
-                            canvas.drawText(String.valueOf(cellIndex),
-                                    (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
-                                    AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 -
-                                            (bitmapBank.getCellWidth() - HEIGHT_MARGIN + AppConstants.getInstance(context).CELL_MARGIN) -
-                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
-                                    paint);
-
-                            // Draws type icon, if it's available
-                            int typeDrawableId = 0;
-                            String id_name = board.getCells().get(cellIndex).getType();
-                            if (id_name != null) {
-
-                                try {
-                                    typeDrawableId = DrawableGetter.getReference().getTypeDrawableId(id_name);
-                                    Bitmap type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
-                                    type_icon = bitmapBank.scaleTypeIcon(type_icon);
-                                    canvas.drawBitmap(type_icon,
-                                            page_number_cell_path_direction,
-                                            AppConstants.getInstance(context).SCREEN_HEIGHT  - bitmapBank.getCellWidth()/4 -
-                                                    AppConstants.getInstance(context).CELL_MARGIN - HEIGHT_MARGIN  -
-                                                    (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
-                                            null);
-
-                                } catch (DrawableNotFoundException e) {
-                                    Log.e(TAG, e.getMessage(), e);
-                                }
-
-
-                            }
-
-                            // Stores drawn cell in displayed cells matrix
-                            displayedCells[i][colToOccupy] = graphicCell;
-
-                            cellIndex++;
-
-                        } else {
-
-                            // There are no more cells to be drawn, cycle must end
-                            j = cols;
-                            i = rows;
                         }
+
+                        // Stores drawn cell in displayed cells matrix
+                        displayedCells[i][colToOccupy] = graphicCell;
+
+                        cellIndex++;
+
+                    } else {
+
+                        // There are no more cells to be drawn, cycle must end
+                        j = cols;
+                        i = rows;
                     }
-
                 }
 
-
-                if (!AppConstants.isDrawable) {
-                    System.out.println("è tutto falso dice: " + AppConstants.isDrawable);
-                    AppConstants.DONE_CELLS = cellIndex;
-                    AppConstants.isDrawable = !AppConstants.isDrawable;
-
-
-                }
             }
+
+
+            if (!AppConstants.isDrawable) {
+                System.out.println("è tutto falso dice: " + AppConstants.isDrawable);
+                AppConstants.DONE_CELLS = cellIndex;
+                AppConstants.isDrawable = !AppConstants.isDrawable;
+
+
+            }
+        }
     }
 
 

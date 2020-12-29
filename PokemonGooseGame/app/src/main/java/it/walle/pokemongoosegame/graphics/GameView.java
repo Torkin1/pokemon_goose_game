@@ -36,6 +36,7 @@ public class GameView extends AppCompatActivity {
     SurfaceView svBoard;
     SurfaceView svPawn;
 
+
     private static final String TAG = GameView.class.getSimpleName();
 
     //per gli effetti sonori
@@ -55,7 +56,6 @@ public class GameView extends AppCompatActivity {
 
     //a text view for the result fo the dice
     TextView dice_res;
-    String d_res = "Your Score is: ";
 
     RelativeLayout game_menu_layout;//getting the realtive layout
 
@@ -81,7 +81,7 @@ public class GameView extends AppCompatActivity {
         //fare FullScreen l'activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dice_res = findViewById(R.id.text_dice_result);
+        dice_res = findViewById(R.id.text_dice_res);
         up_page_arrow = findViewById(R.id.page_up_img);
         down_page_arrow = findViewById(R.id.page_down_img);
 
@@ -267,7 +267,7 @@ public class GameView extends AppCompatActivity {
 
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
         diceImage.startAnimation(anim);
-        dice_res.setText(String.format(d_res + "%d", i));
+        dice_res.setText(String.format("%d", i));
 
         try {
             diceImage.setImageResource(DrawableGetter.getReference().getDiceDrawableId(i));

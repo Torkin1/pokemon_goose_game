@@ -32,4 +32,8 @@
     <string name="ALERT_NO_PLAYER_ADDED_MSG">Please add at least one player to start the game</string>
     <string name="ALERT_NO_PLAYER_ADDED_TITLE">No player added!</string>
     <string name="TOAST_WITH_ICON_HINT">Toast message here</string>
+    <string name="dice_res">Dice result is:</string>
+    <string name="actual_score">Your Actual Score is:</string>
+    <string name="has_to_move_for">has to move for</string>
+    <string name="cells">cells</string>
 </resources>
