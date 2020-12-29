@@ -36,4 +36,6 @@
     <string name="actual_score">Your Actual Score is:</string>
     <string name="has_to_move_for">has to move for</string>
     <string name="cells">cells</string>
+    <string name="TOAST_THROW_DICE">%s roll the dice!</string>
+    <string name="DIALOG_MESSAGE_SKIP_TURN">Ops, you have to skip the turn...</string>
 </resources>

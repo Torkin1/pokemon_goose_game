@@ -1,5 +1,7 @@
 package it.walle.pokemongoosegame.graphics;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.media.SoundPool;
@@ -14,12 +16,15 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.MoveBean;
+import it.walle.pokemongoosegame.game.SkipTurnBean;
 import it.walle.pokemongoosegame.game.ThrowDicesBean;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
 import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
@@ -56,6 +61,9 @@ public class GameView extends AppCompatActivity {
 
     //a text view for the result fo the dice
     TextView dice_res;
+
+    //Variabile che controlla se una pedina si deve muovere oppure no.
+    boolean pawnMove = true;
 
     RelativeLayout game_menu_layout;//getting the realtive layout
 
@@ -102,9 +110,14 @@ public class GameView extends AppCompatActivity {
                 // displays roll result
                 rotateDice(res);
 
-                // Moves pawn
-                // TODO: This is probably not the best place where to place the movement of the player, since in this way we are assuming that every time the dice is rolled the current player pawn must be moved
-                movePlayer(CoreController.getReference().getCurrentPlayerUsername(), res);
+                //Controlla se il dado doveva essere lanciato per muovere la pedina
+                if(pawnMove){
+                    //Disabilita un secondo lancio del dado che fa muovere la pedina in uno stesso turno
+                    diceImage.setEnabled(false);
+
+                    // Moves pawn
+                    movePlayer(CoreController.getReference().getCurrentPlayerUsername(), res);
+                }
             }
         });
 
@@ -201,6 +214,7 @@ public class GameView extends AppCompatActivity {
             }
         });
 
+        this.playerTurn();
     }
 
     @Override
@@ -295,6 +309,65 @@ public class GameView extends AppCompatActivity {
         // updates pawn positions
         GameEngine.getInstance(this, svBoard).getPawnSemaphore().release();
 
+        //settare il turno successivo e far giocare il player successivo
+        CoreController.getReference().nextTurn();
+        playerTurn();
+    }
+
+    private void playerTurn(){
+        CoreController coreController = CoreController.getReference();
+        String playerTurn = coreController.getCurrentPlayerUsername();
+
+        //Cambia la scritta del giocatore in turno
+        TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
+        tvPlayerTurn.setText(playerTurn);
+
+        //Controlla se ci sono ancora giocatori nella partita altrimenti termina la partita
+        if(coreController.getPlayers().size() != 0){
+
+            //Risolvi stayInCellEffect
+            MoveBean stayInCellBean = new MoveBean();
+            stayInCellBean.setPlayerUsername(playerTurn);
+            stayInCellBean.setBoardIndex(coreController.getCurrentPlayerPosition());
+            coreController.stayInCell(stayInCellBean);
+
+            //Controlla se il giocatore deve saltare il turno
+            SkipTurnBean skipTurnBean = new SkipTurnBean();
+            skipTurnBean.setPlayerUsername(playerTurn);
+            coreController.skipTurn(skipTurnBean);
+            if(!skipTurnBean.isHasSkipped()){
+
+                //Chiedi all'utente di lanciare il dado ed abilita il lancio
+                new ToastWithIcon(this,
+                        ContextCompat
+                                .getDrawable(this,
+                                        R.drawable.crab_with_a_knife),
+                        String.format(getString(R.string.TOAST_THROW_DICE), playerTurn),
+                        Toast.LENGTH_LONG)
+                        .show();
+                diceImage.setEnabled(true);
+            }
+            else{
+                new AlertDialog.Builder(this)
+                        .setTitle(playerTurn)
+                        .setMessage(R.string.DIALOG_MESSAGE_SKIP_TURN)
+                        .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .create()
+                        .show();
+            }
+
+        }
+        else{
+            //termina la partita
+            coreController.endGame();
+
+            //TODO: start leaderBoardActivity
+        }
 
     }
 
