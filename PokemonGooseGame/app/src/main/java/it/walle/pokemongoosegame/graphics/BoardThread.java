@@ -18,6 +18,15 @@ public class BoardThread extends SurfaceUpdaterThread {
     }
 
     @Override
+    public synchronized void start() {
+
+        // Updates board the first time
+        GameEngine.getInstance().getBoardSemaphore().release();
+
+        super.start();
+    }
+
+    @Override
     public void doUpdate() {
 
         //loop until the boolean is false

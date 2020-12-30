@@ -164,7 +164,6 @@ public class GameView extends AppCompatActivity {
                         svPawn.getHolder().setSizeFromLayout();
 
                         // Do some drawing when surface is ready
-
                         pawnThread = new PawnThread(svPawn, GameView.this);
                         pawnThread.start();
                     }
@@ -226,9 +225,6 @@ public class GameView extends AppCompatActivity {
                             scrollBoardPage(-1);
                     }
                 });
-
-                // Updates board
-                GameEngine.getInstance().getBoardSemaphore().release();
 
                 // All is ready, starts player turn
                 playerTurn();
