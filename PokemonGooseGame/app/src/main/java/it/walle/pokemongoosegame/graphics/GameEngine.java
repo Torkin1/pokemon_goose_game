@@ -40,9 +40,18 @@ public class GameEngine {
 
     private static GameEngine ref = null;
 
-    public synchronized static GameEngine getInstance(Context context, SurfaceView svBoard) {
+    public synchronized static GameEngine getInstance(Context context, int boardHeigth, int boardWidth) {
+
+        // Call this at least once before using this class
         if (ref == null) {
-            ref = new GameEngine(context, svBoard);
+            ref = new GameEngine(context, boardHeigth, boardWidth);
+        }
+        return ref;
+    }
+
+    public synchronized static GameEngine getInstance(){
+        if (ref == null){
+            throw new IllegalStateException("GameEngine.getInstance(Context, svBoard) must be called at least once in your app");
         }
         return ref;
     }
@@ -79,14 +88,14 @@ public class GameEngine {
     private final Semaphore boardSemaphore, pawnSemaphore;
 
 
-    public GameEngine(Context context, SurfaceView svBoard) {
+    public GameEngine(Context context, int boardHeight, int boardWidth) {
         bitmapBank = new BitmapBank(context.getResources(), context);
         backgroundImg = new Background();//initialize bg
 
         pokemon = new Pokemon();
 
-        BOARD_HEIGHT = svBoard.getHeight();
-        BOARD_WIDTH = svBoard.getWidth();
+        BOARD_HEIGHT = boardHeight;
+        BOARD_WIDTH = boardWidth;
 
         // initializes board screen constants
         CELLS_IN_A_ROW = (BOARD_WIDTH -
@@ -288,6 +297,7 @@ public class GameEngine {
                                 //TODO MAX_HEALTH_POKEMON has to be worked differently probably, the setCurrent hp should be initiliazide as max hp, not 0
                                 //So its possible end the game when current hp = 0.
                                 //TODO Implement a mechanism and logic to make the pokemon lose hp, not like now any time they move.
+                                // FIXME: use actual player pokemon instead of game engine pokemon field
                                 if (pokemon.getCurrentHp() <= 0 || pokemon.getCurrentHp() > 100)
                                     pokemon.setCurrentHp(MAX_HEALTH_POKEMON);
                                 if (pokePawn.getX() != 0)

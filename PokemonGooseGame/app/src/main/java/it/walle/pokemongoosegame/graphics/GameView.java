@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import it.walle.pokemongoosegame.R;
@@ -87,7 +89,7 @@ public class GameView extends AppCompatActivity {
         svPawn.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
         //fare FullScreen l'activity
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         dice_res = findViewById(R.id.text_dice_res);
         up_page_arrow = findViewById(R.id.page_up_img);
@@ -95,126 +97,145 @@ public class GameView extends AppCompatActivity {
 
         up_page_arrow.setImageResource(R.drawable.up_arrow);
 
-        diceImage = findViewById(R.id.dice_image);
-        diceImage.setOnClickListener(new View.OnClickListener() {
+        // waits for the svBoard to be drawn on screen
+        svBoard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
-            public void onClick(View view) {
+            public void onGlobalLayout() {
+                Log.d(TAG, "svBoard is drawn");
+                svBoard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                Log.d(TAG, "svBoard heigth is " + svBoard.getHeight());
 
-                // Rolls dice
-                ThrowDicesBean throwDicesBean = new ThrowDicesBean();
-                throwDicesBean.setNumOfFaces(6);
-                throwDicesBean.setNumOfDices(1);
-                CoreController.getReference().throwDices(throwDicesBean);
-                int res = throwDicesBean.getExitNumbers().get(0);
+                // initializes game engine. The reference to GameEngine must be obtained this way at least once
+                GameEngine.getInstance(GameView.this, svBoard.getHeight(), svBoard.getWidth());
 
-                // displays roll result
-                rotateDice(res);
+                // Starts drawing threads for background, board and pawn
+                svBoard.getHolder().addCallback(new SurfaceHolder.Callback() {
 
-                //Controlla se il dado doveva essere lanciato per muovere la pedina
-                if(pawnMove){
-                    //Disabilita un secondo lancio del dado che fa muovere la pedina in uno stesso turno
-                    diceImage.setEnabled(false);
+                    @Override
+                    public void surfaceCreated(SurfaceHolder holder) {
+                        svBoard.getHolder().setSizeFromLayout();
 
-                    // Moves pawn
-                    movePlayer(CoreController.getReference().getCurrentPlayerUsername(), res);
-                }
+                        // Do some drawing when surface is ready
+                        boardThread = new BoardThread(svBoard, GameView.this);
+                        boardThread.start();
+
+                    }
+
+                    @Override
+                    public void surfaceDestroyed(SurfaceHolder holder) {
+
+                    }
+
+                    @Override
+                    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                        //TODO
+                    }
+                });
+
+
+                svBackground.getHolder().addCallback(new SurfaceHolder.Callback() {
+
+                    @Override
+                    public void surfaceCreated(SurfaceHolder holder) {
+                        svBackground.getHolder().setSizeFromLayout();
+                        // Do some drawing when surface is ready
+
+                        backgroundThread = new BackgroundThread(svBackground, GameView.this);
+                        backgroundThread.start();
+
+                    }
+
+                    @Override
+                    public void surfaceDestroyed(SurfaceHolder holder) {
+
+
+                    }
+
+                    @Override
+                    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                        //TODO
+                    }
+                });
+
+                svPawn.getHolder().addCallback(new SurfaceHolder.Callback() {
+
+                    @Override
+                    public void surfaceCreated(SurfaceHolder holder) {
+                        svPawn.getHolder().setSizeFromLayout();
+
+                        // Do some drawing when surface is ready
+
+                        pawnThread = new PawnThread(svPawn, GameView.this);
+                        pawnThread.start();
+                    }
+
+
+                    @Override
+                    public void surfaceDestroyed(SurfaceHolder holder) {
+
+
+                    }
+
+                    @Override
+                    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+                        //TODO
+                    }
+                });
+
+                // sets up dice
+                diceImage = findViewById(R.id.dice_image);
+                diceImage.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        // Rolls dice
+                        ThrowDicesBean throwDicesBean = new ThrowDicesBean();
+                        throwDicesBean.setNumOfFaces(6);
+                        throwDicesBean.setNumOfDices(1);
+                        CoreController.getReference().throwDices(throwDicesBean);
+                        int res = throwDicesBean.getExitNumbers().get(0);
+
+                        // displays roll result
+                        rotateDice(res);
+
+                        //Controlla se il dado doveva essere lanciato per muovere la pedina
+                        if(pawnMove){
+                            //Disabilita un secondo lancio del dado che fa muovere la pedina in uno stesso turno
+                            diceImage.setEnabled(false);
+
+                            // Moves pawn
+                            movePlayer(CoreController.getReference().getCurrentPlayerUsername(), res);
+                        }
+                    }
+                });
+
+                // sets click listeners for page arrows
+                up_page_arrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Log.d("Burp", "Burp");
+                        scrollBoardPage(1);
+                        AppConstants.isDrawable = !AppConstants.isDrawable;
+                    }
+                });
+
+                down_page_arrow.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (GameEngine.getInstance().getCurrentBoardPage() != 0)
+                            scrollBoardPage(-1);
+                    }
+                });
+
+                // Updates board
+                GameEngine.getInstance().getBoardSemaphore().release();
+
+                // All is ready, starts player turn
+                playerTurn();
             }
         });
 
-        up_page_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("Burp", "Burp");
-                scrollBoardPage(1);
-                AppConstants.isDrawable = !AppConstants.isDrawable;
-            }
-        });
 
-        down_page_arrow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (GameEngine.getInstance(getApplicationContext(), svBoard).getCurrentBoardPage() != 0)
-                    scrollBoardPage(-1);
-            }
-        });
-
-
-        // Starts drawing threads for background, board and pawn
-        svBackground.getHolder().addCallback(new SurfaceHolder.Callback() {
-
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                svBackground.getHolder().setSizeFromLayout();
-                // Do some drawing when surface is ready
-
-                backgroundThread = new BackgroundThread(svBackground, GameView.this);
-                backgroundThread.start();
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-
-
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                //TODO
-            }
-        });
-
-
-        svBoard.getHolder().addCallback(new SurfaceHolder.Callback() {
-
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                svBoard.getHolder().setSizeFromLayout();
-                // Do some drawing when surface is ready
-                boardThread = new BoardThread(svBoard, GameView.this);
-                boardThread.start();
-
-            }
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                //TODO
-            }
-        });
-
-        // TODO: Uncomment this when code for drawing pawns is implemented.
-
-        svPawn.getHolder().addCallback(new SurfaceHolder.Callback() {
-
-            @Override
-            public void surfaceCreated(SurfaceHolder holder) {
-                svPawn.getHolder().setSizeFromLayout();
-
-                // Do some drawing when surface is ready
-
-                pawnThread = new PawnThread(svPawn, GameView.this);
-                pawnThread.start();
-            }
-
-
-            @Override
-            public void surfaceDestroyed(SurfaceHolder holder) {
-
-
-            }
-
-            @Override
-            public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-                //TODO
-            }
-        });
-
-        this.playerTurn();
     }
 
     @Override
@@ -247,12 +268,14 @@ public class GameView extends AppCompatActivity {
         boardThread = new BoardThread(svBoard, this);
         pawnThread = new PawnThread(svPawn, this);
 
+
+
     }
 
     private void updateArrowVisibility() {
         // Calculates how many cells a board should have to use all cells of this page plus the cells of passed pages.
         // If this number is higher than the  number of cells of the actual board, it means that the current page is the last page, so the up arrow button is disabled
-        if (((GameEngine.getInstance(this, svBoard).getCurrentBoardPage() + 1) * GameEngine.getInstance(this, svBoard).CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()) {
+        if (((GameEngine.getInstance().getCurrentBoardPage() + 1) * GameEngine.getInstance().CELLS_IN_A_SCREEN) >= CoreController.getReference().getBoard().getCells().size() && up_page_arrow.isClickable()) {
             up_page_arrow.setClickable(false);
             up_page_arrow.setImageResource(R.drawable.up_arrow_off);
         } else {
@@ -261,7 +284,7 @@ public class GameView extends AppCompatActivity {
         }
 
         // If it's the first board page disables the arrow down button
-        if (GameEngine.getInstance(this, svBoard).getCurrentBoardPage() == 0 && down_page_arrow.isClickable()) {
+        if (GameEngine.getInstance().getCurrentBoardPage() == 0 && down_page_arrow.isClickable()) {
             down_page_arrow.setClickable(false);
             down_page_arrow.setImageResource(R.drawable.down_arrow_off);
         } else {
@@ -273,7 +296,7 @@ public class GameView extends AppCompatActivity {
     private void scrollBoardPage(int pages) {
 
         // Updates current board page adding pages to it
-        GameEngine.getInstance(this, svBoard).setCurrentBoardPage(GameEngine.getInstance(this, svBoard).getCurrentBoardPage() + pages);
+        GameEngine.getInstance().setCurrentBoardPage(GameEngine.getInstance().getCurrentBoardPage() + pages);
         updateArrowVisibility();
     }
 
@@ -307,7 +330,7 @@ public class GameView extends AppCompatActivity {
         CoreController.getReference().moveInCell(moveInCellBean);
 
         // updates pawn positions
-        GameEngine.getInstance(this, svBoard).getPawnSemaphore().release();
+        GameEngine.getInstance().getPawnSemaphore().release();
 
         //settare il turno successivo e far giocare il player successivo
         CoreController.getReference().nextTurn();

@@ -10,29 +10,17 @@ import android.view.SurfaceView;
 
 import it.walle.pokemongoosegame.entity.Game;
 
-public class BoardThread extends Thread {
-    private static final String TAG = BoardThread.class.getSimpleName();
-    final SurfaceView surfaceView;//ref to the surfaceHolder
-    private boolean isRunning = false;//flag to detect if the Thread is running or not
-    Context context;
+public class BoardThread extends SurfaceUpdaterThread {
 
-    public BoardThread(SurfaceView surfaceView , Context context) {
-        //Passing a surfaceholder as param on the constructor
-        this.surfaceView = surfaceView;
-        this.context = context;
-    }//It will do an ovveride of the run method and the start will call it from GameView.
+
+    public BoardThread(SurfaceView surfaceView, Context context) {
+        super(surfaceView, context);
+    }
 
     @Override
-    public void run() {
-
-        isRunning = true;
-        Log.d(TAG, "I've just have born");
-
-        // An initial token is needed when activity restarts
-        GameEngine.getInstance(context, surfaceView).getBoardSemaphore().release();
+    public void doUpdate() {
 
         //loop until the boolean is false
-        while (isRunning) {
 
             //locking the canvas
             Canvas canvas = surfaceView.getHolder().lockCanvas();
@@ -41,11 +29,11 @@ public class BoardThread extends Thread {
 
                     try {
                         // Updates board if there are some changes
-                        GameEngine.getInstance(context, surfaceView).getBoardSemaphore().acquire();
-                        GameEngine.getInstance(context, surfaceView).updateAndDrawBoard(canvas, context);
+                        GameEngine.getInstance().getBoardSemaphore().acquire();
+                        GameEngine.getInstance().updateAndDrawBoard(canvas, context);
 
                         // awakens pawns updater thread in order to updated pawns position in relation to new board screen
-                        GameEngine.getInstance(context, surfaceView).getPawnSemaphore().release();
+                        GameEngine.getInstance().getPawnSemaphore().release();
                     } catch (InterruptedException e) {
                         Log.e(TAG, e.getMessage(), e);
                     }
@@ -54,17 +42,5 @@ public class BoardThread extends Thread {
 
                 }
             }
-        }
-        Log.d(TAG, "I'm dying lol");
-    }
-
-    //return whether the thread is running
-    public boolean isRunning() {
-        return isRunning;
-    }
-
-    //Sets the thread state, false  = stopped, true = running
-    public void setIsRunning(boolean state) {
-        isRunning = state;
     }
 }
