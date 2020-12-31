@@ -69,7 +69,7 @@ public class CoreController {
 
         // Changes the current player to the next player and updates next player index
         int newPlayerIndex = game.getNextPlayerIndex();
-        this.game.setCurrentPlayerIndex(newPlayerIndex);
+        this.game.setCurrentPlayerIndex(newPlayerIndex % this.game.getGamers().size());
         this.game.setNextPlayerIndex((newPlayerIndex + 1) % this.game.getGamers().size());
     }
 
