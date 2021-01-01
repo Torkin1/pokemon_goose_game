@@ -357,7 +357,6 @@ public class GameView extends AppCompatActivity {
 
         // updates pawn positions
         GameEngine.getInstance().getPawnSemaphore().release();
-        CoreController.getReference().getPlayerByUsername("Player1").getPokemon().setCurrentHp(0);
 
 
         //settare il turno successivo e far giocare il player successivo
