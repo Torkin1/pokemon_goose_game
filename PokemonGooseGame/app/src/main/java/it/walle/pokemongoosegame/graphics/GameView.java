@@ -329,8 +329,15 @@ public class GameView extends AppCompatActivity {
         GameEngine.getInstance().getPawnSemaphore().release();
 
         //settare il turno successivo e far giocare il player successivo
-        CoreController.getReference().nextTurn();
-        playerTurn();
+        if (CoreController.getReference().getPlayers().size() != 0){
+            CoreController.getReference().nextTurn();
+            playerTurn();
+        } else {
+            //termina la partita
+            CoreController.getReference().endGame();
+
+            //TODO: start leaderBoardActivity
+        }
     }
 
     private void playerTurn(){
@@ -341,7 +348,7 @@ public class GameView extends AppCompatActivity {
         TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
         tvPlayerTurn.setText(playerTurn);
 
-        //Controlla se ci sono ancora giocatori nella partita altrimenti termina la partita
+        //Controlla se ci sono ancora giocatori nella partita
         if(coreController.getPlayers().size() != 0){
 
             //Risolvi stayInCellEffect
@@ -380,12 +387,6 @@ public class GameView extends AppCompatActivity {
                         .show();
             }
 
-        }
-        else{
-            //termina la partita
-            coreController.endGame();
-
-            //TODO: start leaderBoardActivity
         }
 
     }

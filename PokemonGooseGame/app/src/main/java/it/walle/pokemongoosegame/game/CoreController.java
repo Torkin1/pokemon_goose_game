@@ -42,10 +42,13 @@ public class CoreController {
         this.game = game;
 
         // Sets all pokemons health
-        for (Player p : game.getPlayers()){
+        for (Player p : game.getInGamePlayers()){
             p.getPokemon().setMaxHp(MAX_HEALTH_POKEMON);
             p.getPokemon().setCurrentHp(MAX_HEALTH_POKEMON);
         }
+
+        // Adds all registered players to players currently in game
+        game.getInGamePlayers().addAll(game.getAllPlayers());
     }
 
     public synchronized Board getBoard(){
@@ -53,7 +56,7 @@ public class CoreController {
     }
 
     public synchronized List<Player> getPlayers(){
-        return this.game.getPlayers();
+        return this.game.getInGamePlayers();
     }
 
     public List<Player> getWinners(){
@@ -76,8 +79,8 @@ public class CoreController {
 
         // Changes the current player to the next player and updates next player index
         int newPlayerIndex = game.getNextPlayerIndex();
-        this.game.setCurrentPlayerIndex(newPlayerIndex % this.game.getPlayers().size());
-        this.game.setNextPlayerIndex((newPlayerIndex + 1) % this.game.getPlayers().size());
+        this.game.setCurrentPlayerIndex(newPlayerIndex % this.game.getInGamePlayers().size());
+        this.game.setNextPlayerIndex((newPlayerIndex + 1) % this.game.getInGamePlayers().size());
     }
 
     public synchronized Player getPlayerByUsername(String username){
@@ -89,7 +92,7 @@ public class CoreController {
                 .game
                 .setNextPlayerIndex(this
                         .game
-                        .getPlayers()
+                        .getInGamePlayers()
                         .indexOf(this
                                 .game
                                 .getPlayerByUsername(username)));
@@ -100,7 +103,7 @@ public class CoreController {
         // Removes the player from the game and adds it to the winner list, returning their score
         Player winner = this.game.getPlayerByUsername(bean.getWinnerUsername());
 
-        this.game.getPlayers().remove(winner);
+        this.game.getInGamePlayers().remove(winner);
         this.game.getWinners().add(winner);
 
         int score = this.calculateScore(winner);
@@ -144,7 +147,7 @@ public class CoreController {
 
         // Create a list of all players which is a combination of winning players, losing players and gamers list
         List<Player> allPlayers = new ArrayList<>();
-        allPlayers.addAll(this.game.getPlayers());
+        allPlayers.addAll(this.game.getInGamePlayers());
         allPlayers.addAll(this.game.getWinners());
         allPlayers.addAll(this.game.getLosers());
 
@@ -186,7 +189,7 @@ public class CoreController {
     public String[] getAllPlayersInACellUsernames(int index){
         // Returns the usernames who are  occupying the cell with the provided index
         List<String> usernames = new ArrayList<>();
-        for (Player p : game.getPlayers()){
+        for (Player p : game.getInGamePlayers()){
             if (p.getCurrentPosition() == index){
                 usernames.add(p.getUsername());
             }
@@ -198,7 +201,7 @@ public class CoreController {
         // Returns the username of the current player
         return this
                 .getGame()
-                .getPlayers()
+                .getInGamePlayers()
                 .get(this
                         .getGame()
                         .getCurrentPlayerIndex())
@@ -209,7 +212,7 @@ public class CoreController {
         // Returns the index of the cell currently occupied by the player
         return this
                 .getGame()
-                .getPlayers()
+                .getInGamePlayers()
                 .get(this
                         .getGame()
                         .getCurrentPlayerIndex())

@@ -42,7 +42,7 @@ public class GameFactory {
         player.setPokemon(pokemon);
 
         // Registers the player to the game;
-        this.game.getPlayers().add(player);
+        this.game.getInGamePlayers().add(player);
     }
 
     public void createGame(CreateGameBean bean) {
