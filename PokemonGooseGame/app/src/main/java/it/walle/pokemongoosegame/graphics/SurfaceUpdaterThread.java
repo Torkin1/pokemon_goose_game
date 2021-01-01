@@ -8,7 +8,7 @@ public abstract class SurfaceUpdaterThread extends Thread {
 
     final String TAG = this.getClass().getSimpleName();
     protected final SurfaceView surfaceView;//ref to the surfaceHolder
-    protected boolean isRunning = false;//flag to detect if the Thread is running or not
+    private boolean isRunning = false;//flag to detect if the Thread is running or not
     protected Context context;
 
     public SurfaceUpdaterThread(SurfaceView surfaceView , Context context) {

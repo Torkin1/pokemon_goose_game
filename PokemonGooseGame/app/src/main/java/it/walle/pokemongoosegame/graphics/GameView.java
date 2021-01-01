@@ -23,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.MoveBean;
@@ -34,9 +37,10 @@ import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 public class GameView extends AppCompatActivity {
 
     // Threads for drawing elements on surface views
-    private BackgroundThread backgroundThread;
-    private BoardThread boardThread;
-    private PawnThread pawnThread;
+    private List<SurfaceUpdaterThread> surfaceUpdaterThreads = new ArrayList<>();
+    // private BackgroundThread backgroundThread;
+    // private BoardThread boardThread;
+    // private PawnThread pawnThread;
 
     private
     SurfaceView svBackground;
@@ -101,9 +105,9 @@ public class GameView extends AppCompatActivity {
         svBoard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                Log.d(TAG, "svBoard is drawn");
+
+                // This listener is called the first time the view is drawn, but it will be called other times. To prevent this, we remove the listener
                 svBoard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-                Log.d(TAG, "svBoard heigth is " + svBoard.getHeight());
 
                 // initializes game engine. The reference to GameEngine must be obtained this way at least once
                 GameEngine.getInstance(GameView.this, svBoard.getHeight(), svBoard.getWidth());
@@ -116,7 +120,8 @@ public class GameView extends AppCompatActivity {
                         svBoard.getHolder().setSizeFromLayout();
 
                         // Do some drawing when surface is ready
-                        boardThread = new BoardThread(svBoard, GameView.this);
+                        SurfaceUpdaterThread boardThread = new BoardThread(svBoard, GameView.this);
+                        surfaceUpdaterThreads.add(boardThread);
                         boardThread.start();
 
                     }
@@ -138,9 +143,10 @@ public class GameView extends AppCompatActivity {
                     @Override
                     public void surfaceCreated(SurfaceHolder holder) {
                         svBackground.getHolder().setSizeFromLayout();
-                        // Do some drawing when surface is ready
 
-                        backgroundThread = new BackgroundThread(svBackground, GameView.this);
+                        // Do some drawing when surface is ready
+                        SurfaceUpdaterThread backgroundThread = new BackgroundThread(svBackground, GameView.this);
+                        surfaceUpdaterThreads.add(backgroundThread);
                         backgroundThread.start();
 
                     }
@@ -164,7 +170,8 @@ public class GameView extends AppCompatActivity {
                         svPawn.getHolder().setSizeFromLayout();
 
                         // Do some drawing when surface is ready
-                        pawnThread = new PawnThread(svPawn, GameView.this);
+                        SurfaceUpdaterThread pawnThread = new PawnThread(svPawn, GameView.this);
+                        surfaceUpdaterThreads.add(pawnThread);
                         pawnThread.start();
                     }
 
@@ -212,7 +219,6 @@ public class GameView extends AppCompatActivity {
                 up_page_arrow.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d("Burp", "Burp");
                         scrollBoardPage(1);
                         AppConstants.isDrawable = !AppConstants.isDrawable;
                     }
@@ -238,34 +244,14 @@ public class GameView extends AppCompatActivity {
     protected void onPause() {
 
         // kills surface updater threads
-        if (backgroundThread.isRunning()) {
-            backgroundThread.setIsRunning(false);
-        }
-
-        if (boardThread.isRunning()) {
-            boardThread.setIsRunning(false);
-            boardThread.interrupt();
-        }
-
-        if (pawnThread.isRunning()) {
-            pawnThread.setIsRunning(false);
-            pawnThread.interrupt();
+        for (SurfaceUpdaterThread t : surfaceUpdaterThreads){
+            if (t.isRunning()){
+                t.setIsRunning(false);
+                t.interrupt();
+            }
         }
 
         super.onPause();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        // creates new instances of updater threads in order to be restarted
-        backgroundThread = new BackgroundThread(svBackground, this);
-        boardThread = new BoardThread(svBoard, this);
-        pawnThread = new PawnThread(svPawn, this);
-
-
-
     }
 
     private void updateArrowVisibility() {
