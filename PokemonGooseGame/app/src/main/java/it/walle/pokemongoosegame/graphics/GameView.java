@@ -37,10 +37,7 @@ import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 public class GameView extends AppCompatActivity {
 
     // Threads for drawing elements on surface views
-    private List<SurfaceUpdaterThread> surfaceUpdaterThreads = new ArrayList<>();
-    // private BackgroundThread backgroundThread;
-    // private BoardThread boardThread;
-    // private PawnThread pawnThread;
+    private final List<SurfaceUpdaterThread> surfaceUpdaterThreads = new ArrayList<>();
 
     private
     SurfaceView svBackground;
