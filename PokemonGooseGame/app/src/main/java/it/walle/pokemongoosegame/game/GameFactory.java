@@ -1,6 +1,5 @@
 package it.walle.pokemongoosegame.game;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -9,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import it.walle.pokemongoosegame.boardfactory.BoardFactory;
-import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.UnableToCreateBoardException;
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
@@ -44,7 +42,7 @@ public class GameFactory {
         player.setPokemon(pokemon);
 
         // Registers the player to the game;
-        this.game.getGamers().add(player);
+        this.game.getPlayers().add(player);
     }
 
     public void createGame(CreateGameBean bean) {

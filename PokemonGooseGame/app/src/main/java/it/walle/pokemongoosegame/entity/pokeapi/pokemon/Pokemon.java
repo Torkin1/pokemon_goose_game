@@ -10,6 +10,7 @@ public class Pokemon{
 
     // Dynamic fields
     private int currentHp;                  // Remaining pokemon health
+    private int maxHp;                      // Max pokemon health
 
     public Pokemon(){}
 
@@ -59,5 +60,13 @@ public class Pokemon{
 
     public void setCurrentHp(int currentHp) {
         this.currentHp = currentHp;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
+    }
+
+    public void setMaxHp(int maxHp) {
+        this.maxHp = maxHp;
     }
 }

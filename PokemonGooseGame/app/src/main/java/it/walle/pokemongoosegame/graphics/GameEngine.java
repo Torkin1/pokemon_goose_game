@@ -58,7 +58,7 @@ public class GameEngine {
 
     private int currentBoardPage = 0;    // Current drawn board page
 
-    // Note that the following constants cannot be instantiated in AppConstants since they need a reference to BitmapBank, which currrently needs an AppConstants reference to be instantiated.
+    // Note that the following constants cannot be instantiated in AppConstants since they need a reference to BitmapBank, which currently needs an AppConstants reference to be instantiated.
     // board screen constants
     public final int
             CELLS_IN_A_SCREEN,
@@ -67,15 +67,13 @@ public class GameEngine {
             WIDTH_MARGIN,
             HEIGHT_MARGIN,
             BOARD_WIDTH,
-            BOARD_HEIGHT,
-            MAX_HEALTH_POKEMON = 100;
+            BOARD_HEIGHT;
 
     Background backgroundImg;
     static int gameState;
     static int xspeed, yspeed;
     private int xspeedtemp;
     BitmapBank bitmapBank;
-    private Pokemon pokemon;
 
     // Pawns used to track players board position
     private final Map<String, PokePawn> pawns = new HashMap<>();
@@ -91,8 +89,6 @@ public class GameEngine {
     public GameEngine(Context context, int boardHeight, int boardWidth) {
         bitmapBank = new BitmapBank(context.getResources(), context);
         backgroundImg = new Background();//initialize bg
-
-        pokemon = new Pokemon();
 
         BOARD_HEIGHT = boardHeight;
         BOARD_WIDTH = boardWidth;
@@ -233,15 +229,19 @@ public class GameEngine {
                 @Override
                 public void accept(String playerUsername, PokePawn pokePawn) {
 
-                    // Updates pawn position only if it's on current board screen
                     try {
+
+                        Player player = CoreController.getReference().getPlayerByUsername(playerUsername);
 
                         // gets Graphic cell position of corresponding board cell occupied by the player owning the pawn
                         FindOccupiedDisplayedCellBean findOccupiedDisplayedCellBean = new FindOccupiedDisplayedCellBean();
                         findOccupiedDisplayedCellBean.setPlayerUsername(playerUsername);
                         findOccupiedDisplayedCell(findOccupiedDisplayedCellBean);
 
+                        // Updates pawn position only if it's on current board screen
                         if (findOccupiedDisplayedCellBean.getCell() != null) {
+
+                            // Pawn is on screen, it can be drawn
                             // Updates position of pawn
                             pokePawn.setX(
                                     findOccupiedDisplayedCellBean.getCell().getCellImgX()
@@ -251,10 +251,8 @@ public class GameEngine {
                             );
 
                             // When sprite is ready stores a reference to it in the pawn
-                            // FIXME: sprite is not drawn on screen (disegna solo quel granchio di merda)
                             if (pokePawn.getSprite() == null) {
                                 DAOSprite daoSprite = new DAOSprite(context);
-                                Player player = CoreController.getReference().getPlayerByUsername(playerUsername);
                                 daoSprite
                                         .loadSprite(
                                                 player.getPokemon().getSprites().getFront_default(),
@@ -262,7 +260,7 @@ public class GameEngine {
                                                     @Override
                                                     public void onResponse(Bitmap response) {
 
-                                                        // sets pawn sprite with pokemon sprite and draws pawn
+                                                        // sets pawn sprite with pokemon sprite and draws pawn, then informs pawn updater thread that we are done
                                                         pokePawn.setSprite(bitmapBank.scalePawn(response));
                                                         canvas.drawBitmap(pokePawn.getSprite(),
                                                                 pokePawn.getX(),
@@ -274,6 +272,8 @@ public class GameEngine {
                                                 new Response.ErrorListener() {
                                                     @Override
                                                     public void onErrorResponse(VolleyError error) {
+
+                                                        // Network error, sprite will not be available, we inform pawn updater thread that we have done
                                                         Log.e(TAG, error.getMessage(), error);
                                                         spriteSemaphore.release();
                                                     }
@@ -281,57 +281,45 @@ public class GameEngine {
                                         );
                             } else {
 
-                                // draws pawn
+                                // Sprite is already loaded, draws pawn
                                 canvas.drawBitmap(pokePawn.getSprite(),
                                         pokePawn.getX(),
                                         pokePawn.getY(),
                                         null);
-
-
-                                //Distance, position and hp percentage variables
-                                float x = (float) pokePawn.getX();
-                                float y = (float) pokePawn.getY();
-                                float distanceToPlayer = 30;
-                                Log.d(TAG, "The currentHp is " + pokemon.getCurrentHp());
-
-                                //TODO MAX_HEALTH_POKEMON has to be worked differently probably, the setCurrent hp should be initiliazide as max hp, not 0
-                                //So its possible end the game when current hp = 0.
-                                //TODO Implement a mechanism and logic to make the pokemon lose hp, not like now any time they move.
-                                // FIXME: use actual player pokemon instead of game engine pokemon field
-                                if (pokemon.getCurrentHp() <= 0 || pokemon.getCurrentHp() > 100)
-                                    pokemon.setCurrentHp(MAX_HEALTH_POKEMON);
-                                if (pokePawn.getX() != 0)
-                                    pokemon.setCurrentHp(pokemon.getCurrentHp() - 10);
-
-                                Log.d(TAG, "The currentHp after the increase is " + pokemon.getCurrentHp());
-                                float healthPointPercentage = (float) pokemon.getCurrentHp() / MAX_HEALTH_POKEMON;
-
-                                //draw Border
-                                float borderLeft, borderTop, borderRight, borderBottom;
-                                borderLeft = x - (float)hbar_width / 2;
-                                borderRight = x + (float)hbar_width / 2;
-                                borderBottom = y + distanceToPlayer;
-                                borderTop = borderBottom - hbar_height;
-
-                                canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2), borderTop, borderRight + (float)bitmapBank.getCellHeight() / 2, borderBottom, borderPaint);
-
-                                // Draw health
-                                float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
-                                healthWidth = hbar_width - 4 * margin;
-                                healthHeight = hbar_height - 4 * margin;
-                                healthLeft = borderLeft + 2 * margin;
-                                healthRight = healthLeft + healthWidth * healthPointPercentage;
-                                healthBottom = borderBottom - 2 * margin;
-                                healthTop = healthBottom - healthHeight;
-
-                                canvas.drawRect(healthLeft + (float)bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float)bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
-
-
                                 spriteSemaphore.release();
                             }
 
+                            // Draws health bar
+                            //Distance, position and hp percentage variables
+                            float x = (float) pokePawn.getX();
+                            float y = (float) pokePawn.getY();
+                            float distanceToPlayer = 30;
+
+                            float healthPointPercentage = (float) player.getPokemon().getCurrentHp() / CoreController.MAX_HEALTH_POKEMON;
+
+                            //draw Border
+                            float borderLeft, borderTop, borderRight, borderBottom;
+                            borderLeft = x - (float)hbar_width / 2;
+                            borderRight = x + (float)hbar_width / 2;
+                            borderBottom = y + distanceToPlayer;
+                            borderTop = borderBottom - hbar_height;
+
+                            canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2), borderTop, borderRight + (float)bitmapBank.getCellHeight() / 2, borderBottom, borderPaint);
+
+                            // Draw health
+                            float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
+                            healthWidth = hbar_width - 4 * margin;
+                            healthHeight = hbar_height - 4 * margin;
+                            healthLeft = borderLeft + 2 * margin;
+                            healthRight = healthLeft + healthWidth * healthPointPercentage;
+                            healthBottom = borderBottom - 2 * margin;
+                            healthTop = healthBottom - healthHeight;
+
+                            canvas.drawRect(healthLeft + (float)bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float)bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
+
                         } else {
-                            // pawns is not on screen, no needed to update, releases token
+
+                            // pawn is not on screen, no need to update, releases token
                             spriteSemaphore.release();
                         }
 
@@ -343,7 +331,7 @@ public class GameEngine {
             });
             try {
 
-                // waits for listeners to download sprites if they were fired
+                // waits for listeners to download sprites
                 spriteSemaphore.acquire(pawns.size());
             } catch (InterruptedException e) {
                 Log.e(TAG, e.getMessage(), e);

@@ -2,9 +2,6 @@ package it.walle.pokemongoosegame.game;
 
 import android.util.Log;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,6 +28,9 @@ public class CoreController {
         return ref;
     }
 
+    // TODO: this should be moved in a game settings class, in a similar manner of board settngs
+    public final static int MAX_HEALTH_POKEMON = 100;
+
     private Game game;   // Contains all infos about the game
 
     private Game getGame() {
@@ -38,7 +38,14 @@ public class CoreController {
     }
 
     public void setGame(Game game) {
+
         this.game = game;
+
+        // Sets all pokemons health
+        for (Player p : game.getPlayers()){
+            p.getPokemon().setMaxHp(MAX_HEALTH_POKEMON);
+            p.getPokemon().setCurrentHp(MAX_HEALTH_POKEMON);
+        }
     }
 
     public synchronized Board getBoard(){
@@ -46,7 +53,7 @@ public class CoreController {
     }
 
     public synchronized List<Player> getPlayers(){
-        return this.game.getGamers();
+        return this.game.getPlayers();
     }
 
     public List<Player> getWinners(){
@@ -69,8 +76,8 @@ public class CoreController {
 
         // Changes the current player to the next player and updates next player index
         int newPlayerIndex = game.getNextPlayerIndex();
-        this.game.setCurrentPlayerIndex(newPlayerIndex % this.game.getGamers().size());
-        this.game.setNextPlayerIndex((newPlayerIndex + 1) % this.game.getGamers().size());
+        this.game.setCurrentPlayerIndex(newPlayerIndex % this.game.getPlayers().size());
+        this.game.setNextPlayerIndex((newPlayerIndex + 1) % this.game.getPlayers().size());
     }
 
     public synchronized Player getPlayerByUsername(String username){
@@ -82,7 +89,7 @@ public class CoreController {
                 .game
                 .setNextPlayerIndex(this
                         .game
-                        .getGamers()
+                        .getPlayers()
                         .indexOf(this
                                 .game
                                 .getPlayerByUsername(username)));
@@ -93,7 +100,7 @@ public class CoreController {
         // Removes the player from the game and adds it to the winner list, returning their score
         Player winner = this.game.getPlayerByUsername(bean.getWinnerUsername());
 
-        this.game.getGamers().remove(winner);
+        this.game.getPlayers().remove(winner);
         this.game.getWinners().add(winner);
 
         int score = this.calculateScore(winner);
@@ -120,7 +127,6 @@ public class CoreController {
         }
 
         //if the player has not lost calculate score
-
         int scoreHp = player
                 .getPokemon()
                 .getCurrentHp();
@@ -138,7 +144,7 @@ public class CoreController {
 
         // Create a list of all players which is a combination of winning players, losing players and gamers list
         List<Player> allPlayers = new ArrayList<>();
-        allPlayers.addAll(this.game.getGamers());
+        allPlayers.addAll(this.game.getPlayers());
         allPlayers.addAll(this.game.getWinners());
         allPlayers.addAll(this.game.getLosers());
 
@@ -180,7 +186,7 @@ public class CoreController {
     public String[] getAllPlayersInACellUsernames(int index){
         // Returns the usernames who are  occupying the cell with the provided index
         List<String> usernames = new ArrayList<>();
-        for (Player p : game.getGamers()){
+        for (Player p : game.getPlayers()){
             if (p.getCurrentPosition() == index){
                 usernames.add(p.getUsername());
             }
@@ -192,7 +198,7 @@ public class CoreController {
         // Returns the username of the current player
         return this
                 .getGame()
-                .getGamers()
+                .getPlayers()
                 .get(this
                         .getGame()
                         .getCurrentPlayerIndex())
@@ -203,7 +209,7 @@ public class CoreController {
         // Returns the index of the cell currently occupied by the player
         return this
                 .getGame()
-                .getGamers()
+                .getPlayers()
                 .get(this
                         .getGame()
                         .getCurrentPlayerIndex())

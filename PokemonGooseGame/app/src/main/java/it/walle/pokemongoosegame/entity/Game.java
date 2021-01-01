@@ -8,7 +8,7 @@ import it.walle.pokemongoosegame.game.PlayerNotInGameException;
 
 public class Game{
 
-    private final List<Player> gamers = new ArrayList<>();              // All players in the game
+    private final List<Player> players = new ArrayList<>();              // All players in the game
     private Board board;                                                // Board used in the game
     private Integer plate = 0;                                          // The plate of the game
     private int currentPlayerIndex = 0;                                 // Current player index
@@ -38,18 +38,18 @@ public class Game{
 
     public void setCurrentPlayerIndex(int currentPlayerIndex) {
         // currentPlayerIndex must not be a negative value or a value greater than gamers.size
-        if (currentPlayerIndex < 0 || currentPlayerIndex > gamers.size()){
+        if (currentPlayerIndex < 0 || currentPlayerIndex > players.size()){
             throw new IndexOutOfBoundsException();
         }
         this.currentPlayerIndex = currentPlayerIndex;
     }
 
-    public List<Player> getGamers(){
-        return this.gamers;
+    public List<Player> getPlayers(){
+        return this.players;
     }
 
     public Player getPlayerByUsername(String username){
-        for (Player p : gamers){
+        for (Player p : players){
             if (p.getUsername().equals(username)){
                 return p;
             }
