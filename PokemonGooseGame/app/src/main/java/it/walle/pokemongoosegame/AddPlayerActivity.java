@@ -474,13 +474,12 @@ public class AddPlayerActivity extends AppCompatActivity {
                             @Override
                             public void onChanged(Game game) {
 
-                                Log.d("burp", "onChanged called with object game");
-
                                 // Sets up game controller with newly created game
-                                CoreController.getReference().setGame(game);
+                                CoreController.getReference(game);
 
                                 // starts next activity
                                 startActivity(new Intent(addPlayerActivity, GameView.class));
+                                finish();
                             }
                         });
                         GameFactory.getReference().createGame(createGameBean);

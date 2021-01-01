@@ -30,6 +30,7 @@ import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.game.CoreController;
+import it.walle.pokemongoosegame.game.LoserBean;
 import it.walle.pokemongoosegame.game.PlayerNotInGameException;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
 import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
@@ -326,6 +327,7 @@ public class GameEngine {
 
                     } catch (PlayerNotInGameException e) {
                         // Player not in players, no need to draw its pawn
+                        spriteSemaphore.release();
                     }
                 }
             });

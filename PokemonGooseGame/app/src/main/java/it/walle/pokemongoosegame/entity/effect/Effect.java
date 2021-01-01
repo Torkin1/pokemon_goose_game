@@ -6,7 +6,7 @@ public abstract class Effect {
     private String description;                                     // A textual description of the effect
 
 
-    public abstract void doEffect(InvocationContext context);       // Implementation of the actual effect
+    public abstract void doEffect(InvocationContext invocationContext);       // Implementation of the actual effect
 
     public String getDescription() {
         return description;

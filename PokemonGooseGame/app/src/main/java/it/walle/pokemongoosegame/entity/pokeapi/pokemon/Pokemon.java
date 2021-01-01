@@ -1,4 +1,9 @@
 package it.walle.pokemongoosegame.entity.pokeapi.pokemon;
+
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 public class Pokemon{
 
     // PokeAPI read-only fields
@@ -9,8 +14,8 @@ public class Pokemon{
     private Sprites sprites;
 
     // Dynamic fields
-    private int currentHp;                  // Remaining pokemon health
-    private int maxHp;                      // Max pokemon health
+    private final MutableLiveData<Integer> currentHp = new MutableLiveData<>();   // Remaining pokemon health
+    private int maxHp;                                                            // Max pokemon health
 
     public Pokemon(){}
 
@@ -54,19 +59,23 @@ public class Pokemon{
         this.types = types;
     }
 
-    public int getCurrentHp() {
-        return currentHp;
-    }
-
-    public void setCurrentHp(int currentHp) {
-        this.currentHp = currentHp;
-    }
-
     public int getMaxHp() {
         return maxHp;
     }
 
     public void setMaxHp(int maxHp) {
         this.maxHp = maxHp;
+    }
+
+    public Integer getCurrentHp() {
+        return currentHp.getValue();
+    }
+
+    public void setCurrentHp(Integer currentHp) {
+        this.currentHp.setValue(currentHp);
+    }
+
+    public void observeCurrentHp(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
+        this.currentHp.observe(lifecycleOwner, observer);
     }
 }

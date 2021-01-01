@@ -21,10 +21,18 @@ public class CoreController {
     private final static String TAG = CoreController.class.getName();
 
     private static CoreController ref = null;
-    public synchronized static CoreController getReference(){
+    public synchronized static CoreController getReference(){   // Call this only if a game has already been set
+        if (ref == null || ref.game == null){
+            throw new IllegalStateException("You can get a reference to CoreController only after a game has been set");
+        }
+        return ref;
+    }
+
+    public synchronized static CoreController getReference(Game game){  // Call this when you want to set the game while obtaining a ref to CoreController
         if (ref == null){
             ref = new CoreController();
         }
+        ref.setGame(game);
         return ref;
     }
 
@@ -75,7 +83,12 @@ public class CoreController {
         this.game.setPlate(val);
     }
 
-    public void nextTurn(){
+    public synchronized void nextTurn(){
+
+        // it's nonsense to call this method when there are no more players in game
+        if (getPlayers().isEmpty()){
+            throw new IllegalStateException("No players left in game");
+        }
 
         // Changes the current player to the next player and updates next player index
         int newPlayerIndex = game.getNextPlayerIndex();
@@ -96,6 +109,14 @@ public class CoreController {
                         .indexOf(this
                                 .game
                                 .getPlayerByUsername(username)));
+    }
+
+    public void chooseLoser(LoserBean bean){
+
+        // Removes player from in game players and adds it to losers list
+        Player loser = getPlayerByUsername(bean.getPlayerUsername());
+        game.getInGamePlayers().remove(loser);
+        game.getLosers().add(loser);
     }
 
     public void chooseWinner(WinnerBean bean){
@@ -142,20 +163,17 @@ public class CoreController {
         return scoreHp + scoreMoney + scorePlate;
     }
 
-    public List<WinnerBean> endGame(){
+    public List<WinnerBean> endGame(){   // Call this when you want the game to normally end (for example, when all player have become winners or losers)
         List<WinnerBean> winnerBeans = new ArrayList<>();
 
-        // Create a list of all players which is a combination of winning players, losing players and gamers list
-        List<Player> allPlayers = new ArrayList<>();
-        allPlayers.addAll(this.game.getInGamePlayers());
-        allPlayers.addAll(this.game.getWinners());
-        allPlayers.addAll(this.game.getLosers());
+        // Create a list of winners
+        List<Player> winners = game.getWinners();
 
-        // Now for all the players crate winnerBean and set username and score
-        for(int i = 0; i < allPlayers.size(); i++){
+        // Now for all the players create winnerBean and set username and score
+        for(int i = 0; i < winners.size(); i++){
             WinnerBean bean = new WinnerBean();
-            bean.setWinnerUsername(allPlayers.get(i).getUsername());
-            bean.setScore(calculateScore(allPlayers.get(i)));
+            bean.setWinnerUsername(winners.get(i).getUsername());
+            bean.setScore(calculateScore(winners.get(i)));
             winnerBeans.add(bean);
         }
 
@@ -167,12 +185,12 @@ public class CoreController {
             }
         });
 
-        // Ends game and returns winner
+        // Interrupts game and returns winners
         this.abortGame();
         return winnerBeans;
     }
 
-    public void abortGame(){
+    public void abortGame(){    // call this when you want to interrupt the game (pause game to resume another time, canceling game, ...)
         this.game = null;
     }
 

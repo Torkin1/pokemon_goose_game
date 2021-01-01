@@ -20,14 +20,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import it.walle.pokemongoosegame.R;
+import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.game.CoreController;
+import it.walle.pokemongoosegame.game.LoserBean;
 import it.walle.pokemongoosegame.game.MoveBean;
 import it.walle.pokemongoosegame.game.SkipTurnBean;
 import it.walle.pokemongoosegame.game.ThrowDicesBean;
@@ -35,6 +40,8 @@ import it.walle.pokemongoosegame.utils.DrawableGetter;
 import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
 public class GameView extends AppCompatActivity {
+
+    private static final String TAG = GameView.class.getSimpleName();
 
     // Threads for drawing elements on surface views
     private final List<SurfaceUpdaterThread> surfaceUpdaterThreads = new ArrayList<>();
@@ -44,8 +51,8 @@ public class GameView extends AppCompatActivity {
     SurfaceView svBoard;
     SurfaceView svPawn;
 
-
-    private static final String TAG = GameView.class.getSimpleName();
+    // Health points of all players in game
+    private final List<LiveData<Integer>> healths = new ArrayList<>();
 
     //per gli effetti sonori
     private SoundPool soundPool;
@@ -74,9 +81,49 @@ public class GameView extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_game);
 
+        // binds players pokemon healths to observers
+        for (Player p : CoreController.getReference().getPlayers()){
+            p.getPokemon().observeCurrentHp(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer currentHp) {
+
+                    // If pokemon health reaches 0 or below, the player owning the pokemon loses the game
+                    if (currentHp <= 0){
+                        LoserBean bean = new LoserBean();
+                        bean.setPlayerUsername(p.getUsername());
+                        CoreController.getReference().chooseLoser(bean);
+
+                        // Informs player that they have lost the game
+                        (new AlertDialog.Builder(GameView.this))
+                                .setTitle(String.format(getString(R.string.ALERT_POKEMON_FAINTED_TITLE), p.getUsername()))
+                                .setMessage(String.format(getString(R.string.ALERT_POKEMON_FAINTED_MSG), p.getPokemon().getName()))
+                                .setIcon(ContextCompat.getDrawable(GameView.this, R.drawable._f47432d67f0546c05a0719573105396_removebg_preview))
+                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                                    @Override
+                                    public void onDismiss(DialogInterface dialog) {
+
+                                        // updates pawns
+                                        GameEngine.getInstance().getPawnSemaphore().release();
+
+                                        // If the loser is the current player, proceeds to next player
+                                        if (CoreController.getReference().getCurrentPlayerUsername().compareTo(p.getUsername() ) == 0 && CoreController.getReference().getPlayers().size() > 1){
+                                            CoreController.getReference().nextTurn();
+                                            playerTurn();
+                                        }
+
+                                    }
+                                })
+                                .create()
+                                .show();
+
+                    }
+                }
+            });
+        }
+
+        // Initializes surfaces
         svBackground = (SurfaceView) findViewById(R.id.svBackground);
         svBoard = findViewById(R.id.svBoard);
         svPawn = findViewById(R.id.svPawn);
@@ -310,6 +357,8 @@ public class GameView extends AppCompatActivity {
 
         // updates pawn positions
         GameEngine.getInstance().getPawnSemaphore().release();
+        CoreController.getReference().getPlayerByUsername("Player1").getPokemon().setCurrentHp(0);
+
 
         //settare il turno successivo e far giocare il player successivo
         if (CoreController.getReference().getPlayers().size() != 0){
@@ -325,14 +374,16 @@ public class GameView extends AppCompatActivity {
 
     private void playerTurn(){
         CoreController coreController = CoreController.getReference();
-        String playerTurn = coreController.getCurrentPlayerUsername();
 
-        //Cambia la scritta del giocatore in turno
-        TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
-        tvPlayerTurn.setText(playerTurn);
 
         //Controlla se ci sono ancora giocatori nella partita
         if(coreController.getPlayers().size() != 0){
+
+            String playerTurn = coreController.getCurrentPlayerUsername();
+
+            //Cambia la scritta del giocatore in turno
+            TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
+            tvPlayerTurn.setText(playerTurn);
 
             //Risolvi stayInCellEffect
             MoveBean stayInCellBean = new MoveBean();

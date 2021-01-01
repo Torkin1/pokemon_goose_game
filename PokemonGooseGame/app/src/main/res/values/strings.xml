@@ -38,4 +38,6 @@
     <string name="cells">cells</string>
     <string name="TOAST_THROW_DICE">%s roll the dice!</string>
     <string name="DIALOG_MESSAGE_SKIP_TURN">Ops, you have to skip the turn...</string>
+    <string name="ALERT_POKEMON_FAINTED_TITLE">%s, your journey ends here</string>
+    <string name="ALERT_POKEMON_FAINTED_MSG">Your %s just fainted. You hurry to the nearest poke center, hoping in better luck next time.</string>
 </resources>
