@@ -22,8 +22,7 @@ public class Bootstrap {
     // Shared preferences names
     public final static String
             SHARED_PREF_NAME = Bootstrap.class.getName(),
-            IS_FIRST_BOOT_SHARED_PREF_NAME = "isFirstBoot",
-            CELLS_IN_A_SCREEN_SHARED_PREF_NAME = "cellsInAScreen";
+            IS_FIRST_BOOT_SHARED_PREF_NAME = "isFirstBoot";
 
     // default board params
     private final static int NUM_CELLS = 63;
@@ -63,9 +62,6 @@ public class Bootstrap {
         // Stores a default board configuration in the db
         Bootstrap.getReference().createDefaultBoard(context);
 
-        // stores how many cells fit in the screen
-        settingsEditor.putInt(CELLS_IN_A_SCREEN_SHARED_PREF_NAME, calculateCellsInAScreen(context));
-
         // saves settings
         settingsEditor.apply();
     }
@@ -88,23 +84,5 @@ public class Bootstrap {
         controller.setBoardPGParams();
         controller.setWhatYellowCellStartingIndex();
         controller.storeBoardSettings(context);
-    }
-
-    private int calculateCellsInAScreen(Context context){
-
-        int counter;
-
-        BitmapBank bitmapBank = new BitmapBank(context.getResources(), context);
-
-        int cols = (AppConstants.getInstance(context).SCREEN_WIDTH - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH -
-                AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellWidth();
-
-        int rows = (AppConstants.getInstance(context).SCREEN_HEIGHT - AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellHeight();
-
-        counter = cols*rows;
-
-        return counter;
-
-
     }
 }
