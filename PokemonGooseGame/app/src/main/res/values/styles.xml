@@ -11,7 +11,7 @@
 -->
 
 <resources>
-    <style name="GreetingsLabel">
+    <style name="GreetingsLabel" parent="Theme.MaterialComponents.DayNight">
         <item name="fontFamily">casual</item>
         <item name="android:paddingEnd">8dp</item>
         <item name="android:textSize">18sp</item>
