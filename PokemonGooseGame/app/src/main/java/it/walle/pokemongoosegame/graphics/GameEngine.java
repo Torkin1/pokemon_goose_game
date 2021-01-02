@@ -457,11 +457,11 @@ public class GameEngine {
                             type_icon = bitmapBank.scaleTypeIcon(type_icon);
                             System.out.println("Type_icon is: " + type_icon);
 
+
                             canvas.drawBitmap(type_icon,
                                     page_number_cell_path_direction,
-                                    AppConstants.getInstance(context).SCREEN_HEIGHT -
-                                            (bitmapBank.getCellWidth() - HEIGHT_MARGIN) -
-                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
+                                    graphicCell.getCellImgY() +
+                                            (bitmapBank.getCellWidth()/2 + type_icon.getHeight()),
                                     null);
 
                         }
