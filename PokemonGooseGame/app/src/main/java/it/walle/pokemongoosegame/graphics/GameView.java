@@ -26,6 +26,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,9 +70,6 @@ public class GameView extends AppCompatActivity {
 
     //the dice image
     private ImageView diceImage, up_page_arrow, down_page_arrow;
-
-    //a text view for the result fo the dice
-    TextView dice_res;
 
     //Variabile che controlla se una pedina si deve muovere oppure no.
     boolean pawnMove = true;
@@ -139,7 +138,6 @@ public class GameView extends AppCompatActivity {
         //fare FullScreen l'activity
          getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        dice_res = findViewById(R.id.text_dice_res);
         up_page_arrow = findViewById(R.id.page_up_img);
         down_page_arrow = findViewById(R.id.page_down_img);
 
@@ -330,7 +328,6 @@ public class GameView extends AppCompatActivity {
 
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
         diceImage.startAnimation(anim);
-        dice_res.setText(String.format("%d", i));
 
         try {
             diceImage.setImageResource(DrawableGetter.getReference().getDiceDrawableId(i));
@@ -379,10 +376,13 @@ public class GameView extends AppCompatActivity {
         if(coreController.getPlayers().size() != 0){
 
             String playerTurn = coreController.getCurrentPlayerUsername();
+            String coins = Integer.toString(coreController.getCurrentPlayerCoins());
 
-            //Cambia la scritta del giocatore in turno
+            //Cambiare nome e monete del giocatore in turno
             TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
+            TextView tvCoinsValue = findViewById(R.id.text_coins_value);
             tvPlayerTurn.setText(playerTurn);
+            tvCoinsValue.setText(coins);
 
             //Risolvi stayInCellEffect
             MoveBean stayInCellBean = new MoveBean();
@@ -400,9 +400,9 @@ public class GameView extends AppCompatActivity {
                 new ToastWithIcon(this,
                         ContextCompat
                                 .getDrawable(this,
-                                        R.drawable.crab_with_a_knife),
+                                        R.drawable.throw_dice_toast),
                         String.format(getString(R.string.TOAST_THROW_DICE), playerTurn),
-                        Toast.LENGTH_LONG)
+                        Toast.LENGTH_SHORT)
                         .show();
                 diceImage.setEnabled(true);
             }

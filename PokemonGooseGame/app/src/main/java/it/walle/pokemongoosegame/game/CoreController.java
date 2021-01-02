@@ -237,6 +237,16 @@ public class CoreController {
                 .getCurrentPosition();
     }
 
+    public int getCurrentPlayerCoins(){
+        return this
+                .getGame()
+                .getInGamePlayers()
+                .get(this
+                        .getGame()
+                        .getCurrentPlayerIndex())
+                .getMoney();
+    }
+
     private void changeEntityValue(Object entity, EntityParam param, int value){
         // adds the specified value to the entity param and returns the old value
         try {
