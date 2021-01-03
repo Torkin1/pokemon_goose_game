@@ -344,12 +344,14 @@ public class GameView extends AppCompatActivity {
         MoveBean moveFromCellBean = new MoveBean();
         moveFromCellBean.setPlayerUsername(ownerUsername);
         moveFromCellBean.setBoardIndex(currentPosition);
+        moveFromCellBean.setContext(this);
         CoreController.getReference().moveFromCell(moveFromCellBean);
 
         // Moves player in target cell
         MoveBean moveInCellBean = new MoveBean();
         moveInCellBean.setPlayerUsername(ownerUsername);
         moveInCellBean.setBoardIndex(currentPosition + steps);
+        moveInCellBean.setContext(this);
         CoreController.getReference().moveInCell(moveInCellBean);
 
         // updates pawn positions

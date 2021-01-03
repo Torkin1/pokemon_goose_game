@@ -1,12 +1,48 @@
 package it.walle.pokemongoosegame.entity.effect;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+
+import it.walle.pokemongoosegame.R;
+
 public abstract class Effect {
 
     private String title;                                           // The readable name of the effect
     private String description;                                     // A textual description of the effect
+    private int effect_image_dialogID;
 
 
     public abstract void doEffect(InvocationContext invocationContext);       // Implementation of the actual effect
+
+    protected Dialog generalDialog(InvocationContext invocationContext) {
+        Context context;
+        context = invocationContext.getContext();
+
+        System.out.println("The context is: " + context);
+
+        LayoutInflater dialog_layout_inflater = LayoutInflater.from(context);
+
+        LinearLayout dialog_layout = (LinearLayout) dialog_layout_inflater.inflate(R.layout.general_dialog, null);
+        TextView effect_description_dialog = dialog_layout.findViewById(R.id.dialog_description_text);
+        ImageView effect_image_dialog = dialog_layout.findViewById(R.id.dialog_image);
+
+
+        effect_description_dialog.setText(description);
+        effect_image_dialog.setImageDrawable(ContextCompat.getDrawable(context, effect_image_dialogID));
+
+
+        return new AlertDialog.Builder(context)
+                .setView(dialog_layout)
+                .setTitle(this.getTitle())
+                .create();
+    }
 
     public String getDescription() {
         return description;
@@ -27,5 +63,9 @@ public abstract class Effect {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public void setEffect_image_dialogID(int effect_image_dialogID){
+        this.effect_image_dialogID =effect_image_dialogID;
     }
 }

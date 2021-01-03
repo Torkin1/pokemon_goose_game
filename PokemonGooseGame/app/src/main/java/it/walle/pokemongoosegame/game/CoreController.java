@@ -1,5 +1,6 @@
 package it.walle.pokemongoosegame.game;
 
+import android.content.Context;
 import android.util.Log;
 
 import java.lang.reflect.InvocationTargetException;
@@ -301,7 +302,8 @@ public class CoreController {
             InvocationContext invocationContext =
                     this.setInvocationContext(
                             bean.getPlayerUsername(),
-                            newPos
+                            newPos,
+                            bean.getContext()
                     );
 
             cell.getEntryEffect().doEffect(invocationContext);
@@ -319,7 +321,8 @@ public class CoreController {
             InvocationContext invocationContext =
                     this.setInvocationContext(
                             bean.getPlayerUsername(),
-                            bean.getBoardIndex()
+                            bean.getBoardIndex(),
+                            bean.getContext()
                     );
 
             cell.getExitEffect().doEffect(invocationContext);
@@ -337,17 +340,19 @@ public class CoreController {
             InvocationContext invocationContext =
                     this.setInvocationContext(
                             bean.getPlayerUsername(),
-                            bean.getBoardIndex()
+                            bean.getBoardIndex(),
+                            bean.getContext()
                     );
 
             cell.getStayEffect().doEffect(invocationContext);
         }
     }
 
-    private InvocationContext setInvocationContext(String playerUsername, int boardIndex) {
+    private InvocationContext setInvocationContext(String playerUsername, int boardIndex, Context context) {
         InvocationContext invocationContext = new InvocationContext();
         invocationContext.setTriggerUsername(playerUsername);
         invocationContext.setWhereTriggered(boardIndex);
+        invocationContext.setContext(context);
 
         return invocationContext;
     }
