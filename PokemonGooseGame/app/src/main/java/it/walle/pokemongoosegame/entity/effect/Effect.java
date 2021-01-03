@@ -3,6 +3,7 @@ package it.walle.pokemongoosegame.entity.effect;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,17 +32,22 @@ public abstract class Effect {
 
         LinearLayout dialog_layout = (LinearLayout) dialog_layout_inflater.inflate(R.layout.general_dialog, null);
         TextView effect_description_dialog = dialog_layout.findViewById(R.id.dialog_description_text);
+        TextView effect_title_dialog = dialog_layout.findViewById(R.id.dialog_title_text);
         ImageView effect_image_dialog = dialog_layout.findViewById(R.id.dialog_image);
 
 
         effect_description_dialog.setText(description);
+        effect_title_dialog.setText(title);
         effect_image_dialog.setImageDrawable(ContextCompat.getDrawable(context, effect_image_dialogID));
 
-
-        return new AlertDialog.Builder(context)
+        Dialog dialog = new AlertDialog.Builder(context)
                 .setView(dialog_layout)
-                .setTitle(this.getTitle())
                 .create();
+
+        dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+        dialog.getWindow().setGravity(Gravity.CENTER);
+
+        return dialog;
     }
 
     public String getDescription() {

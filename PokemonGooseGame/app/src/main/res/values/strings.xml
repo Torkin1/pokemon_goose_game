@@ -41,4 +41,7 @@
     <string name="ALERT_POKEMON_FAINTED_TITLE">%s, your journey ends here</string>
     <string name="ALERT_POKEMON_FAINTED_MSG">Your %s just fainted. You hurry to the nearest poke center, hoping in better luck next time.</string>
     <string name="default_description_dialog_text">Default description</string>
+    <string name="dialog_title">Dialog Title</string>
+    <string name="win_title">You did it buddy!!</string>
+    <string name="win_description_dialog">Spend all your money on bitches</string>
 </resources>

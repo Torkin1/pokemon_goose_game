@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="players_name_dimension">25sp</dimen>
+    <dimen name="up_bar_height">55dp</dimen>
+    <dimen name="game_view_normal_text_size">15sp</dimen>
+    <dimen name="left_game_menu_dimension">90dp</dimen>
+    <dimen name="bottom_dice_distance">36dp</dimen>
+    <dimen name="up_bar_icon_dimension">25dp</dimen>
+    <dimen name="start_end_margin_distance">30dp</dimen>
+</resources>

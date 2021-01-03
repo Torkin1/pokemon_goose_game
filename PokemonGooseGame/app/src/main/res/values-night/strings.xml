@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="actual_score">Your Actual Score is:</string>
+    <string name="has_to_move_for">has to move for</string>
+    <string name="cells">cells</string>
+    <string name="default_description_dialog_text">Default description</string>
+    <string name="dialog_title">Dialog Title</string>
+    <string name="win_title">You did it buddy!!</string>
+    <string name="win_description_dialog">Spend all your money on bitches</string>
+</resources>
