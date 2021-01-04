@@ -482,7 +482,8 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 finish();
                             }
                         });
-                        GameFactory.getReference().createGame(createGameBean);
+                        GameFactory gameFactory = new GameFactory();
+                        gameFactory.createGame(createGameBean);
                     }
                 }
             });

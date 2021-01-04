@@ -18,16 +18,9 @@ public class GameFactory {
 
     private static final String TAG = GameFactory.class.getName();
     private final Game game;
-    private static GameFactory ref = null;
 
-    public static GameFactory getReference(){
-        if (ref == null){
-            ref = new GameFactory();
-        }
-        return  ref;
-    }
 
-    private GameFactory(){
+    public GameFactory(){
         this.game = new Game();
     }
 
@@ -42,7 +35,7 @@ public class GameFactory {
         player.setPokemon(pokemon);
 
         // Registers the player to the game;
-        this.game.getInGamePlayers().add(player);
+        this.game.getAllPlayers().add(player);
     }
 
     public void createGame(CreateGameBean bean) {
