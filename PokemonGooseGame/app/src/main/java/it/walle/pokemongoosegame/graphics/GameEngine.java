@@ -430,17 +430,11 @@ public class GameEngine {
                         }
 
 
-                        // Draws cell board index
-                        canvas.drawText(String.valueOf(cellIndex),
-                                (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
-                                AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 -
-                                        (bitmapBank.getCellWidth() - HEIGHT_MARGIN + AppConstants.getInstance(context).CELL_MARGIN) -
-                                        (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i,
-                                paint);
 
                         // Draws type icon, if it's available
                         int typeDrawableId = 0;
                         String id_name = board.getCells().get(cellIndex).getType();
+                        Bitmap type_icon;
                         if (id_name != null) {
 
                             try {
@@ -452,7 +446,7 @@ public class GameEngine {
                                 Log.e(TAG, e.getMessage(), e);
                             }
 
-                            Bitmap type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
+                            type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
 
                             type_icon = bitmapBank.scaleTypeIcon(type_icon);
                             System.out.println("Type_icon is: " + type_icon);
@@ -465,6 +459,14 @@ public class GameEngine {
                                     null);
 
                         }
+
+
+                        // Draws cell board index
+                        canvas.drawText(String.valueOf(cellIndex),
+                                (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
+                                graphicCell.getCellImgY() +
+                                        (bitmapBank.getCellWidth()/2 + bitmapBank.getCellWidth()/3),
+                                paint);
 
                         // Stores drawn cell in displayed cells matrix
                         displayedCells[i][colToOccupy] = graphicCell;
