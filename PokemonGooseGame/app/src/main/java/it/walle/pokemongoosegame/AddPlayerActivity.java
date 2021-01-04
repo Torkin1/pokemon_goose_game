@@ -524,10 +524,10 @@ public class AddPlayerActivity extends AppCompatActivity {
     private static final String TAG = AddPlayerActivity.class.getSimpleName();
 
     private Holder holder;                      // Holds all view elements
-    private final List<Pokemon> allPokemons;    // List of all selectable pokemons
+    private List<Pokemon> allPokemons;    // List of all selectable pokemons
     private CreateBoardBean createBoardPGBean;  //bean for create a new board
     private int currentlySelectedPokemonIndex;    // Index of holder currently pointed by bouncing head
-    private final ControllerSelectPokemon controllerSelectPokemon; // Reference to the controller
+    private ControllerSelectPokemon controllerSelectPokemon; // Reference to the controller
 
 
     public CreateBoardBean getCreateBoardPGBean() {
@@ -554,17 +554,14 @@ public class AddPlayerActivity extends AppCompatActivity {
         this.currentlySelectedPokemonIndex = currentlySelectedPokemonIndex;
     }
 
-    public AddPlayerActivity(){
-
-        this.controllerSelectPokemon = new ControllerSelectPokemon();
-        this.allPokemons = new Vector<>();
-        this.currentlySelectedPokemonIndex = RecyclerView.NO_POSITION;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_player);
+
+        this.controllerSelectPokemon = new ControllerSelectPokemon();
+        this.allPokemons = new Vector<>();
+        this.currentlySelectedPokemonIndex = RecyclerView.NO_POSITION;
 
         //fare FullScreen l'activity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);

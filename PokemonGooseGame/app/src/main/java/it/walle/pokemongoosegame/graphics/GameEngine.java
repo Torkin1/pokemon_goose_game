@@ -331,7 +331,7 @@ public class GameEngine {
                         }
 
 
-                    } catch (PlayerNotInGameException e) {
+                    } catch (PlayerNotInGameException | IllegalStateException e) {
                         // Player not in players, no need to draw its pawn
                         spriteSemaphore.release();
                     }
