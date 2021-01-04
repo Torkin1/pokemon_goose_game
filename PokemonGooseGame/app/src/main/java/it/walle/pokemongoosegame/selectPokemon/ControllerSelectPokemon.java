@@ -1,6 +1,7 @@
 package it.walle.pokemongoosegame.selectPokemon;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.android.volley.Response;
 
@@ -22,8 +23,12 @@ public class ControllerSelectPokemon{
         return addNewPlayerBeans;
     }
 
+    private static final String TAG = ControllerSelectPokemon.class.getSimpleName();
     public void setAddNewPlayerBeans(List<AddNewPlayerBean> addNewPlayerBeans) {
         this.addNewPlayerBeans = addNewPlayerBeans;
+        for (AddNewPlayerBean b : addNewPlayerBeans){
+            Log.i(TAG, "player to be added: " + b.getPlayerUsername());
+        }
     }
 
     public ControllerSelectPokemon(){

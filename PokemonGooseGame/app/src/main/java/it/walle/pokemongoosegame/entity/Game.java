@@ -1,5 +1,10 @@
 package it.walle.pokemongoosegame.entity;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +15,7 @@ public class Game{
 
     private final List<Player> inGamePlayers = new ArrayList<>();       // All players registered in the game
     private Board board;                                                // Board used in the game
-    private Integer plate = 0;                                          // The plate of the game
+    private final MutableLiveData<Integer> plate = new MutableLiveData<>(0);                                         // The plate of the game
     private int currentPlayerIndex = 0;                                 // Current player index
     private int nextPlayerIndex = currentPlayerIndex + 1;               // Next Player index
     private final List<Player> allPlayers = new ArrayList<>();          // All players currently in game
@@ -64,11 +69,15 @@ public class Game{
 
     public Board getBoard(){return this.board;}
 
-    public void setPlate(int plate){ this.plate = plate; }
+    public void setPlate(Integer plate){ this.plate.setValue(plate); }
 
-    public int getPlate(){ return this.plate; }
+    public int getPlate(){ return this.plate.getValue(); }
 
     public List<Player> getAllPlayers() {
         return allPlayers;
+    }
+
+    public void observePlate(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
+        plate.observe(lifecycleOwner, observer);
     }
 }

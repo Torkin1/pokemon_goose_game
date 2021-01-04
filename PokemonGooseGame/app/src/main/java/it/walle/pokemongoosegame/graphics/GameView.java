@@ -53,6 +53,9 @@ public class GameView extends AppCompatActivity {
     SurfaceView svBoard;
     SurfaceView svPawn;
 
+    // current Player's Coin counter
+    TextView text_coins_value = findViewById(R.id.text_coins_value);
+
     // Health points of all players in game
     private final List<LiveData<Integer>> healths = new ArrayList<>();
 
@@ -117,6 +120,20 @@ public class GameView extends AppCompatActivity {
                                 .create()
                                 .show();
 
+                    }
+                }
+            });
+        }
+
+        // Binds current player coins to text_coins_value
+        for (Player p : CoreController.getReference().getPlayers()){
+            p.observeMoney(this, new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer coins) {
+
+                    // updates view only if it's the current player
+                    if (p.getUsername().compareTo(CoreController.getReference().getCurrentPlayerUsername()) == 0){
+                        text_coins_value.setText(coins);
                     }
                 }
             });
@@ -383,9 +400,8 @@ public class GameView extends AppCompatActivity {
 
             //Cambiare nome e monete del giocatore in turno
             TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
-            TextView tvCoinsValue = findViewById(R.id.text_coins_value);
             tvPlayerTurn.setText(playerTurn);
-            tvCoinsValue.setText(coins);
+            text_coins_value.setText(coins);
 
             //Risolvi stayInCellEffect
             MoveBean stayInCellBean = new MoveBean();

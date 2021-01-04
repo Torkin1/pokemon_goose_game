@@ -1,5 +1,9 @@
 package it.walle.pokemongoosegame.entity;
 
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 
 public class Player {
@@ -9,20 +13,20 @@ public class Player {
     private Pokemon pokemon;        // Pokemon used by the player in the game.
 
     // Params nedded to play a game. Their values are likely to change during a game
-    private int money;              // Money collected by the player during game
+    private final MutableLiveData<Integer> money = new MutableLiveData<>(0);              // Money collected by the player during game
     private int idleTurns;          // Number of turns the player shall stay idle
     private int currentPosition;    // Index of cell currently occupied by the player in the board
 
     public int getMoney() {
-        return money;
+        return money.getValue();
     }
 
-    public void setMoney(int money) {
+    public void setMoney(Integer money) {
         // Negative money value is nonsense
         if (money < 0){
             money = 0;
         }
-        this.money = money;
+        this.money.setValue(money);
     }
 
     public int getNumOfIdleTurns() {
@@ -63,5 +67,9 @@ public class Player {
 
     public void setCurrentPosition(int currentPosition) {
         this.currentPosition = currentPosition;
+    }
+
+    public void observeMoney(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
+        money.observe(lifecycleOwner, observer);
     }
 }
