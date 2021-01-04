@@ -152,6 +152,7 @@ public class GameView extends AppCompatActivity {
                 svBoard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
                 // initializes game engine. The reference to GameEngine must be obtained this way at least once
+                GameEngine.reset();
                 GameEngine.getInstance(GameView.this, svBoard.getHeight(), svBoard.getWidth());
 
                 // Starts drawing threads for background, board and pawn

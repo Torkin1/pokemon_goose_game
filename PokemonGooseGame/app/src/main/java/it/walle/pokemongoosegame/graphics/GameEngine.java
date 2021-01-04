@@ -41,11 +41,11 @@ public class GameEngine {
 
     private static GameEngine ref = null;
 
-    public synchronized static GameEngine getInstance(Context context, int boardHeigth, int boardWidth) {
+    public synchronized static GameEngine getInstance(Context context, int boardHeight, int boardWidth) {
 
         // Call this at least once before using this class
         if (ref == null) {
-            ref = new GameEngine(context, boardHeigth, boardWidth);
+            ref = new GameEngine(context, boardHeight, boardWidth);
         }
         return ref;
     }
@@ -55,6 +55,12 @@ public class GameEngine {
             throw new IllegalStateException("GameEngine.getInstance(Context, svBoard) must be called at least once in your app");
         }
         return ref;
+    }
+
+    public synchronized static void reset(){
+
+        // Resets GameEngine state
+        ref = null;
     }
 
     private int currentBoardPage = 0;    // Current drawn board page
