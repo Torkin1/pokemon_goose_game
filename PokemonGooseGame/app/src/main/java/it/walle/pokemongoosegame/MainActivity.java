@@ -197,13 +197,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        TextView highScoreTxt = findViewById(R.id.highScoreTxt);
-
+//Use this for the score ad the end
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-        highScoreTxt.setText("HighScore:" + prefs.getInt("highscore", 0));
 
         ImageView play_button_img = findViewById(R.id.play_button_img);
-        Animation zoomAnim = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.zoom_in);
+        Animation zoomAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
         play_button_img.startAnimation(zoomAnim);
 
         isMute = prefs.getBoolean("isMute", false);
@@ -240,12 +238,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .setUsage(AudioAttributes.USAGE_GAME)
-                    .build();
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
         soundPool = new SoundPool.Builder()
-                    .setAudioAttributes(audioAttributes)
-                    .build();
+                .setAudioAttributes(audioAttributes)
+                .build();
 
 
         //prendere da  file

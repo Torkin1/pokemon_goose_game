@@ -22,51 +22,43 @@
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
         <include
-            layout="@layout/toolbar"
             android:id="@+id/toolbar"
-            />
+            layout="@layout/toolbar" />
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:contentDescription="@string/main_bg_description"
             android:scaleType="fitXY"
-            android:src="@drawable/bg"
-
-            />
+            android:src="@drawable/bg" />
 
         <ImageView
             android:id="@+id/play_button_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:src="@drawable/play_button_img"/>
-
-        <TextView
-            android:id="@+id/highScoreTxt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="12dp"
-            android:text="High Score"
-            android:textColor="#E4E4E4"
-            android:textSize="24sp" />
+            android:contentDescription="@string/play_button_description"
+            android:src="@drawable/play_button_img" />
 
         <ImageView
             android:id="@+id/volumeCtrl"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_margin="15dp"
+            android:contentDescription="@string/sound_button_description"
             android:src="@drawable/sound_on" />
 
         <ImageView
             android:id="@+id/config_btn"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_margin="15dp"
+            android:contentDescription="@string/config_button_description"
             android:src="@drawable/config_img" />
-
 
     </RelativeLayout>
 </androidx.drawerlayout.widget.DrawerLayout>
