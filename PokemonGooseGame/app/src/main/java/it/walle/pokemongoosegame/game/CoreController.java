@@ -50,14 +50,14 @@ public class CoreController {
 
         this.game = game;
 
+        // Adds all registered players to players currently in game
+        game.getInGamePlayers().addAll(game.getAllPlayers());
+
         // Sets all pokemons health
         for (Player p : game.getInGamePlayers()){
             p.getPokemon().setMaxHp(MAX_HEALTH_POKEMON);
             p.getPokemon().setCurrentHp(MAX_HEALTH_POKEMON);
         }
-
-        // Adds all registered players to players currently in game
-        game.getInGamePlayers().addAll(game.getAllPlayers());
     }
 
     public synchronized Board getBoard(){

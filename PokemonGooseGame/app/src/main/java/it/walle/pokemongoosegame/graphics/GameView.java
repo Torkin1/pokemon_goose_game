@@ -54,7 +54,7 @@ public class GameView extends AppCompatActivity {
     SurfaceView svPawn;
 
     // current Player's Coin counter
-    TextView text_coins_value = findViewById(R.id.text_coins_value);
+    TextView text_coins_value;
 
     // Health points of all players in game
     private final List<LiveData<Integer>> healths = new ArrayList<>();
@@ -125,6 +125,8 @@ public class GameView extends AppCompatActivity {
             });
         }
 
+        text_coins_value = findViewById(R.id.text_coins_value);
+        /*
         // Binds current player coins to text_coins_value
         for (Player p : CoreController.getReference().getPlayers()){
             p.observeMoney(this, new Observer<Integer>() {
@@ -133,11 +135,13 @@ public class GameView extends AppCompatActivity {
 
                     // updates view only if it's the current player
                     if (p.getUsername().compareTo(CoreController.getReference().getCurrentPlayerUsername()) == 0){
-                        text_coins_value.setText(coins);
+                        text_coins_value.setText(String.valueOf(coins));
                     }
                 }
             });
         }
+
+         */
 
         // Initializes surfaces
         svBackground = (SurfaceView) findViewById(R.id.svBackground);
