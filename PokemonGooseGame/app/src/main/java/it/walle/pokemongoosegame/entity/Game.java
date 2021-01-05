@@ -77,7 +77,7 @@ public class Game{
         return allPlayers;
     }
 
-    public void observePlate(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
-        plate.observe(lifecycleOwner, observer);
-    }
+        public void observePlate(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
+            plate.observe(lifecycleOwner, observer);
+        }
 }

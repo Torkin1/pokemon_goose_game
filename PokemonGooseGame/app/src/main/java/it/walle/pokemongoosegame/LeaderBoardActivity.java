@@ -79,7 +79,6 @@ public class LeaderBoardActivity extends AppCompatActivity {
             this.btnHome.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startActivity(new Intent(leaderBoardActivity, MainActivity.class));
                     finish();
                 }
             });

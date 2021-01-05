@@ -17,10 +17,11 @@ public class Win extends Effect {
 
     @Override
     public void doEffect(InvocationContext invocationContext) {
-        super.setEffect_image_dialogID(R.drawable.win_dialog_image);
+        super.setEffect_image_dialogID(R.drawable.plate);
         super.setDescription(invocationContext.getContext().getString(R.string.win_description_dialog));
         super.setTitle(invocationContext.getContext().getString(R.string.win_title));
         super.generalDialog(invocationContext).show();
+
         // Makes the trigger user to win the game
         WinnerBean winnerBean = new WinnerBean();
         winnerBean.setWinnerUsername(invocationContext.getTriggerUsername());
