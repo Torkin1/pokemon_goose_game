@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.jinatonic.confetti.CommonConfetti;
@@ -60,6 +61,11 @@ public class LeaderBoardActivity extends AppCompatActivity {
             holder.tvPosition.setText(Integer.toString(position + 1));
             holder.tvPlayerName.setText(winnerBean.getWinnerUsername());
             holder.tvScore.setText(Integer.toString(winnerBean.getScore()));
+
+            // If it's the first player it is the winner of the game
+            if (position == 0){
+                holder.ivWinner.setVisibility(View.VISIBLE);
+            }
         }
 
         @Override
@@ -72,12 +78,14 @@ public class LeaderBoardActivity extends AppCompatActivity {
             private final TextView tvPosition;
             private final TextView tvPlayerName;
             private final TextView tvScore;
+            private final ImageView ivWinner;
 
             public PositionsHolder(@NonNull View itemView) {
                 super(itemView);
                 this.tvPosition = itemView.findViewById(R.id.tvPosition);
                 this.tvPlayerName = itemView.findViewById(R.id.tvPlayerName);
                 this.tvScore = itemView.findViewById(R.id.tvScore);
+                ivWinner = itemView.findViewById(R.id.ivWinner);
             }
         }
     }

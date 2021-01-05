@@ -54,6 +54,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/ivWinner"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="12dp"
+            android:src="@drawable/aaf1b0693cc95fab78f29b399b27e15e"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPlayerName"
+            app:layout_constraintStart_toEndOf="@+id/tvPlayerName"
+            app:layout_constraintTop_toTopOf="@+id/tvPlayerName" />
+
+        <ImageView
             android:id="@+id/ivScore"
             android:layout_width="50dp"
             android:layout_height="0dp"
