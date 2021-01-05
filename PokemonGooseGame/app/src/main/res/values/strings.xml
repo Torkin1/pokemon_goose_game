@@ -48,4 +48,9 @@
     <string name="main_bg_description">Main BG</string>
     <string name="sound_button_description">sound button</string>
     <string name="config_button_description">Config button</string>
+    <string name="pokecoins_icon">PokeCoins icon</string>
+    <string name="up_arrow_description">up arrow</string>
+    <string name="down_arrow_description">Down Arrow, move the board on the below page</string>
+    <string name="dice_image_description">Dice image</string>
+    <string name="config_image_description">Config image</string>
 </resources>

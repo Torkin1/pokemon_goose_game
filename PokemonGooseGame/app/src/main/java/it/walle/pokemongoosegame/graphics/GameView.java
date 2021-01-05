@@ -54,7 +54,7 @@ public class GameView extends AppCompatActivity {
     SurfaceView svPawn;
 
     // current Player's Coin counter
-    TextView text_coins_value;
+    TextView text_coins_value, text_plate_value;
 
     // Health points of all players in game
     private final List<LiveData<Integer>> healths = new ArrayList<>();
@@ -126,7 +126,17 @@ public class GameView extends AppCompatActivity {
         }
 
         text_coins_value = findViewById(R.id.text_coins_value);
-        /*
+        text_plate_value = findViewById(R.id.text_plate_value);
+
+        //Binds current plate with the text
+        CoreController.getReference().observePlate(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                //Chage the value of the plate
+                text_plate_value.setText(String.valueOf(integer));
+            }
+        });
+
         // Binds current player coins to text_coins_value
         for (Player p : CoreController.getReference().getPlayers()){
             p.observeMoney(this, new Observer<Integer>() {
@@ -141,7 +151,7 @@ public class GameView extends AppCompatActivity {
             });
         }
 
-         */
+
 
         // Initializes surfaces
         svBackground = (SurfaceView) findViewById(R.id.svBackground);

@@ -3,6 +3,10 @@ package it.walle.pokemongoosegame.game;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.Observer;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -81,6 +85,8 @@ public class CoreController {
     }
 
     public void setPlate(Integer val){
+        if(val < 0)
+            val = 0;
         this.game.setPlate(val);
     }
 
@@ -357,4 +363,7 @@ public class CoreController {
         return invocationContext;
     }
 
+    public void observePlate(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
+        this.game.observePlate(lifecycleOwner, observer);
+    }
 }
