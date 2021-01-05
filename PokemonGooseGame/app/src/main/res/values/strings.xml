@@ -53,4 +53,6 @@
     <string name="down_arrow_description">Down Arrow, move the board on the below page</string>
     <string name="dice_image_description">Dice image</string>
     <string name="config_image_description">Config image</string>
+    <string name="TV_TITLE_ACTIVITY_LEADER_BOARD">Scoreboard</string>
+    <string name="CONTENT_DESCRIPTION_IV_POSITION_CARD">image for the next score points</string>
 </resources>

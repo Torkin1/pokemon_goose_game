@@ -15,12 +15,13 @@
         <service
             android:name=".graphics.MusicService"
             android:enabled="true" />
-<activity
+        <activity
             android:name=".AddPlayerActivity"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar"
+            android:screenOrientation="landscape"/>
+        <activity android:name=".LeaderBoardActivity"
             android:screenOrientation="landscape"
-            />
-
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar"/>
         <activity
             android:name=".Aboutus"
             android:screenOrientation="landscape"

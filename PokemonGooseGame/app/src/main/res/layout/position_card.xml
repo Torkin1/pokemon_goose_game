@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent"
+    android:scrollbarThumbHorizontal="@color/transparent"
+    android:scrollbarThumbVertical="@color/transparent"
+    app:cardBackgroundColor="@color/transparent"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="0dp"
+    app:cardPreventCornerOverlap="false"
+    app:cardUseCompatPadding="false">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        android:scrollbarThumbHorizontal="@color/transparent"
+        android:scrollbarThumbVertical="@color/transparent">
+
+        <TextView
+            android:id="@+id/tvPosition"
+            style="@style/GreetingsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/transparent"
+            android:fontFamily="sans-serif"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvPlayerName"
+            style="@style/GreetingsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="48dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/transparent"
+            android:fontFamily="sans-serif"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvScore"
+            app:layout_constraintStart_toEndOf="@id/tvPosition"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivScore"
+            android:layout_width="50dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="4dp"
+            android:contentDescription="@string/CONTENT_DESCRIPTION_IV_POSITION_CARD"
+            app:layout_constraintBottom_toBottomOf="@+id/tvPlayerName"
+            app:layout_constraintEnd_toStartOf="@+id/tvScore"
+            app:layout_constraintTop_toTopOf="@+id/tvPlayerName"
+            app:srcCompat="@drawable/score" />
+
+        <TextView
+            android:id="@+id/tvScore"
+            style="@style/GreetingsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@color/transparent"
+            android:fontFamily="sans-serif"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

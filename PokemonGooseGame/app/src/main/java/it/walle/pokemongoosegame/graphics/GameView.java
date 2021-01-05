@@ -2,6 +2,7 @@ package it.walle.pokemongoosegame.graphics;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.media.SoundPool;
@@ -31,6 +32,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.walle.pokemongoosegame.LeaderBoardActivity;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.game.CoreController;
@@ -395,10 +397,8 @@ public class GameView extends AppCompatActivity {
             CoreController.getReference().nextTurn();
             playerTurn();
         } else {
-            //termina la partita
-            CoreController.getReference().endGame();
-
-            //TODO: start leaderBoardActivity
+            startActivity(new Intent(this, LeaderBoardActivity.class));
+            finish();
         }
     }
 
