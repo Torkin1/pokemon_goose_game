@@ -57,4 +57,6 @@
     <string name="CONTENT_DESCRIPTION_IV_POSITION_CARD">image for the next score points</string>
     <string name="isMute_flag">isMute</string>
     <string name="game_flag">game</string>
+    <string name="little_hidden_treasure_description_dialog">You find some coins shining in the grass. Coins + 50</string>
+    <string name="little_hidden_treasure_title_dialog">Little hidden treasure</string>
 </resources>

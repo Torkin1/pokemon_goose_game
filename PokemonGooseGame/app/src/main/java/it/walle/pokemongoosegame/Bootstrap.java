@@ -12,6 +12,7 @@ import java.util.List;
 
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettings;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettingsBean;
+import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
 import it.walle.pokemongoosegame.graphics.AppConstants;
 import it.walle.pokemongoosegame.graphics.BitmapBank;
 
@@ -73,9 +74,13 @@ public class Bootstrap {
         yellowCellStartingIndex.add(YELLOW_CELLS_STARTING_INDEX[0]);
         yellowCellStartingIndex.add(YELLOW_CELLS_STARTING_INDEX[1]);
 
+        List<String> yellowEffectClassName = new ArrayList<>();
+        yellowEffectClassName.add(LittleHiddenTreasure.class.getName());
+
         bean.setNumCells(NUM_CELLS);
         bean.setYellowCellDelta(YELLOW_CELLS_DELTA);
         bean.setYellowCellStartingIndex(yellowCellStartingIndex);
+        bean.setYellowEffectClassName(yellowEffectClassName);
         bean.setBoardPGParamsName(BOARD_NAME);
         bean.setBoardSettingsName(BOARD_NAME);
 
@@ -83,6 +88,7 @@ public class Bootstrap {
 
         controller.setBoardPGParams();
         controller.setWhatYellowCellStartingIndex();
+        controller.setWhatYellowEffectName();
         controller.storeBoardSettings(context);
     }
 }
