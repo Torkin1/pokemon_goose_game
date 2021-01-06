@@ -55,4 +55,5 @@
     <string name="config_image_description">Config image</string>
     <string name="TV_TITLE_ACTIVITY_LEADER_BOARD">Scoreboard</string>
     <string name="CONTENT_DESCRIPTION_IV_POSITION_CARD">image for the next score points</string>
+    <string name="isMute_flag">isMute</string>
 </resources>

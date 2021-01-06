@@ -7,4 +7,5 @@
     <string name="dialog_title">Dialog Title</string>
     <string name="win_title">You did it buddy!!</string>
     <string name="win_description_dialog">Spend all your money on bitches</string>
+    <string name="isMute_flag">isMute</string>
 </resources>
