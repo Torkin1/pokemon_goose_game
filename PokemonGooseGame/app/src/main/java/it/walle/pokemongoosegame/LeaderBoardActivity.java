@@ -2,18 +2,16 @@ package it.walle.pokemongoosegame;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.Interpolator;
+import android.media.AudioAttributes;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,10 +21,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.jinatonic.confetti.CommonConfetti;
 import com.github.jinatonic.confetti.ConfettiManager;
 import com.github.jinatonic.confetti.ConfettiSource;
-import com.github.jinatonic.confetti.ConfettiView;
 import com.github.jinatonic.confetti.ConfettoGenerator;
 import com.github.jinatonic.confetti.Utils;
 import com.github.jinatonic.confetti.confetto.BitmapConfetto;
@@ -123,11 +119,30 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
     private Holder holder;
     private List<WinnerBean> winnerBeanList;
+    int sound_celebrate;
+    private SoundPool soundPool;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
+
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+
+        //inizilizzo il suono
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+
+        //prendere da  file
+
+        sound_celebrate = soundPool.load(this, R.raw.celebration_sound, 1);
+
 
 
         //variables for the personalized confetti animation
@@ -139,6 +154,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
         Bitmap pokeStar1 = BitmapFactory.decodeResource(this.getResources(), R.drawable.poke_star_1);
         Bitmap pokeStar2 = BitmapFactory.decodeResource(this.getResources(), R.drawable.poke_star_2);
         Bitmap pokeStar3 = BitmapFactory.decodeResource(this.getResources(), R.drawable.poke_star_2);
+        Bitmap specialcoin = BitmapFactory.decodeResource(this.getResources(), R.drawable.special_coin);
 
         //creating a list of Bitmaps
         ArrayList<Bitmap> bitmapArrayList = new ArrayList<Bitmap>();
@@ -150,6 +166,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
         bitmapArrayList.add(pokeStar1);
         bitmapArrayList.add(pokeStar2);
         bitmapArrayList.add(pokeStar3);
+        bitmapArrayList.add(specialcoin);
 
 
         final List<Bitmap> allPossibleConfetti = bitmapArrayList;
@@ -191,6 +208,8 @@ public class LeaderBoardActivity extends AppCompatActivity {
                         .animate();
 
 
+                if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                    soundPool.play(sound_celebrate, 1, 1, 0, 0, 1);
                 }
             });
 

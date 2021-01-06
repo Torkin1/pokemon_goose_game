@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
+import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
@@ -68,6 +69,7 @@ public class GameView extends AppCompatActivity {
     //usato per tenere i dati del gioco, si aggiorna ogni nuvoa versione!
     private SharedPreferences prefs;
 
+
     //the dice image
     private ImageView diceImage, up_page_arrow, down_page_arrow;
 
@@ -81,6 +83,22 @@ public class GameView extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+
+        prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+
+        //inizilizzo il suono
+        AudioAttributes audioAttributes = new AudioAttributes.Builder()
+                .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                .setUsage(AudioAttributes.USAGE_GAME)
+                .build();
+
+        soundPool = new SoundPool.Builder()
+                .setAudioAttributes(audioAttributes)
+                .build();
+
+
+        //prendere da  file
+        sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
         // binds players pokemon healths to observers
         for (Player p : CoreController.getReference().getPlayers()){
@@ -264,6 +282,8 @@ public class GameView extends AppCompatActivity {
                 diceImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
 
                         // Rolls dice
                         ThrowDicesBean throwDicesBean = new ThrowDicesBean();

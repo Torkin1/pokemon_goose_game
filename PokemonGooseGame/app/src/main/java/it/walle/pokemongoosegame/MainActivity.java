@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
         super.onCreate(savedInstanceState);
 
         Bootstrap.getReference().doOnBoot(this);
@@ -74,8 +74,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-
-        System.out.println("The is Mute prefs is " + prefs.getBoolean(getString(R.string.isMute_flag), true));
         setContentView(R.layout.activity_main);
 
 
@@ -140,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_home:
 
                         Intent home = new Intent(MainActivity.this, MainActivity.class);
-                        if (!prefs.getBoolean(getString(R.string.isMute_flag), false))
+                        if (prefs.getBoolean(getString(R.string.isMute_flag), false))
                             soundPool.play(sound_back, 1, 1, 0, 0, 1);
                         startActivity(home);
                         rotateConfigImg();
@@ -150,14 +148,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_info:
 
                         Intent info = new Intent(MainActivity.this, Info.class);
-                        if (!prefs.getBoolean(getString(R.string.isMute_flag), false))
+                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(info);
                         break;
 
                     case R.id.nav_AboutUs:
                         Intent aboutUs = new Intent(MainActivity.this, Aboutus.class);
-                        if (!prefs.getBoolean(getString(R.string.isMute_flag), false))
+                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(aboutUs);
                         break;
@@ -175,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_share: {
 
                         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                        if (!prefs.getBoolean(getString(R.string.isMute_flag), false))
+                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
 
 
@@ -201,8 +199,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                play_button_img.clearAnimation();
 //                zoomAnim.cancel();
 //                zoomAnim.reset();
-                final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-                if (!prefs.getBoolean(getString(R.string.isMute_flag), false))
+                final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+                if (prefs.getBoolean(getString(R.string.isMute_flag), true))
                     soundPool.play(sound_click, 1, 1, 0, 0, 1);
                 startActivity(new Intent(MainActivity.this, AddPlayerActivity.class));
 
@@ -255,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
         //se non è muto metto gli effetti del suono
-        if (!prefs.getBoolean(getString(R.string.isMute_flag), false))
+        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
     }
 
@@ -265,8 +263,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         soundEffects = new SoundEffects(this);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
-            final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-            if (!prefs.getBoolean(getString(R.string.isMute_flag), false))
+            final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+            if (prefs.getBoolean(getString(R.string.isMute_flag), true))
                 soundPool.play(sound_back, 1, 1, 0, 0, 1);
             rotateConfigImg();
         } else
