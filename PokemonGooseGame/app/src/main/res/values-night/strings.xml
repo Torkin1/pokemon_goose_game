@@ -13,4 +13,5 @@
     <string name="dialog_quit_message">You are sure you want to quit?</string>
     <string name="dialog_quit_pos_button_text">Yes, quit!</string>
     <string name="button_cancel_text">Cancel</string>
+    <string name="the_tribute_of_the_pious_yellow_effect_description">You found a legendary pokemon shrine in the woods. You must pay 10 coins to the plate, else your pokemon shall suffer it\'s godly wrath, losing 10% health</string>
 </resources>

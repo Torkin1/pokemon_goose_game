@@ -5,7 +5,6 @@ import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.game.CoreController;
 
 public class ItsATrap extends YellowEffect {
-    int deathHp = 0;
     @Override
     public void doEffect(InvocationContext invocationContext) {
         super.setEffect_image_dialogID(R.drawable.its_a_trap);
@@ -17,12 +16,7 @@ public class ItsATrap extends YellowEffect {
 
         int current_hp = player.getPokemon().getCurrentHp();
         int malus_hp = current_hp - player.getPokemon().getMaxHp() * 20 / 100;
-        if (malus_hp > deathHp)
-            player.getPokemon().setCurrentHp(malus_hp);
-
-        else
-            player.getPokemon().setCurrentHp(deathHp);
-
+        player.getPokemon().setCurrentHp(malus_hp);
 
     }
 }

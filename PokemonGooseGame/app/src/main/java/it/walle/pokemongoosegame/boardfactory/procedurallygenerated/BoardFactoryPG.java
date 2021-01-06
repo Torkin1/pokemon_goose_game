@@ -27,7 +27,6 @@ import it.walle.pokemongoosegame.entity.effect.Win;
 import it.walle.pokemongoosegame.entity.effect.YellowEffect;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
-import it.walle.pokemongoosegame.utils.RangeMapper;
 
 public class BoardFactoryPG extends BoardFactory {
 

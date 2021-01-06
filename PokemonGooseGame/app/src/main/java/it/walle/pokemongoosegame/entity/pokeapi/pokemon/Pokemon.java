@@ -78,4 +78,11 @@ public class Pokemon{
     public void observeCurrentHp(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
         this.currentHp.observe(lifecycleOwner, observer);
     }
+
+    public void heal(int healAmount){
+        if(healAmount + getCurrentHp() > getMaxHp())
+            setCurrentHp(getMaxHp());
+        else
+            setCurrentHp(healAmount + getCurrentHp());
+    }
 }

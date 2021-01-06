@@ -67,4 +67,6 @@
     <string name="button_cancel_text">Cancel</string>
     <string name="its_a_trap_yellow_effect_title">It\'s a trap</string>
     <string name="its_a_trap_yellow_effect_description">The team rocket ambushes you! You manage to escape after an hard fight. -20% health</string>
+    <string name="the_tribute_of_the_pious_yellow_effect_title">The tribute of the pious</string>
+    <string name="the_tribute_of_the_pious_yellow_effect_description">You found a legendary pokemon shrine in the woods. You must pay 10 coins to the plate, else your pokemon shall suffer it\'s godly wrath, losing 10% health</string>
 </resources>
