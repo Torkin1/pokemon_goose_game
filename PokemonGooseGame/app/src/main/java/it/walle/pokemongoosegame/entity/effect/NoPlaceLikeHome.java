@@ -14,7 +14,13 @@ public class NoPlaceLikeHome extends YellowEffect {
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
 
-        int plus_hp = player.getPokemon().getMaxHp() / 10;
-        player.getPokemon().heal(plus_hp);
+        for (int i = 0; i < player.getPokemon().getTypes().length; i++) {
+            if (player.getPokemon().getTypes()[i].toString().
+                    compareTo(CoreController.getReference().getBoard().getCells().
+                            get(invocationContext.getWhereTriggered()).getType()) == 0) {
+                int plus_hp = player.getPokemon().getMaxHp() / 10;
+                player.getPokemon().heal(plus_hp);
+            }
+        }
     }
 }
