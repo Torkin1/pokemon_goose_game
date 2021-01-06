@@ -16,7 +16,7 @@ public class ItsATrap extends YellowEffect {
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
 
         int current_hp = player.getPokemon().getCurrentHp();
-        int malus_hp = current_hp - current_hp * 20 / 100;
+        int malus_hp = current_hp - player.getPokemon().getMaxHp() * 20 / 100;
         if (malus_hp > deathHp)
             player.getPokemon().setCurrentHp(malus_hp);
 
