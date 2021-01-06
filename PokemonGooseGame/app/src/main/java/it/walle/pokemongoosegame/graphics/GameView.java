@@ -96,7 +96,7 @@ public class GameView extends AppCompatActivity {
 
         prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
 
-//inizilizzo il suono
+        //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_GAME)
@@ -108,7 +108,8 @@ public class GameView extends AppCompatActivity {
 
         //prendere da  file
         sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
-        sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
+        sound_click = soundPool.load(this, R.raw.teleport_sound, 1);
+        //Care always with this, where they're declared and started!
 
         //BIND Music Service
         doBindService();

@@ -126,7 +126,6 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
     private Holder holder;
     private List<WinnerBean> winnerBeanList;
-    int sound_celebrate;
     private SoundPool soundPool;
     HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
@@ -155,8 +154,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
         //prendere da  file
         sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
-        sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
-        sound_celebrate = soundPool.load(this, R.raw.click_sound, 1);
+        sound_click = soundPool.load(this, R.raw.celebration_sound_effect, 1);
 
         //BIND Music Service
         doBindService();
@@ -250,7 +248,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
 
                 if (prefs.getBoolean(getString(R.string.isMute_flag), true))
-                    soundPool.play(sound_celebrate, 1, 1, 0, 0, 1);
+                    soundPool.play(sound_click, 1, 1, 0, 0, 1);
                 }
             });
 

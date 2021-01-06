@@ -472,6 +472,10 @@ public class AddPlayerActivity extends AppCompatActivity {
                         )).show();
                     }
                     else {
+                        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+
+                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
 
                         // Creates a new game
                         CreateGameBean createGameBean = new CreateGameBean();
@@ -622,7 +626,7 @@ public class AddPlayerActivity extends AppCompatActivity {
 
         //prendere da  file
         sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
-        sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
+        sound_click = soundPool.load(this, R.raw.start_sound, 1);
 
         //BIND Music Service
         doBindService();
