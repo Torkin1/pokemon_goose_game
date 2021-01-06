@@ -75,10 +75,10 @@ public class CreateBoardSettings {
     }
 
     public void setWhatYellowEffectName(){
-        for (int i = 0; i < bean.getYellowEffectClassName().size(); i++){
+        for (int i = 0; i < bean.getYellowEffectClassName().length; i++){
             WhatYellowEffectName whatYellowEffectName = new WhatYellowEffectName();
 
-            whatYellowEffectName.setYellowEffectClassName(bean.getYellowEffectClassName().get(i));
+            whatYellowEffectName.setYellowEffectClassName(bean.getYellowEffectClassName()[i]);
             whatYellowEffectName.setBoardSettingsName(bean.getBoardSettingsName());
 
             whatYellowEffectNameList.add(whatYellowEffectName);

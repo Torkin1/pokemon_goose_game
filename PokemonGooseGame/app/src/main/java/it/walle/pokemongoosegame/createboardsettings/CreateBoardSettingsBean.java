@@ -10,7 +10,7 @@ public class CreateBoardSettingsBean {
     private List<Integer> yellowCellStartingIndex;      //Starting index of the yellow cells
     private List<String> blueCellName;
     private List<Integer> blueCellIndex;
-    private List<String> yellowEffectClassName;         //The name of the class of the corresponding effect
+    private String[] yellowEffectClassName;         //The name of the class of the corresponding effect
 
     public int getNumCells() {
         return numCells;
@@ -68,11 +68,11 @@ public class CreateBoardSettingsBean {
         this.blueCellIndex = blueCellIndex;
     }
 
-    public List<String> getYellowEffectClassName() {
+    public String[] getYellowEffectClassName() {
         return yellowEffectClassName;
     }
 
-    public void setYellowEffectClassName(List<String> yellowEffectClassName) {
+    public void setYellowEffectClassName(String[] yellowEffectClassName) {
         this.yellowEffectClassName = yellowEffectClassName;
     }
 }

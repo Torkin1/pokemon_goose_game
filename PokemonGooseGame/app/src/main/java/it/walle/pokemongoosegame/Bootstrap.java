@@ -13,6 +13,7 @@ import java.util.List;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettings;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettingsBean;
 import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
+import it.walle.pokemongoosegame.entity.effect.NoPlaceLikeHome;
 import it.walle.pokemongoosegame.graphics.AppConstants;
 import it.walle.pokemongoosegame.graphics.BitmapBank;
 
@@ -30,6 +31,11 @@ public class Bootstrap {
     private final static int YELLOW_CELLS_DELTA = 9;
     private final static int[] YELLOW_CELLS_STARTING_INDEX = {5, 9};
     private final static String BOARD_NAME = "Default";
+    private final static String[] YELLOW_EFFECT_CLASS_NAME = {
+            LittleHiddenTreasure.class.getName(),
+            NoPlaceLikeHome.class.getName()
+
+            };
 
     private static Bootstrap ref = null;
 
@@ -74,13 +80,13 @@ public class Bootstrap {
         yellowCellStartingIndex.add(YELLOW_CELLS_STARTING_INDEX[0]);
         yellowCellStartingIndex.add(YELLOW_CELLS_STARTING_INDEX[1]);
 
-        List<String> yellowEffectClassName = new ArrayList<>();
-        yellowEffectClassName.add(LittleHiddenTreasure.class.getName());
+
+
 
         bean.setNumCells(NUM_CELLS);
         bean.setYellowCellDelta(YELLOW_CELLS_DELTA);
         bean.setYellowCellStartingIndex(yellowCellStartingIndex);
-        bean.setYellowEffectClassName(yellowEffectClassName);
+        bean.setYellowEffectClassName(YELLOW_EFFECT_CLASS_NAME);
         bean.setBoardPGParamsName(BOARD_NAME);
         bean.setBoardSettingsName(BOARD_NAME);
 
