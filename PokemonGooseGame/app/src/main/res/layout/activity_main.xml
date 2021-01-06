@@ -49,7 +49,7 @@
             android:layout_alignParentEnd="true"
             android:layout_margin="15dp"
             android:contentDescription="@string/sound_button_description"
-            android:src="@drawable/sound_on" />
+            android:src="@drawable/sound_off" />
 
         <ImageView
             android:id="@+id/config_btn"
