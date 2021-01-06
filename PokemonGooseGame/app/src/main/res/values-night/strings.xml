@@ -9,4 +9,8 @@
     <string name="win_description_dialog">Spend all your money on bitches</string>
     <string name="isMute_flag">isMute</string>
     <string name="no_place_like_home_yellow_effect">If your pokemon is of the same type of this cell, it heals 10%hp</string>
+    <string name="dialog_quit_title">Quit?</string>
+    <string name="dialog_quit_message">You are sure you want to quit?</string>
+    <string name="dialog_quit_pos_button_text">Yes, quit!</string>
+    <string name="button_cancel_text">Cancel</string>
 </resources>

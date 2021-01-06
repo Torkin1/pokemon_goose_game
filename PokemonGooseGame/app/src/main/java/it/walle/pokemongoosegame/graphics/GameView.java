@@ -1,13 +1,18 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.PixelFormat;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.PowerManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -25,9 +30,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import it.walle.pokemongoosegame.HomeWatcher;
 import it.walle.pokemongoosegame.LeaderBoardActivity;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.entity.Player;
@@ -57,7 +64,10 @@ public class GameView extends AppCompatActivity {
     // Health points of all players in game
     private final List<LiveData<Integer>> healths = new ArrayList<>();
 
-    //per gli effetti sonori
+    HomeWatcher mHomeWatcher;
+    private boolean mIsBound = false;
+    private MusicService mServ;
+    //for sound effects
     private SoundPool soundPool;
 
     //sound effect
@@ -86,28 +96,53 @@ public class GameView extends AppCompatActivity {
 
         prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
 
-        //inizilizzo il suono
+//inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_GAME)
                 .build();
-
         soundPool = new SoundPool.Builder()
                 .setAudioAttributes(audioAttributes)
                 .build();
 
 
         //prendere da  file
+        sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
         sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
+        //BIND Music Service
+        doBindService();
+        Intent music = new Intent();
+        music.setClass(this, MusicService.class);
+        startService(music);
+
+        //Start HomeWatcher
+        mHomeWatcher = new HomeWatcher(this);
+        mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
+            @Override
+            public void onHomePressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+
+            @Override
+            public void onHomeLongPressed() {
+                if (mServ != null) {
+                    mServ.pauseMusic();
+                }
+            }
+        });
+        mHomeWatcher.startWatch();
+
         // binds players pokemon healths to observers
-        for (Player p : CoreController.getReference().getPlayers()){
+        for (Player p : CoreController.getReference().getPlayers()) {
             p.getPokemon().observeCurrentHp(this, new Observer<Integer>() {
                 @Override
                 public void onChanged(Integer currentHp) {
 
                     // If pokemon health reaches 0 or below, the player owning the pokemon loses the game
-                    if (currentHp <= 0){
+                    if (currentHp <= 0) {
                         LoserBean bean = new LoserBean();
                         bean.setPlayerUsername(p.getUsername());
                         CoreController.getReference().chooseLoser(bean);
@@ -125,7 +160,7 @@ public class GameView extends AppCompatActivity {
                                         GameEngine.getInstance().getPawnSemaphore().release();
 
                                         // If the loser is the current player, proceeds to next player
-                                        if (CoreController.getReference().getCurrentPlayerUsername().compareTo(p.getUsername() ) == 0 && CoreController.getReference().getPlayers().size() > 1){
+                                        if (CoreController.getReference().getCurrentPlayerUsername().compareTo(p.getUsername()) == 0 && CoreController.getReference().getPlayers().size() > 1) {
                                             CoreController.getReference().nextTurn();
                                             playerTurn();
                                         }
@@ -153,19 +188,18 @@ public class GameView extends AppCompatActivity {
         });
 
         // Binds current player coins to text_coins_value
-        for (Player p : CoreController.getReference().getPlayers()){
+        for (Player p : CoreController.getReference().getPlayers()) {
             p.observeMoney(this, new Observer<Integer>() {
                 @Override
                 public void onChanged(Integer coins) {
 
                     // updates view only if it's the current player
-                    if (p.getUsername().compareTo(CoreController.getReference().getCurrentPlayerUsername()) == 0){
+                    if (p.getUsername().compareTo(CoreController.getReference().getCurrentPlayerUsername()) == 0) {
                         text_coins_value.setText(String.valueOf(coins));
                     }
                 }
             });
         }
-
 
 
         // Initializes surfaces
@@ -296,7 +330,7 @@ public class GameView extends AppCompatActivity {
                         rotateDice(res);
 
                         //Controlla se il dado doveva essere lanciato per muovere la pedina
-                        if(pawnMove){
+                        if (pawnMove) {
                             //Disabilita un secondo lancio del dado che fa muovere la pedina in uno stesso turno
                             diceImage.setEnabled(false);
 
@@ -342,13 +376,27 @@ public class GameView extends AppCompatActivity {
 
         killSurfaceUpdaterThreads();
         super.onPause();
+
+        //Detect idle screen
+        PowerManager pm = (PowerManager)
+                getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = false;
+        if (pm != null) {
+            isScreenOn = pm.isScreenOn();
+        }
+
+        if (!isScreenOn) {
+            if (mServ != null) {
+                mServ.pauseMusic();
+            }
+        }
     }
 
-    private void killSurfaceUpdaterThreads(){
+    private void killSurfaceUpdaterThreads() {
 
         // kills surface updater threads
-        for (SurfaceUpdaterThread t : surfaceUpdaterThreads){
-            if (t.isRunning()){
+        for (SurfaceUpdaterThread t : surfaceUpdaterThreads) {
+            if (t.isRunning()) {
                 t.setIsRunning(false);
                 t.interrupt();
             }
@@ -421,7 +469,7 @@ public class GameView extends AppCompatActivity {
 
 
         //settare il turno successivo e far giocare il player successivo
-        if (CoreController.getReference().getPlayers().size() != 0){
+        if (CoreController.getReference().getPlayers().size() != 0) {
             CoreController.getReference().nextTurn();
             playerTurn();
         } else {
@@ -430,12 +478,12 @@ public class GameView extends AppCompatActivity {
         }
     }
 
-    private void playerTurn(){
+    private void playerTurn() {
         CoreController coreController = CoreController.getReference();
 
 
         //Controlla se ci sono ancora giocatori nella partita
-        if(coreController.getPlayers().size() != 0){
+        if (coreController.getPlayers().size() != 0) {
 
             String playerTurn = coreController.getCurrentPlayerUsername();
             String coins = Integer.toString(coreController.getCurrentPlayerCoins());
@@ -455,7 +503,7 @@ public class GameView extends AppCompatActivity {
             SkipTurnBean skipTurnBean = new SkipTurnBean();
             skipTurnBean.setPlayerUsername(playerTurn);
             coreController.skipTurn(skipTurnBean);
-            if(!skipTurnBean.isHasSkipped()){
+            if (!skipTurnBean.isHasSkipped()) {
 
                 //Chiedi all'utente di lanciare il dado ed abilita il lancio
                 new ToastWithIcon(this,
@@ -466,8 +514,7 @@ public class GameView extends AppCompatActivity {
                         Toast.LENGTH_SHORT)
                         .show();
                 diceImage.setEnabled(true);
-            }
-            else{
+            } else {
                 new AlertDialog.Builder(this)
                         .setTitle(playerTurn)
                         .setMessage(R.string.DIALOG_MESSAGE_SKIP_TURN)
@@ -485,6 +532,80 @@ public class GameView extends AppCompatActivity {
 
     }
 
+    //Bind/Unbind music service
 
+    private ServiceConnection Scon = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName name, IBinder
+                binder) {
+            mServ = ((MusicService.ServiceBinder) binder).getService();
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mServ = null;
+        }
+    };
+
+    void doBindService() {
+        bindService(new Intent(this, MusicService.class),
+                Scon, Context.BIND_AUTO_CREATE);
+        mIsBound = true;
+    }
+
+    void doUnbindService() {
+        if (mIsBound) {
+            unbindService(Scon);
+            mIsBound = false;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (mServ != null) {
+            mServ.resumeMusic();
+        }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
+        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+            soundPool.play(sound_back, 1, 1, 0, 0, 1);
+        (new AlertDialog.Builder(GameView.this))
+                .setTitle(R.string.dialog_quit_title)
+                .setMessage(R.string.dialog_quit_message)
+                .setPositiveButton(getString(R.string.dialog_quit_pos_button_text), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        GameView.super.onBackPressed();
+                    }
+                })
+                .setNegativeButton(getString(R.string.button_cancel_text), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                })
+                .create()
+                .show();
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //UNBIND music service
+        doUnbindService();
+        Intent music = new Intent();
+        music.setClass(this, MusicService.class);
+        mHomeWatcher.stopWatch();
+        stopService(music);
+
+    }
 }
 

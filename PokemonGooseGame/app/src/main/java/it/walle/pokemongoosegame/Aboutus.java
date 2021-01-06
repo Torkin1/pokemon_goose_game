@@ -51,7 +51,7 @@ public class Aboutus extends AppCompatActivity {
         //get preferences
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
 
-        boolean isMute = prefs.getBoolean("isMute", false);
+        boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -184,7 +184,7 @@ public class Aboutus extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-        if (!prefs.getBoolean("isMute", false))
+        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
         super.onBackPressed();
     }

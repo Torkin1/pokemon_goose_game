@@ -135,7 +135,7 @@ public class Info extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-        if (!prefs.getBoolean("isMute", false))
+        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
         super.onBackPressed();
     }
