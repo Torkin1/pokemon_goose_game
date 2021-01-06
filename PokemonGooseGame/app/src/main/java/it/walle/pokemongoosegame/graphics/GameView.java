@@ -182,7 +182,7 @@ public class GameView extends AppCompatActivity {
         svPawn.getHolder().setFormat(PixelFormat.TRANSPARENT);
 
         //fare FullScreen l'activity
-         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         up_page_arrow = findViewById(R.id.page_up_img);
         down_page_arrow = findViewById(R.id.page_down_img);
@@ -332,7 +332,19 @@ public class GameView extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        killSurfaceUpdaterThreads();
+        super.onStop();
+    }
+
+    @Override
     protected void onPause() {
+
+        killSurfaceUpdaterThreads();
+        super.onPause();
+    }
+
+    private void killSurfaceUpdaterThreads(){
 
         // kills surface updater threads
         for (SurfaceUpdaterThread t : surfaceUpdaterThreads){
@@ -342,7 +354,8 @@ public class GameView extends AppCompatActivity {
             }
         }
 
-        super.onPause();
+        // Clears references to killed threads
+        surfaceUpdaterThreads.clear();
     }
 
     private void updateArrowVisibility() {
