@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
-    private boolean isMute;
+    private boolean isMute = true;
 
     // first boot shared preference name
     private final String firstBootSharedPrefName = "isFirstBoot";
@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //BIND Music Service
         doBindService();
         Intent music = new Intent();
-        music.setClass(this, MusicService.class);
+        music.setClass(context, MusicService.class);
         if (isMute)
             startService(music);
 
