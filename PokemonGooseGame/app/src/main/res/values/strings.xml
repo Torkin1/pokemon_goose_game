@@ -65,4 +65,6 @@
     <string name="dialog_quit_message">You are sure you want to quit?</string>
     <string name="dialog_quit_pos_button_text">Yes, quit!</string>
     <string name="button_cancel_text">Cancel</string>
+    <string name="its_a_trap_yellow_effect_title">It\'s a trap</string>
+    <string name="its_a_trap_yellow_effect_description">The team rocket ambushes you! You manage to escape after an hard fight. -20% health</string>
 </resources>

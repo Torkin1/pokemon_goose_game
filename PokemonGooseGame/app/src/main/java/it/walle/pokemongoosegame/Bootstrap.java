@@ -12,6 +12,7 @@ import java.util.List;
 
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettings;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettingsBean;
+import it.walle.pokemongoosegame.entity.effect.ItsATrap;
 import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
 import it.walle.pokemongoosegame.entity.effect.NoPlaceLikeHome;
 import it.walle.pokemongoosegame.graphics.AppConstants;
@@ -33,7 +34,8 @@ public class Bootstrap {
     private final static String BOARD_NAME = "Default";
     private final static String[] YELLOW_EFFECT_CLASS_NAME = {
             LittleHiddenTreasure.class.getName(),
-            NoPlaceLikeHome.class.getName()
+            NoPlaceLikeHome.class.getName(),
+            ItsATrap.class.getName()
 
             };
 
