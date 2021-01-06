@@ -335,8 +335,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onPause() {
+        stopMusic();
         super.onPause();
 
+
+    }
+
+    @Override
+    protected void onStop() {
+        stopMusic();
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //UNBIND music service
+        doUnbindService();
+        Intent music = new Intent();
+        music.setClass(this, MusicService.class);
+        mHomeWatcher.stopWatch();
+        stopService(music);
+
+    }
+
+    private void stopMusic(){
         //Detect idle screen
         PowerManager pm = (PowerManager)
                 getSystemService(Context.POWER_SERVICE);
@@ -350,19 +374,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 mServ.pauseMusic();
             }
         }
-    }
-
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        //UNBIND music service
-        doUnbindService();
-        Intent music = new Intent();
-        music.setClass(this, MusicService.class);
-        mHomeWatcher.stopWatch();
-        stopService(music);
-
     }
 }

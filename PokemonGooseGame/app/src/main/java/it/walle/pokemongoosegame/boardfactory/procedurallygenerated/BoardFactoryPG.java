@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 import it.walle.pokemongoosegame.boardfactory.BoardFactory;
@@ -26,6 +27,7 @@ import it.walle.pokemongoosegame.entity.effect.Win;
 import it.walle.pokemongoosegame.entity.effect.YellowEffect;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
+import it.walle.pokemongoosegame.utils.RangeMapper;
 
 public class BoardFactoryPG extends BoardFactory {
 
@@ -57,8 +59,6 @@ public class BoardFactoryPG extends BoardFactory {
     }
 
     private void createBoardProcedurallyGenerated(CreateBoardPGBean bean) throws UnableToSetTypesException {
-
-
 
         Board board = new Board();
         List<BlueCell> blueCells = new ArrayList<>();
@@ -148,7 +148,7 @@ public class BoardFactoryPG extends BoardFactory {
                         while (!bean.getBoardSettings().getYellowEffectNames().isEmpty() && !chosen) {
 
                             // gets a random yellow effect name from the available ones
-                            yellowEffectRandomIndex  = (int) Math.floor(Math.random() * availableYellowEffectNames.size());
+                            yellowEffectRandomIndex  = new Random().nextInt(availableYellowEffectNames.size());
                             randomYellowEffectClassName = availableYellowEffectNames
                                     .get(yellowEffectRandomIndex)
                                     .getYellowEffectClassName();
@@ -203,9 +203,7 @@ public class BoardFactoryPG extends BoardFactory {
                             .setType(
                                     pokemonTypes
                                             .get(
-                                                    (int) Math.floor(
-                                                            Math.random() * pokemonTypes.size()
-                                                    )
+                                                    new Random().nextInt(pokemonTypes.size())
                                             )
                             );
                 }

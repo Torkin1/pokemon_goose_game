@@ -11,6 +11,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Random;
 
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
@@ -188,7 +189,9 @@ public class CoreController {
         winnerBeans.sort(new Comparator<WinnerBean>() {
             @Override
             public int compare(WinnerBean o1, WinnerBean o2) {
-                return o1.getScore() - o2.getScore();
+
+                int result = o1.getScore() - o2.getScore();
+                return - result;
             }
         });
 
@@ -206,7 +209,7 @@ public class CoreController {
         // Generates a number of casual values using params specified in bean
         ArrayList<Integer> exitNumbers = new ArrayList<>();
         for(int i = 0; i < bean.getNumOfDices(); i++){
-            exitNumbers.add(i, (int) (Math.random() * bean.getNumOfFaces() + 1));
+            exitNumbers.add(i, new Random().nextInt(6) + 1);
         }
         bean.setExitNumbers(exitNumbers);
     }
