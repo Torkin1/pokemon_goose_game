@@ -85,6 +85,18 @@ public class CoreController {
         return this.game.getPlate();
     }
 
+    public void addToPlate(int money){
+        // Adds a positive value to the plate
+        game.setPlate(getPlate() + Math.abs(money));
+    }
+
+    public int drainPlate(){
+        // returns content of plate and resets it
+        int res = game.getPlate();
+        game.setPlate(0);
+        return res;
+    }
+
     public void setPlate(Integer val){
         if(val < 0)
             val = 0;
@@ -121,8 +133,12 @@ public class CoreController {
 
     public void chooseLoser(LoserBean bean){
 
-        // Removes player from in game players and adds it to losers list
         Player loser = getPlayerByUsername(bean.getPlayerUsername());
+
+        // Puts all player coins to the plate
+        addToPlate(loser.getMoney());
+
+        // Removes player from in game players and adds it to losers list
         game.getInGamePlayers().remove(loser);
         game.getLosers().add(loser);
     }
@@ -163,10 +179,7 @@ public class CoreController {
                 .getPokemon()
                 .getCurrentHp();
         int scoreMoney = player.getMoney();
-        int scorePlate = this.game.getPlate();
-
-        // Resets plate
-        this.setPlate(0);
+        int scorePlate = drainPlate();
 
         return scoreHp + scoreMoney + scorePlate;
     }
