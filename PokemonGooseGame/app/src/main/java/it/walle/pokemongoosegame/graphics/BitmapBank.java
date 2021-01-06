@@ -140,4 +140,8 @@ public class BitmapBank {
     public Bitmap scaleTypeIcon(Bitmap typeIcon){
         return Bitmap.createScaledBitmap(typeIcon, cell.getWidth()/5, cell.getHeight()/5, false);
     }
+
+    public Bitmap scaleConfetti(Bitmap confetti_img){
+        return Bitmap.createScaledBitmap(confetti_img, 30,30,false);
+    }
 }

@@ -50,14 +50,14 @@ public class GameEngine {
         return ref;
     }
 
-    public synchronized static GameEngine getInstance(){
-        if (ref == null){
+    public synchronized static GameEngine getInstance() {
+        if (ref == null) {
             throw new IllegalStateException("GameEngine.getInstance(Context, svBoard) must be called at least once in your app");
         }
         return ref;
     }
 
-    public synchronized static void reset(){
+    public synchronized static void reset() {
 
         // Resets GameEngine state
         ref = null;
@@ -306,12 +306,12 @@ public class GameEngine {
 
                             //draw Border
                             float borderLeft, borderTop, borderRight, borderBottom;
-                            borderLeft = x - (float)hbar_width / 2;
-                            borderRight = x + (float)hbar_width / 2;
+                            borderLeft = x - (float) hbar_width / 2;
+                            borderRight = x + (float) hbar_width / 2;
                             borderBottom = y + distanceToPlayer;
                             borderTop = borderBottom - hbar_height;
 
-                            canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2), borderTop, borderRight + (float)bitmapBank.getCellHeight() / 2, borderBottom, borderPaint);
+                            canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2), borderTop, borderRight + (float) bitmapBank.getCellHeight() / 2, borderBottom, borderPaint);
 
                             // Draw health
                             float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
@@ -322,7 +322,7 @@ public class GameEngine {
                             healthBottom = borderBottom - 2 * margin;
                             healthTop = healthBottom - healthHeight;
 
-                            canvas.drawRect(healthLeft + (float)bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float)bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
+                            canvas.drawRect(healthLeft + (float) bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float) bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
 
                         } else {
 
@@ -436,17 +436,15 @@ public class GameEngine {
                         }
 
 
-
                         // Draws type icon, if it's available
                         int typeDrawableId = 0;
                         String id_name = board.getCells().get(cellIndex).getType();
                         Bitmap type_icon;
                         if (id_name != null) {
 
-                            try {
-                                System.out.println("Nel Try per typeDrawableId = " + typeDrawableId);
+                            //using the draable gett to get the right image type
+                            try {//hope this works otherwise we had to remake this again!! (I dont wanna)
                                 typeDrawableId = DrawableGetter.getReference().getTypeDrawableId(id_name);
-                                System.out.println("Nel Try dopo che e' typeDrawableId = " + typeDrawableId);
 
                             } catch (DrawableNotFoundException e) {
                                 Log.e(TAG, e.getMessage(), e);
@@ -455,13 +453,12 @@ public class GameEngine {
                             type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
 
                             type_icon = bitmapBank.scaleTypeIcon(type_icon);
-                            System.out.println("Type_icon is: " + type_icon);
 
-
+                            //Please don`t touch the x and y, please just don`t
                             canvas.drawBitmap(type_icon,
                                     page_number_cell_path_direction,
                                     graphicCell.getCellImgY() +
-                                            (bitmapBank.getCellWidth()/2 + type_icon.getHeight()),
+                                            (bitmapBank.getCellWidth() / 2 + type_icon.getHeight()),
                                     null);
 
                         }
@@ -471,7 +468,7 @@ public class GameEngine {
                         canvas.drawText(String.valueOf(cellIndex),
                                 (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
                                 graphicCell.getCellImgY() +
-                                        (bitmapBank.getCellWidth()/2 + bitmapBank.getCellWidth()/3),
+                                        (bitmapBank.getCellWidth() / 2 + bitmapBank.getCellWidth() / 3),
                                 paint);
 
                         // Stores drawn cell in displayed cells matrix
@@ -489,9 +486,9 @@ public class GameEngine {
 
             }
 
-
+            //Has this an utily anymore? I think we should delete this, I made this.. so I like it but we`re not
+            //using it anymore, please kill me
             if (!AppConstants.isDrawable) {
-                System.out.println("è tutto falso dice: " + AppConstants.isDrawable);
                 AppConstants.DONE_CELLS = cellIndex;
                 AppConstants.isDrawable = !AppConstants.isDrawable;
 

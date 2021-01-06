@@ -13,6 +13,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Interpolator;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.github.jinatonic.confetti.ConfettiManager;
 import com.github.jinatonic.confetti.ConfettiSource;
 import com.github.jinatonic.confetti.ConfettiView;
 import com.github.jinatonic.confetti.ConfettoGenerator;
+import com.github.jinatonic.confetti.Utils;
 import com.github.jinatonic.confetti.confetto.BitmapConfetto;
 import com.github.jinatonic.confetti.confetto.Confetto;
 
@@ -36,6 +38,7 @@ import java.util.Random;
 
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.WinnerBean;
+import it.walle.pokemongoosegame.graphics.BitmapBank;
 
 public class LeaderBoardActivity extends AppCompatActivity {
 
@@ -126,13 +129,28 @@ public class LeaderBoardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leader_board);
 
+
+        //variables for the personalized confetti animation
         ConstraintLayout leaderBoard = findViewById(R.id.leader_board_layout);
 
+        //decoding the bitmaps from the resources
         Bitmap pokeball = BitmapFactory.decodeResource(this.getResources(), R.drawable.pikpng_com_pokeball_png_589803);
+        Bitmap pokeCoin = BitmapFactory.decodeResource(this.getResources(), R.drawable.poke_coin);
+        Bitmap pokeStar1 = BitmapFactory.decodeResource(this.getResources(), R.drawable.poke_star_1);
+        Bitmap pokeStar2 = BitmapFactory.decodeResource(this.getResources(), R.drawable.poke_star_2);
+        Bitmap pokeStar3 = BitmapFactory.decodeResource(this.getResources(), R.drawable.poke_star_2);
 
+        //creating a list of Bitmaps
         ArrayList<Bitmap> bitmapArrayList = new ArrayList<Bitmap>();
 
+        //adding Bitmaps to the list
+        //not elegant, better ways to do it, no time have fun
         bitmapArrayList.add(pokeball);
+        bitmapArrayList.add(pokeCoin);
+        bitmapArrayList.add(pokeStar1);
+        bitmapArrayList.add(pokeStar2);
+        bitmapArrayList.add(pokeStar3);
+
 
         final List<Bitmap> allPossibleConfetti = bitmapArrayList;
 // Alternatively, we provide some helper methods inside `Utils` to generate square, circle,
@@ -140,34 +158,38 @@ public class LeaderBoardActivity extends AppCompatActivity {
 // Utils.generateConfettiBitmaps(new int[] { Color.BLACK }, 20 /* size */);
 
         final int numConfetti = allPossibleConfetti.size();
+        BitmapBank bitmapBank = new BitmapBank(this.getResources(), this);
 
+
+        //I put an Observer to w8 the layout creation
         leaderBoard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 leaderBoard.getViewTreeObserver().removeOnGlobalLayoutListener(this);
 
 
-//                final ConfettoGenerator confettoGenerator = new ConfettoGenerator() {
-//                    @Override
-//                    public Confetto generateConfetto(Random random) {
-//                        final Bitmap bitmap = allPossibleConfetti.get(random.nextInt(numConfetti));
-//                        return new BitmapConfetto(bitmap);
-//                    }};
-//
-//                final int containerMiddleX = leaderBoard.getWidth() / 2;
-//                final int containerMiddleY = leaderBoard.getHeight() / 2;
-//                final ConfettiSource confettiSource = new ConfettiSource(containerMiddleX, containerMiddleY);
-//
-//                new ConfettiManager(LeaderBoardActivity.this, confettoGenerator, confettiSource, leaderBoard)
-//                        .setEmissionDuration(1000)
-//                        .setEmissionRate(100)
-//                        .setVelocityX(20, 10)
-//                        .setVelocityY(100)
-//                        .setRotationalVelocity(180, 180)
-//                        .animate();
+                final ConfettoGenerator confettoGenerator = new ConfettoGenerator() {
+                    @Override
+                    public Confetto generateConfetto(Random random) {//random pick of the images
+                        Bitmap confetti_img = allPossibleConfetti.get(random.nextInt(numConfetti));
+                        confetti_img = bitmapBank.scaleConfetti(confetti_img);
+                        return new BitmapConfetto(confetti_img);
+                    }};
 
-                CommonConfetti.rainingConfetti(leaderBoard, new int[] { Color.GREEN })
-                        .infinite();
+                final ConfettiSource confettiSource = new ConfettiSource(0, 20,  leaderBoard.getWidth(), 20);
+
+                //now spark
+                new ConfettiManager(LeaderBoardActivity.this, confettoGenerator, confettiSource, leaderBoard)
+
+                        .setEmissionDuration(2000)
+                        .setEmissionRate(200)
+                        .setVelocityX(10, 10)
+                        .setVelocityY(200)
+                        .setRotationalVelocity(180, 180)
+                        .enableFadeOut(Utils.getDefaultAlphaInterpolator())
+                        .setTouchEnabled(true)
+                        .animate();
+
 
                 }
             });

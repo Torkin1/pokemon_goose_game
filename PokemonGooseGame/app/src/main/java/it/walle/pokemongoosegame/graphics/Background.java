@@ -7,9 +7,7 @@ public class Background {
     int bgImageX = 0, bgImageY = 0, bgImgVelocity;
 
     public Background() {
-//        System.out.println("Sono in background");
-//
-//        System.out.println("creato il background");
+
         bgImageX = 0;
         bgImageY = 0;
         bgImgVelocity = 3;

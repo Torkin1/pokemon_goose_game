@@ -7,7 +7,6 @@ public class Board {
 
     public Board() {
 
-//        System.out.println("creato il pokepawn");
         boardImageX = 70;
         boardImageY = 70;
     }
