@@ -71,4 +71,6 @@
     <string name="the_tribute_of_the_pious_yellow_effect_description">You found a legendary pokemon shrine in the woods. You must pay 10 coins to the plate, else your pokemon shall suffer it\'s godly wrath, losing 10% health</string>
     <string name="another_day_another_victory_description_dialog">An opponent dares to challenge you, but it\'s nothing more than an easy fight. You win 30 coins</string>
     <string name="another_day_another_victory_title_dialog">Another day, another victory</string>
+    <string name="ITS_ON_FIRE_YO_TITLE">****\'s on fire, yo!</string>
+    <string name="ITS_ON_FIRE_YO_DESC">A rapper Jigglypuff appears! Its rhymes are too lit to be ignored. You lose one turn between one beat and another</string>
 </resources>

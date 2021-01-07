@@ -479,7 +479,12 @@ public class GameView extends AppCompatActivity {
         // updates pawn positions
         GameEngine.getInstance().getPawnSemaphore().release();
 
+        // far giocare il player successivo
+        nextTurn();
 
+    }
+
+    private void nextTurn(){
         //settare il turno successivo e far giocare il player successivo
         if (CoreController.getReference().getPlayers().size() != 0) {
             CoreController.getReference().nextTurn();
@@ -560,10 +565,11 @@ public class GameView extends AppCompatActivity {
                 new AlertDialog.Builder(this)
                         .setTitle(playerTurn)
                         .setMessage(R.string.DIALOG_MESSAGE_SKIP_TURN)
-                        .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD, new DialogInterface.OnClickListener() {
+                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void onDismiss(DialogInterface dialog) {
                                 dialog.cancel();
+                                nextTurn();
                             }
                         })
                         .create()

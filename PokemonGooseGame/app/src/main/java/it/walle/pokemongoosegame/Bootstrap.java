@@ -14,6 +14,7 @@ import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettings;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettingsBean;
 import it.walle.pokemongoosegame.entity.effect.AnotherDayAnotherVictory;
 import it.walle.pokemongoosegame.entity.effect.ItsATrap;
+import it.walle.pokemongoosegame.entity.effect.ItsOnFireYo;
 import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
 import it.walle.pokemongoosegame.entity.effect.NoPlaceLikeHome;
 import it.walle.pokemongoosegame.entity.effect.TheTributeOfThePious;
@@ -39,7 +40,8 @@ public class Bootstrap {
             NoPlaceLikeHome.class.getName(),
             ItsATrap.class.getName(),
             TheTributeOfThePious.class.getName(),
-            AnotherDayAnotherVictory.class.getName()
+            AnotherDayAnotherVictory.class.getName(),
+            ItsOnFireYo.class.getName()
             };
 
     private static Bootstrap ref = null;
