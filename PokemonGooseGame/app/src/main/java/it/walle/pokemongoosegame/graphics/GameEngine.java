@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.function.BiConsumer;
+import java.util.zip.CheckedOutputStream;
 
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
@@ -81,6 +82,8 @@ public class GameEngine {
     static int xspeed, yspeed;
     private int xspeedtemp;
     BitmapBank bitmapBank;
+    int in_cell_counter = 0;
+
 
     // Pawns used to track players board position
     private final Map<String, PokePawn> pawns = new HashMap<>();
@@ -198,6 +201,10 @@ public class GameEngine {
         }
     }
 
+    protected void setCounter(int counter) {
+
+    }
+
     public void updateAndDrawPawns(Canvas canvas, Context context) {
         //Implement the feature where I check the pokeomn and position
 
@@ -266,14 +273,27 @@ public class GameEngine {
                                                 new Response.Listener<Bitmap>() {
                                                     @Override
                                                     public void onResponse(Bitmap response) {
-
+                                                        String[] list_players_in_a_cell = CoreController.getReference()
+                                                                .getAllPlayersInACellUsernames(player.getCurrentPosition());
+                                                        int players_in_a_cell = list_players_in_a_cell
+                                                                .length;
                                                         // sets pawn sprite with pokemon sprite and draws pawn, then informs pawn updater thread that we are done
-                                                        pokePawn.setSprite(bitmapBank.scalePawn(response));
-                                                        canvas.drawBitmap(pokePawn.getSprite(),
-                                                                pokePawn.getX(),
-                                                                pokePawn.getY(),
+
+                                                        int spirte_dim = bitmapBank.getCellWidth() / players_in_a_cell;
+                                                        pokePawn.setSprite(bitmapBank.scalePawn(response, bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
+
+                                                        Bitmap resized_sprite = bitmapBank.scalePawn(pokePawn.getSprite(), spirte_dim, spirte_dim);
+
+                                                        canvas.drawBitmap(resized_sprite,
+                                                                pokePawn.getX() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
+                                                                pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
                                                                 null);
                                                         spriteSemaphore.release();
+                                                        if (players_in_a_cell > 1) {
+                                                            in_cell_counter++;
+                                                        } else {
+                                                            in_cell_counter = 0;
+                                                        }
                                                     }
                                                 },
                                                 new Response.ErrorListener() {
@@ -289,10 +309,34 @@ public class GameEngine {
                             } else {
 
                                 // Sprite is already loaded, draws pawn
-                                canvas.drawBitmap(pokePawn.getSprite(),
-                                        pokePawn.getX(),
-                                        pokePawn.getY(),
+                                String[] list_players_in_a_cell = CoreController.getReference()
+                                        .getAllPlayersInACellUsernames(player.getCurrentPosition());
+                                int players_in_a_cell = list_players_in_a_cell.length;
+
+
+                                int spirte_dim = bitmapBank.getCellWidth() / players_in_a_cell;
+                                pokePawn.setSprite(bitmapBank.scalePawn(pokePawn.getSprite(), bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
+
+                                Bitmap resized_sprite = bitmapBank.scalePawn(pokePawn.getSprite(), spirte_dim, spirte_dim);
+
+                                boolean in_this_cell = false;
+                                for (int i = 0; i < players_in_a_cell; i++) {
+                                    if (player.getUsername().compareTo(list_players_in_a_cell[i]) == 0 && list_players_in_a_cell.length > 1) {
+                                        in_cell_counter = i;
+                                        in_this_cell = true;
+                                        break;
+                                    }
+                                }
+                                if (list_players_in_a_cell.length < 2 || !in_this_cell)
+                                    in_cell_counter = 0;
+
+                                canvas.drawBitmap(resized_sprite,
+                                        pokePawn.getX() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
+                                        pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
                                         null);
+
+                                in_cell_counter = 0;
+
                                 spriteSemaphore.release();
                             }
 

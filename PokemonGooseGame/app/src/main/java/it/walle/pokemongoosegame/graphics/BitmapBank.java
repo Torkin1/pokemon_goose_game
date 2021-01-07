@@ -32,7 +32,7 @@ public class BitmapBank {
         //scale the board
 
         //to scale the pawn  image
-        pawn = scalePawn(pawn);
+        pawn = scalePawn(pawn, getCellWidth(), getCellHeight());
 
         //to scale the bg  image
         background = scaleImage(background, context);//care, if is a moving bg, check the smoothness, can tell a lot
@@ -129,8 +129,8 @@ public class BitmapBank {
 
 
 
-    public Bitmap scalePawn(Bitmap pawn) {
-        return Bitmap.createScaledBitmap(pawn, cell.getWidth(), cell.getHeight(), false);
+    public Bitmap scalePawn(Bitmap pawn, int width, int height) {
+        return Bitmap.createScaledBitmap(pawn, width, height, false);
     }
 
     private Bitmap scaleCell(Bitmap cell) {
