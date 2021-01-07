@@ -7,7 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -30,13 +33,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+import androidx.room.Dao;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import it.walle.pokemongoosegame.HomeWatcher;
 import it.walle.pokemongoosegame.LeaderBoardActivity;
 import it.walle.pokemongoosegame.R;
+import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.LoserBean;
@@ -60,6 +69,7 @@ public class GameView extends AppCompatActivity {
 
     // current Player's Coin counter
     TextView text_coins_value, text_plate_value;
+    ImageView pokemon_icon;
 
     // Health points of all players in game
     private final List<LiveData<Integer>> healths = new ArrayList<>();
@@ -364,6 +374,7 @@ public class GameView extends AppCompatActivity {
         });
 
 
+
     }
 
     @Override
@@ -493,6 +504,36 @@ public class GameView extends AppCompatActivity {
             TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
             tvPlayerTurn.setText(playerTurn);
             text_coins_value.setText(coins);
+
+            //Intialize the ImageView with pokemon icon
+            pokemon_icon = findViewById(R.id.choosedPokemon);
+//        PokePawn pawns;
+//        Map<String, PokePawn> pawnMap = GameEngine.getInstance().getPawns();
+            Player player = CoreController.getReference().getPlayerByUsername(CoreController.getReference().getCurrentPlayerUsername());
+
+
+            DAOSprite daoSprite = new DAOSprite(this);
+            daoSprite
+                    .loadSprite(
+                            player.getPokemon().getSprites().getFront_default(),
+                            new Response.Listener<Bitmap>() {
+                                @Override
+                                public void onResponse(Bitmap response) {
+
+                                    // sets pawn sprite with pokemon sprite and draws pawn, then informs pawn updater thread that we are done
+                                    Drawable sprite  = new BitmapDrawable(getResources(), response);
+                                    pokemon_icon.setImageDrawable(sprite);
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
+                                    // Network error, sprite will not be available, we inform pawn updater thread that we have done
+                                    Log.e(TAG, error.getMessage(), error);
+                                }
+                            }
+                    );
 
             //Risolvi stayInCellEffect
             MoveBean stayInCellBean = new MoveBean();
