@@ -12,6 +12,7 @@ import java.util.List;
 
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettings;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettingsBean;
+import it.walle.pokemongoosegame.entity.effect.AnotherDayAnotherVictory;
 import it.walle.pokemongoosegame.entity.effect.ItsATrap;
 import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
 import it.walle.pokemongoosegame.entity.effect.NoPlaceLikeHome;
@@ -37,7 +38,8 @@ public class Bootstrap {
             LittleHiddenTreasure.class.getName(),
             NoPlaceLikeHome.class.getName(),
             ItsATrap.class.getName(),
-            TheTributeOfThePious.class.getName()
+            TheTributeOfThePious.class.getName(),
+            AnotherDayAnotherVictory.class.getName()
             };
 
     private static Bootstrap ref = null;
@@ -82,9 +84,6 @@ public class Bootstrap {
         List<Integer> yellowCellStartingIndex = new ArrayList<>();
         yellowCellStartingIndex.add(YELLOW_CELLS_STARTING_INDEX[0]);
         yellowCellStartingIndex.add(YELLOW_CELLS_STARTING_INDEX[1]);
-
-
-
 
         bean.setNumCells(NUM_CELLS);
         bean.setYellowCellDelta(YELLOW_CELLS_DELTA);
