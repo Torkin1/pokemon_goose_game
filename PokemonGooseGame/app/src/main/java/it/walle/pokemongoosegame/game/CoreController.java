@@ -235,7 +235,7 @@ public class CoreController {
                 usernames.add(p.getUsername());
             }
         }
-        return (String[]) usernames.toArray();
+        return usernames.toArray(new String[0]);
     }
 
     public String getCurrentPlayerUsername(){
