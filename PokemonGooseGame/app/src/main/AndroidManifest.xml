@@ -25,11 +25,11 @@
         <activity
             android:name=".Aboutus"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar"></activity>
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar" />
         <activity
             android:name=".Info"
             android:screenOrientation="landscape"
-            android:theme="@style/Theme.PokemonGooseGame.noActionBar"></activity>
+            android:theme="@style/Theme.PokemonGooseGame.noActionBar" />
         <activity
             android:name=".graphics.GameView"
             android:screenOrientation="landscape"
