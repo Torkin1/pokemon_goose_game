@@ -15,7 +15,7 @@ public class LittleHiddenTreasure extends YellowEffect{
         super.setEffect_image_dialogID(R.drawable.little_hidden_treasure);
         super.setDescription(invocationContext.getContext().getString(R.string.little_hidden_treasure_description_dialog));
         super.setTitle(invocationContext.getContext().getString(R.string.little_hidden_treasure_title_dialog));
-        super.generalDialog(invocationContext).show();
+        showDialog(generalDialog(invocationContext));
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
         player.setMoney(player.getMoney() + ADDED_COINS);

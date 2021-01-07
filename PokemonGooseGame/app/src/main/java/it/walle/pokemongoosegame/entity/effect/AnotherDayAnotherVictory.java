@@ -9,10 +9,10 @@ public class AnotherDayAnotherVictory extends YellowEffect{
 
     @Override
     public void doEffect(InvocationContext invocationContext) {
-        super.setEffect_image_dialogID(R.drawable.another_day_another_victory);
-        super.setDescription(invocationContext.getContext().getString(R.string.another_day_another_victory_description_dialog));
-        super.setTitle(invocationContext.getContext().getString(R.string.another_day_another_victory_title_dialog));
-        super.generalDialog(invocationContext).show();
+        setEffect_image_dialogID(R.drawable.another_day_another_victory);
+        setDescription(invocationContext.getContext().getString(R.string.another_day_another_victory_description_dialog));
+        setTitle(invocationContext.getContext().getString(R.string.another_day_another_victory_title_dialog));
+        showDialog(generalDialog(invocationContext));
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
         player.setMoney(player.getMoney() + ADDED_COINS);

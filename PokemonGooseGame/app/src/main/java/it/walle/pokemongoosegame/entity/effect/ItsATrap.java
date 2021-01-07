@@ -10,7 +10,7 @@ public class ItsATrap extends YellowEffect {
         super.setEffect_image_dialogID(R.drawable.its_a_trap);
         super.setDescription(invocationContext.getContext().getString(R.string.its_a_trap_yellow_effect_description));
         super.setTitle(invocationContext.getContext().getString(R.string.its_a_trap_yellow_effect_title));
-        super.generalDialog(invocationContext).show();
+        showDialog(generalDialog(invocationContext));
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
 

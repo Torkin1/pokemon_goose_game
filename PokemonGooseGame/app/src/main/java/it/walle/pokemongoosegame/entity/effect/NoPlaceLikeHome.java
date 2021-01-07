@@ -10,7 +10,7 @@ public class NoPlaceLikeHome extends YellowEffect {
         super.setEffect_image_dialogID(R.drawable.no_place_like_home);
         super.setDescription(invocationContext.getContext().getString(R.string.no_place_like_home_yellow_effect));
         super.setTitle(invocationContext.getContext().getString(R.string.no_place_like_home_yellow_effect_title));
-        super.generalDialog(invocationContext).show();
+        showDialog(generalDialog(invocationContext));
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
 

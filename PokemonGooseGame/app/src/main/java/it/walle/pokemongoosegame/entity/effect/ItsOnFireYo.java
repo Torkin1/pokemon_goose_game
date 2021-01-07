@@ -12,7 +12,7 @@ public class ItsOnFireYo extends YellowEffect {
         setTitle(invocationContext.getContext().getString(R.string.ITS_ON_FIRE_YO_TITLE));
         setDescription(invocationContext.getContext().getString(R.string.ITS_ON_FIRE_YO_DESC));
 
-        generalDialog(invocationContext).show();
+        showDialog(generalDialog(invocationContext));
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
         player.setIdleTurns(player.getNumOfIdleTurns() + 1);

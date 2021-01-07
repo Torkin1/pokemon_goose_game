@@ -3,6 +3,7 @@ package it.walle.pokemongoosegame.entity.effect;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import it.walle.pokemongoosegame.R;
+import it.walle.pokemongoosegame.graphics.DialogManager;
 
 public abstract class Effect {
 
@@ -50,11 +52,19 @@ public abstract class Effect {
         return dialog;
     }
 
+    protected void showDialog(Dialog dialog){
+        DialogManager.getInstance().enqueueDialog(dialog);
+    }
+
+    protected void showDialog(Dialog dialog, DialogInterface.OnDismissListener onDismissListener){
+        DialogManager.getInstance().enqueueDialog(dialog, onDismissListener);
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    protected void setDescription(String description) {
         this.description = description;
     }
 
@@ -67,11 +77,11 @@ public abstract class Effect {
         return title;
     }
 
-    public void setTitle(String title) {
+    protected void setTitle(String title) {
         this.title = title;
     }
 
-    public void setEffect_image_dialogID(int effect_image_dialogID){
+    protected void setEffect_image_dialogID(int effect_image_dialogID){
         this.effect_image_dialogID =effect_image_dialogID;
     }
 }

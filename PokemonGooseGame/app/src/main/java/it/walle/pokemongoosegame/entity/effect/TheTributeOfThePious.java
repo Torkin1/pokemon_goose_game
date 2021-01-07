@@ -11,7 +11,7 @@ public class TheTributeOfThePious extends  YellowEffect {
         super.setEffect_image_dialogID(R.drawable.the_pious);
         super.setDescription(invocationContext.getContext().getString(R.string.the_tribute_of_the_pious_yellow_effect_description));
         super.setTitle(invocationContext.getContext().getString(R.string.the_tribute_of_the_pious_yellow_effect_title));
-        super.generalDialog(invocationContext).show();
+        showDialog(generalDialog(invocationContext));
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
 

@@ -1,6 +1,7 @@
 package it.walle.pokemongoosegame.graphics;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -159,28 +160,27 @@ public class GameView extends AppCompatActivity {
                         CoreController.getReference().chooseLoser(bean);
 
                         // Informs player that they have lost the game
-                        (new AlertDialog.Builder(GameView.this))
+                        Dialog loseDialog = (new AlertDialog.Builder(GameView.this))
                                 .setTitle(String.format(getString(R.string.ALERT_POKEMON_FAINTED_TITLE), p.getUsername()))
                                 .setMessage(String.format(getString(R.string.ALERT_POKEMON_FAINTED_MSG), p.getPokemon().getName()))
                                 .setIcon(ContextCompat.getDrawable(GameView.this, R.drawable._f47432d67f0546c05a0719573105396_removebg_preview))
-                                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                                    @Override
-                                    public void onDismiss(DialogInterface dialog) {
+                                .create();
+                        DialogInterface.OnDismissListener onDismissLoseDialogListener = new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialog) {
 
-                                        // updates pawns
-                                        GameEngine.getInstance().getPawnSemaphore().release();
+                                // updates pawns
+                                GameEngine.getInstance().getPawnSemaphore().release();
 
-                                        // If the loser is the current player, proceeds to next player
-                                        if (CoreController.getReference().getCurrentPlayerUsername().compareTo(p.getUsername()) == 0 && CoreController.getReference().getPlayers().size() > 1) {
-                                            CoreController.getReference().nextTurn();
-                                            playerTurn();
-                                        }
+                                // If the loser is the current player, proceeds to next player
+                                if (CoreController.getReference().getCurrentPlayerUsername().compareTo(p.getUsername()) == 0 && CoreController.getReference().getPlayers().size() > 1) {
+                                    CoreController.getReference().nextTurn();
+                                    playerTurn();
+                                }
 
-                                    }
-                                })
-                                .create()
-                                .show();
-
+                            }
+                        };
+                        DialogManager.getInstance().enqueueDialog(loseDialog, onDismissLoseDialogListener);
                     }
                 }
             });
@@ -562,18 +562,18 @@ public class GameView extends AppCompatActivity {
                         .show();
                 diceImage.setEnabled(true);
             } else {
-                new AlertDialog.Builder(this)
+                Dialog skipTurnDialog = new AlertDialog.Builder(this)
                         .setTitle(playerTurn)
                         .setMessage(R.string.DIALOG_MESSAGE_SKIP_TURN)
-                        .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        .create();
+                        DialogInterface.OnDismissListener onDismissSkipTurnDialogListener = new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialog) {
                                 dialog.cancel();
                                 nextTurn();
                             }
-                        })
-                        .create()
-                        .show();
+                        };
+                DialogManager.getInstance().enqueueDialog(skipTurnDialog, onDismissSkipTurnDialogListener);
             }
 
         }
