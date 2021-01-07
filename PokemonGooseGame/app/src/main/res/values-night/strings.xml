@@ -14,4 +14,6 @@
     <string name="dialog_quit_pos_button_text">Yes, quit!</string>
     <string name="button_cancel_text">Cancel</string>
     <string name="the_tribute_of_the_pious_yellow_effect_description">You found a legendary pokemon shrine in the woods. You must pay 10 coins to the plate, else your pokemon shall suffer it\'s godly wrath, losing 10% health</string>
+    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! My pocket!</string>
+    <string name="oh_no_my_pocket_yellow_effect_description">You forgot the wallet, go back 6 (if avalible) get 20 coins</string>
 </resources>

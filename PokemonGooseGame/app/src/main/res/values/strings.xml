@@ -73,4 +73,7 @@
     <string name="another_day_another_victory_title_dialog">Another day, another victory</string>
     <string name="ITS_ON_FIRE_YO_TITLE">****\'s on fire, yo!</string>
     <string name="ITS_ON_FIRE_YO_DESC">A rapper Jigglypuff appears! Its rhymes are too lit to be ignored. You lose one turn between one beat and another</string>
+    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! My pocket!</string>
+    <string name="oh_no_my_pocket_yellow_effect_description">You forgot the wallet, go back 6 (if avalible) get 20 coins</string>
+
 </resources>

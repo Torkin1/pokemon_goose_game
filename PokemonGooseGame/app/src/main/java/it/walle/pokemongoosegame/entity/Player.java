@@ -23,7 +23,7 @@ public class Player {
 
     public void setMoney(Integer money) {
         // Negative money value is nonsense
-        if (money < 0){
+        if (money < 0) {
             money = 0;
         }
         this.money.setValue(money);
@@ -33,23 +33,23 @@ public class Player {
         return idleTurns;
     }
 
-    public void setIdleTurns(int turns){
+    public void setIdleTurns(int turns) {
         // Negative turns value is nonsense
-        if (turns < 0){
+        if (turns < 0) {
             turns = 0;
         }
         this.idleTurns = turns;
     }
 
-    public Player(){
+    public Player() {
         this.username = null;
     }
 
-    public void setUsername(String username){
+    public void setUsername(String username) {
         this.username = username;
     }
 
-    public String getUsername(){
+    public String getUsername() {
         return username;
     }
 
@@ -66,10 +66,13 @@ public class Player {
     }
 
     public void setCurrentPosition(int currentPosition) {
-        this.currentPosition = currentPosition;
+        if (currentPosition < 0)
+            this.currentPosition = 0;
+        else
+            this.currentPosition = currentPosition;
     }
 
-    public void observeMoney(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
+    public void observeMoney(LifecycleOwner lifecycleOwner, Observer<Integer> observer) {
         money.observe(lifecycleOwner, observer);
     }
 }

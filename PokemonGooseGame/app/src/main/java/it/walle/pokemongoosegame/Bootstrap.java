@@ -17,6 +17,7 @@ import it.walle.pokemongoosegame.entity.effect.ItsATrap;
 import it.walle.pokemongoosegame.entity.effect.ItsOnFireYo;
 import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
 import it.walle.pokemongoosegame.entity.effect.NoPlaceLikeHome;
+import it.walle.pokemongoosegame.entity.effect.OhNoMyPocket;
 import it.walle.pokemongoosegame.entity.effect.TheTributeOfThePious;
 import it.walle.pokemongoosegame.graphics.AppConstants;
 import it.walle.pokemongoosegame.graphics.BitmapBank;
@@ -41,32 +42,35 @@ public class Bootstrap {
             ItsATrap.class.getName(),
             TheTributeOfThePious.class.getName(),
             AnotherDayAnotherVictory.class.getName(),
-            ItsOnFireYo.class.getName()
-            };
+            ItsOnFireYo.class.getName(),
+            OhNoMyPocket.class.getName()
+
+    };
 
     private static Bootstrap ref = null;
 
-    public static Bootstrap getReference(){
-        if (ref == null){
+    public static Bootstrap getReference() {
+        if (ref == null) {
             ref = new Bootstrap();
         }
         return ref;
     }
 
-    private Bootstrap(){}
+    private Bootstrap() {
+    }
 
-    public void doOnBoot(Context context){
+    public void doOnBoot(Context context) {
 
         // If it's first boot do some additional setup
-        if (context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE).getBoolean(IS_FIRST_BOOT_SHARED_PREF_NAME, true)){
+        if (context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE).getBoolean(IS_FIRST_BOOT_SHARED_PREF_NAME, true)) {
             doOnFirstBoot(context);
         }
 
     }
 
-    private void doOnFirstBoot(Context context){
+    private void doOnFirstBoot(Context context) {
 
-        SharedPreferences.Editor settingsEditor =  context
+        SharedPreferences.Editor settingsEditor = context
                 .getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
                 .edit();
 
@@ -80,7 +84,7 @@ public class Bootstrap {
         settingsEditor.apply();
     }
 
-    private void createDefaultBoard(Context context){
+    private void createDefaultBoard(Context context) {
         CreateBoardSettingsBean bean = new CreateBoardSettingsBean();
 
         List<Integer> yellowCellStartingIndex = new ArrayList<>();

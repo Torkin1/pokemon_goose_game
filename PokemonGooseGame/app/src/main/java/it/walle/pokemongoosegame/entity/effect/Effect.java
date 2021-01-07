@@ -28,8 +28,6 @@ public abstract class Effect {
         Context context;
         context = invocationContext.getContext();
 
-        System.out.println("The context is: " + context);
-
         LayoutInflater dialog_layout_inflater = LayoutInflater.from(context);
 
         LinearLayout dialog_layout = (LinearLayout) dialog_layout_inflater.inflate(R.layout.general_dialog, null);
