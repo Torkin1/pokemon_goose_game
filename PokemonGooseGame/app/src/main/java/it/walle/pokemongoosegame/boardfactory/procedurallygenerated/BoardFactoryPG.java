@@ -25,6 +25,7 @@ import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGParams;
 import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
 import it.walle.pokemongoosegame.entity.effect.Win;
 import it.walle.pokemongoosegame.entity.effect.YellowEffect;
+import it.walle.pokemongoosegame.entity.effect.YellowEffectDrawer;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
 
@@ -79,7 +80,6 @@ public class BoardFactoryPG extends BoardFactory {
 
                         // adds a token to the semaphore
                         pokemonTypesSemaphore.release();
-                        Log.d(TAG, "num of semaphore permits: " + pokemonTypesSemaphore.availablePermits());
                     }
                 }
                 ,
@@ -140,32 +140,9 @@ public class BoardFactoryPG extends BoardFactory {
                     currentStartingIndex = bean.getBoardSettings().getYellowCellStartingIndexes().get(j).getIndex();
                     if (i != 0 && i != numOfCells - 1 && (i + (Math.abs(currentStartingIndex - yellowCellDelta))) % yellowCellDelta == 0) {
 
-                        // If there are available yellow effects, picks a random available yellow effect class name
-                        int yellowEffectRandomIndex;
-                        boolean chosen = false;
-                        String randomYellowEffectClassName = "";
-                        while (!bean.getBoardSettings().getYellowEffectNames().isEmpty() && !chosen) {
-
-                            // gets a random yellow effect name from the available ones
-                            yellowEffectRandomIndex  = new Random().nextInt(availableYellowEffectNames.size());
-                            randomYellowEffectClassName = availableYellowEffectNames
-                                    .get(yellowEffectRandomIndex)
-                                    .getYellowEffectClassName();
-                            try {
-
-                                // Instantiate the YellowEffect class with randomYellowEffectClassName name, and binds it to the board cell
-                                YellowEffect yellowEffect = (YellowEffect) Class.forName(randomYellowEffectClassName).newInstance();
-                                cell = new YellowCell();
-                                cell.setEntryEffect(yellowEffect);
-                                chosen = true;
-                            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-
-                                // If the yellow effect name is invalid it pops it, then tries the next one until a valid one is available or all name are popped
-                                Log.e(TAG, "Can't instantiate effect with class name " + randomYellowEffectClassName + " at position " + i, e);
-                                availableYellowEffectNames.remove(yellowEffectRandomIndex);
-
-                            }
-                        }
+                        // sets a yellow effect drawer as the entry effect of the yellow cell
+                        cell = new YellowCell();
+                        cell.setEntryEffect(new YellowEffectDrawer(availableYellowEffectNames));
                     }
                 }
 

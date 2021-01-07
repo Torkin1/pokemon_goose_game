@@ -1,9 +1,7 @@
 package it.walle.pokemongoosegame.game;
 
-import android.content.Context;
 import android.util.Log;
 
-import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
@@ -228,7 +226,7 @@ public class CoreController {
     }
 
     public String[] getAllPlayersInACellUsernames(int index){
-        // Returns the usernames who are  occupying the cell with the provided index
+        // Returns the usernames of the players who are occupying the cell with the provided index
         List<String> usernames = new ArrayList<>();
         for (Player p : game.getInGamePlayers()){
             if (p.getCurrentPosition() == index){
@@ -322,10 +320,8 @@ public class CoreController {
         //Check if in the cell there are an effect or not. If there are, do entry effect
         if(cell.getEntryEffect() != null){
             InvocationContext invocationContext =
-                    this.setInvocationContext(
-                            bean.getPlayerUsername(),
-                            newPos,
-                            bean.getContext()
+                    this.createInvocationContext(
+                            bean
                     );
 
             cell.getEntryEffect().doEffect(invocationContext);
@@ -341,10 +337,8 @@ public class CoreController {
         //Check if in the cell there are an effect or not. If there are, do exit effect
         if(cell.getExitEffect() != null){
             InvocationContext invocationContext =
-                    this.setInvocationContext(
-                            bean.getPlayerUsername(),
-                            bean.getBoardIndex(),
-                            bean.getContext()
+                    this.createInvocationContext(
+                            bean
                     );
 
             cell.getExitEffect().doEffect(invocationContext);
@@ -360,21 +354,20 @@ public class CoreController {
         //Check if in the cell there are an effect or not. If there are, do stay effect
         if(cell.getStayEffect() != null){
             InvocationContext invocationContext =
-                    this.setInvocationContext(
-                            bean.getPlayerUsername(),
-                            bean.getBoardIndex(),
-                            bean.getContext()
+                    this.createInvocationContext(
+                            bean
                     );
 
             cell.getStayEffect().doEffect(invocationContext);
         }
     }
 
-    private InvocationContext setInvocationContext(String playerUsername, int boardIndex, Context context) {
+    private InvocationContext createInvocationContext(MoveBean bean) {
         InvocationContext invocationContext = new InvocationContext();
-        invocationContext.setTriggerUsername(playerUsername);
-        invocationContext.setWhereTriggered(boardIndex);
-        invocationContext.setContext(context);
+
+        invocationContext.setTriggerUsername(bean.getPlayerUsername());
+        invocationContext.setWhereTriggered(bean.getBoardIndex());
+        invocationContext.setContext(bean.getContext());
 
         return invocationContext;
     }
