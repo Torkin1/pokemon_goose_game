@@ -1,5 +1,6 @@
 package it.walle.pokemongoosegame.game;
 
+import android.content.Context;
 import android.util.Log;
 
 import androidx.lifecycle.LifecycleOwner;
@@ -321,7 +322,9 @@ public class CoreController {
         if(cell.getEntryEffect() != null){
             InvocationContext invocationContext =
                     this.createInvocationContext(
-                            bean
+                            bean.getPlayerUsername(),
+                            newPos,
+                            bean.getContext()
                     );
 
             cell.getEntryEffect().doEffect(invocationContext);
@@ -338,7 +341,9 @@ public class CoreController {
         if(cell.getExitEffect() != null){
             InvocationContext invocationContext =
                     this.createInvocationContext(
-                            bean
+                            bean.getPlayerUsername(),
+                            bean.getBoardIndex(),
+                            bean.getContext()
                     );
 
             cell.getExitEffect().doEffect(invocationContext);
@@ -355,19 +360,21 @@ public class CoreController {
         if(cell.getStayEffect() != null){
             InvocationContext invocationContext =
                     this.createInvocationContext(
-                            bean
+                            bean.getPlayerUsername(),
+                            bean.getBoardIndex(),
+                            bean.getContext()
                     );
 
             cell.getStayEffect().doEffect(invocationContext);
         }
     }
 
-    private InvocationContext createInvocationContext(MoveBean bean) {
+    private InvocationContext createInvocationContext(String username, int where, Context context) {
         InvocationContext invocationContext = new InvocationContext();
 
-        invocationContext.setTriggerUsername(bean.getPlayerUsername());
-        invocationContext.setWhereTriggered(bean.getBoardIndex());
-        invocationContext.setContext(bean.getContext());
+        invocationContext.setTriggerUsername(username);
+        invocationContext.setWhereTriggered(where);
+        invocationContext.setContext(context);
 
         return invocationContext;
     }
