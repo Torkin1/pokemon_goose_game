@@ -73,7 +73,7 @@
     <string name="ITS_ON_FIRE_YO_TITLE">Sta ****a e\' una bomba, yo!</string>
     <string name="ITS_ON_FIRE_YO_DESC">Un rapper Jigglypuff appare! Le sue rime sono troppo fighe per essere ignorate. Perdi un turno tra un verso e l\'altro</string>
     <string name="oh_no_my_pocket_yellow_effect_title">Oh no! Il mio portafoglio!</string>
-    <string name="oh_no_my_pocket_yellow_effect_description">Le tasche sono vuote, ho dimenticato il portafoglio. Vai indietro di 6 caselle (se possibile) e ricevi 20 moente</string>
+    <string name="oh_no_my_pocket_yellow_effect_description">Le tasche sono vuote, ho perso il portafoglio. Andando indietro di 6 caselle (se possibile) lo ritrovi, ma 20 moente sono mancati, il piatto trova 20 monete</string>
     <string name="that_berry_looks_tasty_dialog_title">Quella bacca sembra squisita!</string>
     <string name="that_berry_looks_tasty_dialog_description">Hai trovato una bacca! Se vuoi che la mangi, tira il dado prima</string>
     <string name="that_berry_looks_tasty_dialog_positive_button">Tira</string>

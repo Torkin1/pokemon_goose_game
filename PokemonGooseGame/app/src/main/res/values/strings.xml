@@ -74,7 +74,7 @@
     <string name="ITS_ON_FIRE_YO_TITLE">****\'s on fire, yo!</string>
     <string name="ITS_ON_FIRE_YO_DESC">A rapper Jigglypuff appears! Its rhymes are too lit to be ignored. You lose one turn between one beat and another</string>
     <string name="oh_no_my_pocket_yellow_effect_title">Oh no! Le mie tasche!</string>
-    <string name="oh_no_my_pocket_yellow_effect_description">Empty pockets, you forgot the wallet, go back 6 (if avalible) get 20 coins</string>
+    <string name="oh_no_my_pocket_yellow_effect_description">Empty pockets, you lost your wallet, after going for back 6 (if avalible) you found it but 20 coins are missing, that the plate found</string>
     <string name="that_berry_looks_tasty_dialog_title">That berry looks tasty!</string>
     <string name="that_berry_looks_tasty_dialog_description">You have found a berry! If you want your pokemon to eat it, roll your dice first</string>
     <string name="that_berry_looks_tasty_dialog_positive_button">Roll</string>
