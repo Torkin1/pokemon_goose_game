@@ -16,4 +16,5 @@
     <string name="the_tribute_of_the_pious_yellow_effect_description">You found a legendary pokemon shrine in the woods. You must pay 10 coins to the plate, else your pokemon shall suffer it\'s godly wrath, losing 10% health</string>
     <string name="oh_no_my_pocket_yellow_effect_title">Oh no! My pocket!</string>
     <string name="oh_no_my_pocket_yellow_effect_description">You forgot the wallet, go back 6 (if avalible) get 20 coins</string>
+    <string name="that_little_brat_yellow_effect_description">You have been robbed by Burglar psyduck! You lose half of your coins to the plate</string>
 </resources>

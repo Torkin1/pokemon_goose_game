@@ -19,6 +19,7 @@ import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
 import it.walle.pokemongoosegame.entity.effect.NoPlaceLikeHome;
 import it.walle.pokemongoosegame.entity.effect.OhNoMyPocket;
 import it.walle.pokemongoosegame.entity.effect.ThatBerryLooksTasty;
+import it.walle.pokemongoosegame.entity.effect.ThatLittleBrat;
 import it.walle.pokemongoosegame.entity.effect.TheTributeOfThePious;
 import it.walle.pokemongoosegame.graphics.AppConstants;
 import it.walle.pokemongoosegame.graphics.BitmapBank;
@@ -45,8 +46,8 @@ public class Bootstrap {
             AnotherDayAnotherVictory.class.getName(),
             ItsOnFireYo.class.getName(),
             OhNoMyPocket.class.getName(),
-            ThatBerryLooksTasty.class.getName()
-
+            ThatBerryLooksTasty.class.getName(),
+            ThatLittleBrat.class.getName()
     };
 
     private static Bootstrap ref = null;

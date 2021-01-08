@@ -83,5 +83,7 @@
     <string name="that_berry_looks_tasty_roll_dialog_message_case_6">There is a coin in the berry! +5%health, +10 coins</string>
     <string name="that_berry_looks_tasty_roll_dialog_message_case_else">The berry heals your pokemon. +5% health</string>
     <string name="that_berry_looks_tasty_dialog_negative_button">Leave it</string>
+    <string name="that_little_brat_yellow_effect_title">That little brat!</string>
+    <string name="that_little_brat_yellow_effect_description">You have been robbed by Burglar psyduck! You lose half of your coins to the plate</string>
 
 </resources>
