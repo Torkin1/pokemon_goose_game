@@ -1,15 +1,13 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.activities.gameview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
-import android.view.SurfaceView;
 
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -21,7 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.function.BiConsumer;
-import java.util.zip.CheckedOutputStream;
 
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
@@ -29,9 +26,7 @@ import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.BlueCell;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
-import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.game.CoreController;
-import it.walle.pokemongoosegame.game.LoserBean;
 import it.walle.pokemongoosegame.game.PlayerNotInGameException;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
 import it.walle.pokemongoosegame.utils.DrawableNotFoundException;

@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame;
+package it.walle.pokemongoosegame.activities.addplayer;
 
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -41,6 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import it.walle.pokemongoosegame.sound.HomeWatcher;
+import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.boardfactory.BlueCellSettings;
 import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.CreateBoardPGBean;
@@ -57,11 +59,11 @@ import it.walle.pokemongoosegame.game.AddNewPlayerBean;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.CreateGameBean;
 import it.walle.pokemongoosegame.game.GameFactory;
-import it.walle.pokemongoosegame.graphics.GameView;
-import it.walle.pokemongoosegame.graphics.MusicService;
+import it.walle.pokemongoosegame.activities.gameview.GameActivity;
+import it.walle.pokemongoosegame.sound.MusicService;
 import it.walle.pokemongoosegame.graphics.ToastWithIcon;
-import it.walle.pokemongoosegame.selectPokemon.ControllerSelectPokemon;
-import it.walle.pokemongoosegame.selectPokemon.LoadPokemonBean;
+import it.walle.pokemongoosegame.selectpokemon.ControllerSelectPokemon;
+import it.walle.pokemongoosegame.selectpokemon.LoadPokemonBean;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
 import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
@@ -491,7 +493,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 CoreController.getReference(game);
 
                                 // starts next activity
-                                startActivity(new Intent(addPlayerActivity, GameView.class));
+                                startActivity(new Intent(addPlayerActivity, GameActivity.class));
                                 finish();
                             }
                         });

@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame;
+package it.walle.pokemongoosegame.activities.addplayer;
 
 import it.walle.pokemongoosegame.game.ThrowDicesBean;
 

@@ -1,14 +1,9 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.activities.gameview;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.PorterDuff;
-import android.os.SystemClock;
 import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-
-import it.walle.pokemongoosegame.entity.Game;
 
 public class BoardThread extends SurfaceUpdaterThread {
 

@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame;
+package it.walle.pokemongoosegame.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -23,17 +23,18 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.navigation.NavigationView;
 
-import it.walle.pokemongoosegame.graphics.AppConstants;
-import it.walle.pokemongoosegame.graphics.GameView;
-import it.walle.pokemongoosegame.graphics.MusicService;
-import it.walle.pokemongoosegame.graphics.SoundEffects;
+import it.walle.pokemongoosegame.Bootstrap;
+import it.walle.pokemongoosegame.sound.HomeWatcher;
+import it.walle.pokemongoosegame.R;
+import it.walle.pokemongoosegame.activities.addplayer.AddPlayerActivity;
+import it.walle.pokemongoosegame.sound.MusicService;
+import it.walle.pokemongoosegame.sound.SoundEffects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout drawerLayout;
@@ -147,14 +148,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                     case R.id.nav_info:
 
-                        Intent info = new Intent(MainActivity.this, Info.class);
+                        Intent info = new Intent(MainActivity.this, InfoActivity.class);
                         if (prefs.getBoolean(getString(R.string.isMute_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(info);
                         break;
 
                     case R.id.nav_AboutUs:
-                        Intent aboutUs = new Intent(MainActivity.this, Aboutus.class);
+                        Intent aboutUs = new Intent(MainActivity.this, AboutusActivity.class);
                         if (prefs.getBoolean(getString(R.string.isMute_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(aboutUs);

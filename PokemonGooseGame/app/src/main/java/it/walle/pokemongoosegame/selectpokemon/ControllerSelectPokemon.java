@@ -1,6 +1,5 @@
-package it.walle.pokemongoosegame.selectPokemon;
+package it.walle.pokemongoosegame.selectpokemon;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Response;
@@ -10,8 +9,6 @@ import java.util.List;
 import it.walle.pokemongoosegame.database.pokeapi.DAOPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
-import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
-import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.game.AddNewPlayerBean;
 
 public class ControllerSelectPokemon{

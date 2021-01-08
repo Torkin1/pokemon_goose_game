@@ -1,9 +1,5 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.activities.gameview;
 
-
-import android.content.Context;
-
-import it.walle.pokemongoosegame.entity.board.cell.Cell;
 
 public class GraphicCell {
 

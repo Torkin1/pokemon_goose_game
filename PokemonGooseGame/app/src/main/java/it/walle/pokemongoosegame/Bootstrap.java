@@ -2,10 +2,6 @@ package it.walle.pokemongoosegame;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Display;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +20,6 @@ import it.walle.pokemongoosegame.entity.effect.ThatBerryLooksTasty;
 import it.walle.pokemongoosegame.entity.effect.ThatLittleBrat;
 import it.walle.pokemongoosegame.entity.effect.TheTributeOfThePious;
 import it.walle.pokemongoosegame.entity.effect.WhenTheBedTrapsYou;
-import it.walle.pokemongoosegame.graphics.AppConstants;
-import it.walle.pokemongoosegame.graphics.BitmapBank;
-
-import static it.walle.pokemongoosegame.graphics.AppConstants.convertDpToPixel;
 
 public class Bootstrap {
 

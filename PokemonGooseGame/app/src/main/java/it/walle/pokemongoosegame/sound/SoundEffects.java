@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.sound;
 
 import android.app.Activity;
 import android.content.Context;

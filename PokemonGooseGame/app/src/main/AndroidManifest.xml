@@ -13,29 +13,29 @@
         android:theme="@style/Theme.PokemonGooseGame">
 
         <service
-            android:name=".graphics.MusicService"
+            android:name=".sound.MusicService"
             android:enabled="true" />
         <activity
-            android:name=".AddPlayerActivity"
+            android:name=".activities.addplayer.AddPlayerActivity"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar"
             android:screenOrientation="landscape"/>
-        <activity android:name=".LeaderBoardActivity"
+        <activity android:name=".activities.LeaderBoardActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar"/>
         <activity
-            android:name=".Aboutus"
+            android:name=".activities.AboutusActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar" />
         <activity
-            android:name=".Info"
+            android:name=".activities.InfoActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar" />
         <activity
-            android:name=".graphics.GameView"
+            android:name=".activities.gameview.GameActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:screenOrientation="landscape"
             android:theme="@style/Theme.PokemonGooseGame.noActionBar">
             <intent-filter>

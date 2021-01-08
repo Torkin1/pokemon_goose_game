@@ -1,9 +1,8 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.activities.gameview;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.Log;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public class PawnThread extends SurfaceUpdaterThread {

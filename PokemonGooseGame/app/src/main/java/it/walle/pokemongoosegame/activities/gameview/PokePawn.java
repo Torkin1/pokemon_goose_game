@@ -1,10 +1,6 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.activities.gameview;
 
-import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-
-import it.walle.pokemongoosegame.graphics.AppConstants;
 
 public class  PokePawn {
 

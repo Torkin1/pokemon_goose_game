@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame;
+package it.walle.pokemongoosegame.sound;
 
 //Create to stop the music when, Home button, recent apps button or power button are pressed
 import android.content.BroadcastReceiver;

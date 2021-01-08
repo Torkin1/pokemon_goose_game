@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.activities.gameview;
 
 import android.content.Context;
 import android.content.SharedPreferences;

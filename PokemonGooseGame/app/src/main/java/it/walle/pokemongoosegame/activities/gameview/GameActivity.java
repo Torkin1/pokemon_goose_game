@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.graphics;
+package it.walle.pokemongoosegame.activities.gameview;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,17 +34,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
-import androidx.room.Dao;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import it.walle.pokemongoosegame.HomeWatcher;
-import it.walle.pokemongoosegame.LeaderBoardActivity;
+import it.walle.pokemongoosegame.graphics.DialogManager;
+import it.walle.pokemongoosegame.graphics.ToastWithIcon;
+import it.walle.pokemongoosegame.sound.HomeWatcher;
+import it.walle.pokemongoosegame.activities.LeaderBoardActivity;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.database.pokeapi.DAOSprite;
 import it.walle.pokemongoosegame.entity.Player;
@@ -53,12 +53,13 @@ import it.walle.pokemongoosegame.game.LoserBean;
 import it.walle.pokemongoosegame.game.MoveBean;
 import it.walle.pokemongoosegame.game.SkipTurnBean;
 import it.walle.pokemongoosegame.game.ThrowDicesBean;
+import it.walle.pokemongoosegame.sound.MusicService;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
 import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
-public class GameView extends AppCompatActivity {
+public class GameActivity extends AppCompatActivity {
 
-    private static final String TAG = GameView.class.getSimpleName();
+    private static final String TAG = GameActivity.class.getSimpleName();
 
     // Threads for drawing elements on surface views
     private final List<SurfaceUpdaterThread> surfaceUpdaterThreads = new ArrayList<>();
@@ -160,10 +161,10 @@ public class GameView extends AppCompatActivity {
                         CoreController.getReference().chooseLoser(bean);
 
                         // Informs player that they have lost the game
-                        Dialog loseDialog = (new AlertDialog.Builder(GameView.this))
+                        Dialog loseDialog = (new AlertDialog.Builder(GameActivity.this))
                                 .setTitle(String.format(getString(R.string.ALERT_POKEMON_FAINTED_TITLE), p.getUsername()))
                                 .setMessage(String.format(getString(R.string.ALERT_POKEMON_FAINTED_MSG), p.getPokemon().getName()))
-                                .setIcon(ContextCompat.getDrawable(GameView.this, R.drawable._f47432d67f0546c05a0719573105396_removebg_preview))
+                                .setIcon(ContextCompat.getDrawable(GameActivity.this, R.drawable._f47432d67f0546c05a0719573105396_removebg_preview))
                                 .create();
                         DialogInterface.OnDismissListener onDismissLoseDialogListener = new DialogInterface.OnDismissListener() {
                             @Override
@@ -244,7 +245,7 @@ public class GameView extends AppCompatActivity {
 
                 // initializes game engine. The reference to GameEngine must be obtained this way at least once
                 GameEngine.reset();
-                GameEngine.getInstance(GameView.this, svBoard.getHeight(), svBoard.getWidth());
+                GameEngine.getInstance(GameActivity.this, svBoard.getHeight(), svBoard.getWidth());
 
                 // Starts drawing threads for background, board and pawn
                 svBoard.getHolder().addCallback(new SurfaceHolder.Callback() {
@@ -254,7 +255,7 @@ public class GameView extends AppCompatActivity {
                         svBoard.getHolder().setSizeFromLayout();
 
                         // Do some drawing when surface is ready
-                        SurfaceUpdaterThread boardThread = new BoardThread(svBoard, GameView.this);
+                        SurfaceUpdaterThread boardThread = new BoardThread(svBoard, GameActivity.this);
                         surfaceUpdaterThreads.add(boardThread);
                         boardThread.start();
 
@@ -279,7 +280,7 @@ public class GameView extends AppCompatActivity {
                         svBackground.getHolder().setSizeFromLayout();
 
                         // Do some drawing when surface is ready
-                        SurfaceUpdaterThread backgroundThread = new BackgroundThread(svBackground, GameView.this);
+                        SurfaceUpdaterThread backgroundThread = new BackgroundThread(svBackground, GameActivity.this);
                         surfaceUpdaterThreads.add(backgroundThread);
                         backgroundThread.start();
 
@@ -304,7 +305,7 @@ public class GameView extends AppCompatActivity {
                         svPawn.getHolder().setSizeFromLayout();
 
                         // Do some drawing when surface is ready
-                        SurfaceUpdaterThread pawnThread = new PawnThread(svPawn, GameView.this);
+                        SurfaceUpdaterThread pawnThread = new PawnThread(svPawn, GameActivity.this);
                         surfaceUpdaterThreads.add(pawnThread);
                         pawnThread.start();
                     }
@@ -622,13 +623,13 @@ public class GameView extends AppCompatActivity {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
         if (prefs.getBoolean(getString(R.string.isMute_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
-        (new AlertDialog.Builder(GameView.this))
+        (new AlertDialog.Builder(GameActivity.this))
                 .setTitle(R.string.dialog_quit_title)
                 .setMessage(R.string.dialog_quit_message)
                 .setPositiveButton(getString(R.string.dialog_quit_pos_button_text), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        GameView.super.onBackPressed();
+                        GameActivity.super.onBackPressed();
                     }
                 })
                 .setNegativeButton(getString(R.string.button_cancel_text), new DialogInterface.OnClickListener() {

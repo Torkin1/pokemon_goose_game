@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame;
+package it.walle.pokemongoosegame.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,10 +38,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import it.walle.pokemongoosegame.sound.HomeWatcher;
+import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.game.CoreController;
 import it.walle.pokemongoosegame.game.WinnerBean;
-import it.walle.pokemongoosegame.graphics.BitmapBank;
-import it.walle.pokemongoosegame.graphics.MusicService;
+import it.walle.pokemongoosegame.activities.gameview.BitmapBank;
+import it.walle.pokemongoosegame.sound.MusicService;
 
 public class LeaderBoardActivity extends AppCompatActivity {
 
