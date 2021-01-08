@@ -85,5 +85,7 @@
     <string name="that_berry_looks_tasty_dialog_negative_button">Leave it</string>
     <string name="that_little_brat_yellow_effect_title">That little brat!</string>
     <string name="that_little_brat_yellow_effect_description">You have been robbed by Burglar psyduck! You lose half of your coins to the plate</string>
+    <string name="when_the_bed_traps_you_yellow_effect_title">When the bed traps you</string>
+    <string name="when_the_bed_traps_you_yellow_effect_description">You feel too tired to even get out of bed. Your pokemon heals 30% health, but you lose 1 turn</string>
 
 </resources>
