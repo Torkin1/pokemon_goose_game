@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name" translatable="false">PokemonGooseGame</string>
+    <string name="app_name">PokemonGooseGame</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="FRONT_SPRITE_DESCRIPTION">Front sprite of pokemon</string>
@@ -43,7 +43,7 @@
     <string name="ALERT_POKEMON_FAINTED_MSG">Your %s just fainted. You hurry to the nearest poke center, hoping in better luck next time.</string>
     <string name="default_description_dialog_text">Default description</string>
     <string name="dialog_title">Dialog Title</string>
-    <string name="win_title">You did it buddy!!!</string>
+    <string name="win_title">You did it buddy!!</string>
     <string name="win_description_dialog">All the gold in the plate is yours to take! You surely have what it takes to be a winner, but will it be enough to make you the very best?</string>
     <string name="play_button_description">Play button</string>
     <string name="main_bg_description">Main BG</string>
@@ -60,7 +60,7 @@
     <string name="game_flag" translatable="false">game</string>
     <string name="little_hidden_treasure_description_dialog">You find some coins shining in the grass. Coins + 50</string>
     <string name="little_hidden_treasure_title_dialog">Little hidden treasure</string>
-    <string name="no_place_like_home_yellow_effect">If your pokemon is of the same type of this cell, it heals 10% hp</string>
+    <string name="no_place_like_home_yellow_effect">"If your pokemon is of the same type of this cell, it heals 10% "</string>
     <string name="no_place_like_home_yellow_effect_title">No Place Like Home</string>
     <string name="dialog_quit_title">Quit?</string>
     <string name="dialog_quit_message">You are sure you want to quit?</string>
@@ -74,8 +74,8 @@
     <string name="another_day_another_victory_title_dialog">Another day, another victory</string>
     <string name="ITS_ON_FIRE_YO_TITLE">****\'s on fire, yo!</string>
     <string name="ITS_ON_FIRE_YO_DESC">A rapper Jigglypuff appears! Its rhymes are too lit to be ignored. You lose one turn between one beat and another</string>
-    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! My !</string>
-    <string name="oh_no_my_pocket_yellow_effect_description">Yo forgot the wallet, go back 6 (if avalible) get 20 coins</string>
+    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! Le mie tasche!</string>
+    <string name="oh_no_my_pocket_yellow_effect_description">Empty pockets, you forgot the wallet, go back 6 (if avalible) get 20 coins</string>
     <string name="that_berry_looks_tasty_dialog_title">That berry looks tasty!</string>
     <string name="that_berry_looks_tasty_dialog_description">You have found a berry! If you want your pokemon to eat it, roll your dice first</string>
     <string name="that_berry_looks_tasty_dialog_positive_button">Roll</string>
@@ -89,11 +89,13 @@
     <string name="when_the_bed_traps_you_yellow_effect_title">When the bed traps you</string>
     <string name="when_the_bed_traps_you_yellow_effect_description">You feel too tired to even get out of bed. Your pokemon heals 30% health, but you lose 1 turn</string>
     <string name="caught_you_without_mask_yellow_effect_title">Caught you without a mask!</string>
-    <string name="caught_you_without_mask_yellow_effect_description">You got covid, 2 turn stopped and lost half of your hp, have to pay a fee to of 50% of your money to the plate</string>
+    <string name="caught_you_without_mask_yellow_effect_description">Well well well, what do we have here. This will cost you 25 coins, sir. Now go 6 cells back to your house and stay in quarantine for 1 turn</string>
     <string name="a_challenger_approaches_yellow_effect_title">A challenger approaches</string>
     <string name="a_challenger_approaches_yellow_effect_description">An opponent spots you and wants to fight. Roll a dice to see who wins</string>
+    <string name="a_challenger_approaches_yellow_effect_win_case">YOU WIN! Here 20 coins for you</string>
     <string name="a_challenger_approaches_yellow_effect_lost_case">Oh no... you lost, Better luck next time</string>
     <string name="a_challenger_approaches_yellow_effect_run_win_case">You couldn\'t run away, BUT YOU WIN!</string>
-    <string name="a_challenger_approaches_yellow_effect_run_lost_case">You couldn\'t run from his wrath, h you lost 20 coins</string>
+    <string name="a_challenger_approaches_yellow_effect_run_lost_case">You couldn\'t run from his wrath, he defeated you.You lost 20 coins</string>
+    <string name="a_challenger_approaches_yellow_effect_fight_button_name">LET\'S FIGHT!</string>
     <string name="a_challenger_approaches_yellow_effect_run_button_name">RUN</string>
 </resources>

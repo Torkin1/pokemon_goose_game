@@ -84,10 +84,10 @@
     <string name="that_berry_looks_tasty_dialog_negative_button">Lascialla</string>
     <string name="that_little_brat_yellow_effect_title">Quel piccolo birbante!</string>
     <string name="that_little_brat_yellow_effect_description">Sei stato derubato da Psyduck il ladruncolo! Hai perso meta\' delle tue monete, verranno messe nel piatto</string>
-    <string name="when_the_bed_traps_you_yellow_effect_title">"Quando il letto ti intrappola "</string>
+    <string name="when_the_bed_traps_you_yellow_effect_title">Quando il letto ti intrappola</string>
     <string name="when_the_bed_traps_you_yellow_effect_description">Sei così stanco da non poterti alzare dal letto. Il tuo pokemon verra\' curato del 30%, ma perdi un turno</string>
     <string name="caught_you_without_mask_yellow_effect_title">Beccato senza maschera!</string>
-    <string name="caught_you_without_mask_yellow_effect_description">"Ti prendi il covid. Stai fermo 2 turni e perdi meta' degli hp, inoltre devi pagare una multa al piatto pari al 50% delle tue moente "</string>
+    <string name="caught_you_without_mask_yellow_effect_description">Bene bene bene, che abbiamo qui? Questo ti costerà 25 monete, signore. Ora torni di 6 celle indietro per verso casa sua e stia in quarantena per 1 turno</string>
     <string name="a_challenger_approaches_yellow_effect_title">Un nemico si avvicina</string>
     <string name="a_challenger_approaches_yellow_effect_description">Un nemico ti sfida! Lancia un dado. Tira il Combatti o Scappa</string>
     <string name="a_challenger_approaches_yellow_effect_win_case">HAI VINTO! Eccoti 20 monete</string>

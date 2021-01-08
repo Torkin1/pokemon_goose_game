@@ -5,6 +5,9 @@ import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.game.CoreController;
 
 public class CaughtWithoutMask extends YellowEffect{
+    int MALUS_POSITION = -6;
+    int FEE = 25;
+
 
     @Override
     public void doEffect(InvocationContext invocationContext) {
@@ -14,18 +17,12 @@ public class CaughtWithoutMask extends YellowEffect{
 
         showDialog(generalDialog(invocationContext));
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
-        int fee = player.getMoney()/2;
 
         //Always keep the right order, first you take the money and after you take the money from him
-        CoreController.getReference().setPlate(CoreController.getReference().getPlate() + fee);
-        player.setMoney(player.getMoney() - fee);
+        CoreController.getReference().setPlate(CoreController.getReference().getPlate() + FEE);
+        player.setMoney(player.getMoney() - FEE);
 
-        player.getPokemon().setCurrentHp(player.getPokemon().getCurrentHp() - player.getPokemon().getMaxHp()*50/100);
-
-
-
-
-
-        player.setIdleTurns(player.getNumOfIdleTurns() + 2);
+        player.setCurrentPosition(player.getCurrentPosition() + MALUS_POSITION);
+        player.setIdleTurns(player.getNumOfIdleTurns() + 1);
     }
 }
