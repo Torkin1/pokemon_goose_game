@@ -7,7 +7,7 @@
     <string name="TYPE_ICON_DESCRIPTION">icona del tipo di pokemon</string>
     <string name="TV_PLAYER_NAME_LABEL_TEXT">Ciao! Il mio nome e\';</string>
     <string name="ET_PLAYER_NAME_HINT">Qui va il nome del giocatore</string>
-    <string name="TV_CHOOSE_POKEMON_LABEL_TEXT">Scelgo te!</string>
+    <string name="TV_CHOOSE_POKEMON_LABEL_TEXT">Scelgo te:</string>
     <string name="ET_POKEMON_NAME_HINT">Qui il nome del Pokemon</string>
     <string name="BUTTON_DONE">Aggiungi giocatore</string>
     <string name="PLAYER_DEFAULT_NAME">Giocatore</string>
