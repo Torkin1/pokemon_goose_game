@@ -58,7 +58,7 @@
     <string name="CONTENT_DESCRIPTION_IV_POSITION_CARD">immagine per i punti del prossimo punteggio</string>
     <string name="little_hidden_treasure_description_dialog">Hai trovato delle monete risplendere nell\'erba. +50 monente.</string>
     <string name="little_hidden_treasure_title_dialog">Piccolo tesoro nascosto</string>
-    <string name="no_place_like_home_yellow_effect">"Se il tuo pokemon e' dello stesso tipo di questa cella, verrà curato del 10% "</string>
+    <string name="no_place_like_home_yellow_effect">"Se il tuo pokemon e' dello stesso tipo di questa cella, verrà curato del 30% "</string>
     <string name="no_place_like_home_yellow_effect_title">Nessun posto e\' come casa</string>
     <string name="dialog_quit_title">Esci?</string>
     <string name="dialog_quit_message">Sei sicuro di voler uscire?</string>

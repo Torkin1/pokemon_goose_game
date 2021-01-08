@@ -59,7 +59,7 @@
     <string name="game_flag" translatable="false">game</string>
     <string name="little_hidden_treasure_description_dialog">You find some coins shining in the grass. Coins + 50</string>
     <string name="little_hidden_treasure_title_dialog">Little hidden treasure</string>
-    <string name="no_place_like_home_yellow_effect">"If your pokemon is of the same type of this cell, it heals 10% "</string>
+    <string name="no_place_like_home_yellow_effect">"If your pokemon is of the same type of this cell, it heals 30% "</string>
     <string name="no_place_like_home_yellow_effect_title">No Place Like Home</string>
     <string name="dialog_quit_title">Quit?</string>
     <string name="dialog_quit_message">You are sure you want to quit?</string>
