@@ -12,6 +12,7 @@ import java.util.List;
 
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettings;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettingsBean;
+import it.walle.pokemongoosegame.entity.effect.AChallengerApproaches;
 import it.walle.pokemongoosegame.entity.effect.AnotherDayAnotherVictory;
 import it.walle.pokemongoosegame.entity.effect.CaughtWithoutMask;
 import it.walle.pokemongoosegame.entity.effect.ItsATrap;
@@ -51,7 +52,8 @@ public class Bootstrap {
             ThatBerryLooksTasty.class.getName(),
             ThatLittleBrat.class.getName(),
             WhenTheBedTrapsYou.class.getName(),
-            CaughtWithoutMask.class.getName()
+            CaughtWithoutMask.class.getName(),
+            AChallengerApproaches.class.getName()
     };
 
     private static Bootstrap ref = null;
