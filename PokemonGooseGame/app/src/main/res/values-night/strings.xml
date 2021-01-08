@@ -18,4 +18,5 @@
     <string name="oh_no_my_pocket_yellow_effect_description">You forgot the wallet, go back 6 (if avalible) get 20 coins</string>
     <string name="that_little_brat_yellow_effect_description">You have been robbed by Burglar psyduck! You lose half of your coins to the plate</string>
     <string name="when_the_bed_traps_you_yellow_effect_title">When the bed traps you</string>
+    <string name="caught_you_without_mask_yellow_effect_description">You got covid, 2 turn stopped and lost half of your hp, have to pay a fee to of 50% of your money to the plate</string>
 </resources>

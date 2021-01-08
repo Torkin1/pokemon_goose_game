@@ -13,6 +13,7 @@ import java.util.List;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettings;
 import it.walle.pokemongoosegame.createboardsettings.CreateBoardSettingsBean;
 import it.walle.pokemongoosegame.entity.effect.AnotherDayAnotherVictory;
+import it.walle.pokemongoosegame.entity.effect.CaughtWithoutMask;
 import it.walle.pokemongoosegame.entity.effect.ItsATrap;
 import it.walle.pokemongoosegame.entity.effect.ItsOnFireYo;
 import it.walle.pokemongoosegame.entity.effect.LittleHiddenTreasure;
@@ -41,15 +42,16 @@ public class Bootstrap {
     private final static String BOARD_NAME = "Default";
     private final static String[] YELLOW_EFFECT_CLASS_NAME = {
             LittleHiddenTreasure.class.getName(),
-            NoPlaceLikeHome.class.getName(),
-            ItsATrap.class.getName(),
-            TheTributeOfThePious.class.getName(),
-            AnotherDayAnotherVictory.class.getName(),
-            ItsOnFireYo.class.getName(),
-            OhNoMyPocket.class.getName(),
-            ThatBerryLooksTasty.class.getName(),
-            ThatLittleBrat.class.getName(),
-            WhenTheBedTrapsYou.class.getName()
+//            NoPlaceLikeHome.class.getName(),
+//            ItsATrap.class.getName(),
+//            TheTributeOfThePious.class.getName(),
+//            AnotherDayAnotherVictory.class.getName(),
+//            ItsOnFireYo.class.getName(),
+//            OhNoMyPocket.class.getName(),
+//            ThatBerryLooksTasty.class.getName(),
+//            ThatLittleBrat.class.getName(),
+//            WhenTheBedTrapsYou.class.getName(),
+            CaughtWithoutMask.class.getName()
     };
 
     private static Bootstrap ref = null;

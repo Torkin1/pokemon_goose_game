@@ -72,7 +72,10 @@ public class Pokemon{
     }
 
     public void setCurrentHp(Integer currentHp) {
-        this.currentHp.setValue(currentHp);
+        if(currentHp < 0)
+            this.currentHp.setValue(0);
+        else
+            this.currentHp.setValue(currentHp);
     }
 
     public void observeCurrentHp(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
