@@ -59,13 +59,13 @@
     <string name="game_flag">game</string>
     <string name="little_hidden_treasure_description_dialog">You find some coins shining in the grass. Coins + 50</string>
     <string name="little_hidden_treasure_title_dialog">Little hidden treasure</string>
-    <string name="no_place_like_home_yellow_effect">If your pokemon is of the same type of this cell, it heals 10%hp</string>
+    <string name="no_place_like_home_yellow_effect">"If your pokemon is of the same type of this cell, it heals 10% "</string>
     <string name="no_place_like_home_yellow_effect_title">No Place Like Home</string>
     <string name="dialog_quit_title">Quit?</string>
     <string name="dialog_quit_message">You are sure you want to quit?</string>
     <string name="dialog_quit_pos_button_text">Yes, quit!</string>
     <string name="button_cancel_text">Cancel</string>
-    <string name="its_a_trap_yellow_effect_title">It\'s a trap</string>
+    <string name="its_a_trap_yellow_effect_title">It\'s a trap!</string>
     <string name="its_a_trap_yellow_effect_description">The team rocket ambushes you! You manage to escape after an hard fight. -20% health</string>
     <string name="the_tribute_of_the_pious_yellow_effect_title">The tribute of the pious</string>
     <string name="the_tribute_of_the_pious_yellow_effect_description">You found a legendary pokemon shrine in the woods. You must pay 10 coins to the plate, else your pokemon shall suffer it\'s godly wrath, losing 10% health</string>
@@ -73,8 +73,8 @@
     <string name="another_day_another_victory_title_dialog">Another day, another victory</string>
     <string name="ITS_ON_FIRE_YO_TITLE">****\'s on fire, yo!</string>
     <string name="ITS_ON_FIRE_YO_DESC">A rapper Jigglypuff appears! Its rhymes are too lit to be ignored. You lose one turn between one beat and another</string>
-    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! My pocket!</string>
-    <string name="oh_no_my_pocket_yellow_effect_description">You forgot the wallet, go back 6 (if avalible) get 20 coins</string>
+    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! Le mie tasche!</string>
+    <string name="oh_no_my_pocket_yellow_effect_description">Empty pockets, you forgot the wallet, go back 6 (if avalible) get 20 coins</string>
     <string name="that_berry_looks_tasty_dialog_title">That berry looks tasty!</string>
     <string name="that_berry_looks_tasty_dialog_description">You have found a berry! If you want your pokemon to eat it, roll your dice first</string>
     <string name="that_berry_looks_tasty_dialog_positive_button">Roll</string>

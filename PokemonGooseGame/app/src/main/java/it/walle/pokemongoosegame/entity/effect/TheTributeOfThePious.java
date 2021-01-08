@@ -4,8 +4,9 @@ import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.game.CoreController;
 
-public class TheTributeOfThePious extends  YellowEffect {
+public class TheTributeOfThePious extends YellowEffect {
     int TAXES = 10;
+
     @Override
     public void doEffect(InvocationContext invocationContext) {
         super.setEffect_image_dialogID(R.drawable.the_pious);
@@ -17,11 +18,12 @@ public class TheTributeOfThePious extends  YellowEffect {
 
         int current_hp = player.getPokemon().getCurrentHp();
         int malus_hp = current_hp - player.getPokemon().getMaxHp() * 10 / 100;
-        player.getPokemon().setCurrentHp(malus_hp);
+
 
         if (player.getMoney() > TAXES) {
             player.setMoney(player.getMoney() - TAXES);
             CoreController.getReference().setPlate(CoreController.getReference().getPlate() + TAXES);
-        }
+        } else
+            player.getPokemon().setCurrentHp(malus_hp);
     }
 }
