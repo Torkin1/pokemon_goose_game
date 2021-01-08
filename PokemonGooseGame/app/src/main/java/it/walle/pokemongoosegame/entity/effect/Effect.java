@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -24,7 +25,21 @@ public abstract class Effect {
 
     public abstract void doEffect(InvocationContext invocationContext);       // Implementation of the actual effect
 
-    protected Dialog generalDialog(InvocationContext invocationContext) {
+    protected Dialog generalDialog(InvocationContext invocationContext){
+        return this
+                .generalDialog(
+                        invocationContext,
+                        null,
+                        null,
+                        null,
+                        null);
+    }
+
+    protected Dialog generalDialog(InvocationContext invocationContext,
+                                   String positiveButtonText,
+                                   DialogInterface.OnClickListener positiveButton,
+                                   String negativeButtonText,
+                                   DialogInterface.OnClickListener negativeButton) {
         Context context;
         context = invocationContext.getContext();
 
@@ -40,9 +55,20 @@ public abstract class Effect {
         effect_title_dialog.setText(title);
         effect_image_dialog.setImageDrawable(ContextCompat.getDrawable(context, effect_image_dialogID));
 
-        Dialog dialog = new AlertDialog.Builder(context)
-                .setView(dialog_layout)
-                .create();
+        Dialog dialog;
+
+        if(positiveButton == null && negativeButton == null){
+            dialog = new AlertDialog.Builder(context)
+                    .setView(dialog_layout)
+                    .create();
+        }
+        else{
+            dialog = new AlertDialog.Builder(context)
+                    .setView(dialog_layout)
+                    .setPositiveButton(positiveButtonText, positiveButton)
+                    .setNegativeButton(negativeButtonText, negativeButton)
+                    .create();
+        }
 
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
         dialog.getWindow().setGravity(Gravity.CENTER);
@@ -82,4 +108,6 @@ public abstract class Effect {
     protected void setEffect_image_dialogID(int effect_image_dialogID){
         this.effect_image_dialogID =effect_image_dialogID;
     }
+
+    public void DialogBuilder(){}
 }
