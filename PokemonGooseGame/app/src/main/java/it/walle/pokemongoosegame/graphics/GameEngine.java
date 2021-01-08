@@ -409,6 +409,7 @@ public class GameEngine {
 
                                 float healthPointPercentage = (float) player.getPokemon().getCurrentHp() / CoreController.MAX_HEALTH_POKEMON;
 
+                                System.out.println("test1 Percetange is " + healthPointPercentage);
                                 //draw Border
                                 float borderLeft, borderTop, borderRight, borderBottom;
                                 hbar_width = spirte_dim;
@@ -431,7 +432,7 @@ public class GameEngine {
                                         borderRight + (float) bitmapBank.getCellHeight() / 2 + increase_amout*increase,
                                         borderBottom + increase_amout*increase,
                                         borderPaint);
-                                
+
                                 // Draw health
                                 float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
                                 healthWidth = hbar_width - 4 * margin;
@@ -440,6 +441,15 @@ public class GameEngine {
                                 healthRight = healthLeft + healthWidth * healthPointPercentage;
                                 healthBottom = borderBottom - 2 * margin;
                                 healthTop = healthBottom - healthHeight;
+
+                                //Hp amout different percentage
+                                int r, g, b;
+                                int n = (int)(healthPointPercentage*100);
+                                g = (255 * n) / 100;
+                                r = (255 * (100 - n)) / 100;
+                                b = 0;
+
+                                healthPaint.setColor(Color.rgb(r,g,b));
 
                                 canvas.drawRect(healthLeft + (float) bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float) bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
 

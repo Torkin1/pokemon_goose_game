@@ -8,8 +8,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="healthBarBorder">#A0A0A0</color>
-    <color name="healthBarBorder2">#E133F4</color>
+    <color name="healthBarBorder2">#5E27C5</color>
     <color name="healthBarHealth">#00FF00</color>
+
 
     <color name="transparent">#00000000</color>
 </resources>
