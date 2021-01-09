@@ -64,20 +64,17 @@ public class GameEngine {
     // Note that the following constants cannot be instantiated in AppConstants since they need a reference to BitmapBank, which currently needs an AppConstants reference to be instantiated.
     // board screen constants
     public final int
-            CELLS_IN_A_SCREEN,
-            CELLS_IN_A_ROW,
-            CELLS_IN_A_COL,
-            WIDTH_MARGIN,
-            HEIGHT_MARGIN,
-            BOARD_WIDTH,
-            BOARD_HEIGHT;
+            CELLS_IN_A_SCREEN,//Costants that will tell how many cells can be drawn in the screen
+            CELLS_IN_A_ROW,//Costant that will tell how many rows can be drawn in the screen
+            CELLS_IN_A_COL,//Costant that will tell how many cols can be drawn in the screen
+            WIDTH_MARGIN,//Costant that will tell how much space can be between the cells in width
+            HEIGHT_MARGIN,//Costant that will tell how much space can be between the cells in height
+            BOARD_WIDTH,//board width
+            BOARD_HEIGHT;//board height
 
-    Background backgroundImg;
-    static int gameState;
-    static int xspeed, yspeed;
-    private int xspeedtemp;
-    BitmapBank bitmapBank;
-    int in_cell_counter = 0;
+    Background backgroundImg;//istance of the background image
+    BitmapBank bitmapBank;//istance of the bitmapbank
+    int in_cell_counter = 0;//counter used to know many pawns are in the cell
 
 
     // Pawns used to track players board position
@@ -90,11 +87,12 @@ public class GameEngine {
     // Used by threads to do updates only when necessary
     private final Semaphore boardSemaphore, pawnSemaphore;
 
-
+    //The constructor
     public GameEngine(Context context, int boardHeight, int boardWidth) {
         bitmapBank = new BitmapBank(context.getResources(), context);
         backgroundImg = new Background();//initialize bg
 
+        //the dimension of the board are passed and initialized here as costants
         BOARD_HEIGHT = boardHeight;
         BOARD_WIDTH = boardWidth;
 
@@ -104,24 +102,18 @@ public class GameEngine {
         CELLS_IN_A_COL = (BOARD_HEIGHT - AppConstants.getInstance(context).CELL_MARGIN) / bitmapBank.getCellHeight();
         CELLS_IN_A_SCREEN = CELLS_IN_A_COL * CELLS_IN_A_ROW;
 
-        // initializes displayed board cells
-        displayedCells = new GraphicCell[CELLS_IN_A_COL][CELLS_IN_A_ROW];
-
-        // Initializes surface updater thread semaphores
-        boardSemaphore = new Semaphore(0);
-        pawnSemaphore = new Semaphore(0);
-
         WIDTH_MARGIN = (BOARD_WIDTH -
                 CELLS_IN_A_ROW * (AppConstants.getInstance(context).CELL_MARGIN + bitmapBank.getCellWidth())) / 2;
 
         HEIGHT_MARGIN = (BOARD_HEIGHT - CELLS_IN_A_COL * (AppConstants.getInstance(context).CELL_MARGIN +
                 bitmapBank.getCellHeight())) / 2;
 
-//TODO define a speed, tip: Use the cell dimension
-//        xspeed = AppConstants.getBitmapBank().getBoardWidth() / 10;
-//        yspeed = AppConstants.getBitmapBank().getBoardHeight() / 5;
-        //states  0 = Not started, 1 = Playing, 2 = GameOVer;
-        gameState = 0;//Game not started, so have to change it later
+        // initializes displayed board cells
+        displayedCells = new GraphicCell[CELLS_IN_A_COL][CELLS_IN_A_ROW];
+
+        // Initializes surface updater thread semaphores
+        boardSemaphore = new Semaphore(0);
+        pawnSemaphore = new Semaphore(0);
 
         // Creates a pawn for every player
         for (Player p : CoreController.getReference().getPlayers()) {
@@ -156,18 +148,20 @@ public class GameEngine {
 
     public void updateAndDrawBackgroundImage(Canvas canvas, Context context) {
 
+        //always changing the position of the bg, so creates the movement illusion
         backgroundImg.setX(backgroundImg.getX() - backgroundImg.getBgImageVelocity());
         //moving animation
-        //if it ends have to start it back from 0
+        //if it ends have to start it back from 0 (well the image isn't infinite so...)
         if (backgroundImg.getX() < -bitmapBank.getBackgroundWidth())
             backgroundImg.setX(0);
 
+        //draw the bg
         canvas.drawBitmap(bitmapBank.getBackground(),
                 backgroundImg.getX(),
                 backgroundImg.getY(),
                 null);
-        //if the image end, it will leave a long line, to prevent this I'll restart the bg
 
+        //if the image end, it will leave a long line, to prevent this I'll restart the bg
         if (backgroundImg.getX() < -(bitmapBank.getBackgroundWidth() - AppConstants.getInstance(context).SCREEN_WIDTH)) {
             canvas.drawBitmap(bitmapBank.getBackground(),
                     backgroundImg.getX() + bitmapBank.getBackgroundWidth(),
@@ -182,6 +176,7 @@ public class GameEngine {
         int playerPosition = CoreController.getReference().getPlayerByUsername(bean.getPlayerUsername()).getCurrentPosition();
         GraphicCell currentCell;
         boolean found = false;
+
         for (int r = 0; r < displayedCells.length && !found; r++) {
             for (int c = 0; c < displayedCells[0].length; c++) {
                 currentCell = displayedCells[r][c];
@@ -195,6 +190,94 @@ public class GameEngine {
             }
         }
     }
+
+private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas canvas, Context context, String playerUsername, int in_cell_counter){
+
+    // Sprite is already loaded, draws pawn
+    String[] list_players_in_a_cell = CoreController.getReference()
+            .getAllPlayersInACellUsernames(player.getCurrentPosition());
+    int players_in_a_cell = list_players_in_a_cell.length;
+
+    int spirte_dim = bitmapBank.getCellWidth() / players_in_a_cell;
+    pokePawn.setSprite(bitmapBank.scalePawn(sprite, bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
+
+    pokePawn.setSprite(bitmapBank.scalePawn(pokePawn.getSprite(), bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
+
+    Bitmap resized_sprite = bitmapBank.scalePawn(pokePawn.getSprite(), spirte_dim, spirte_dim);
+
+    canvas.drawBitmap(resized_sprite,
+            pokePawn.getX() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
+            pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
+            null);
+
+
+    //Initializing the health bar under the pokemon
+    int hbar_width, hbar_height = 20, margin = 2;
+    Paint borderPaint, healthPaint;
+
+    //Giving to the border and hp bg defined colors
+    borderPaint = new Paint();
+    healthPaint = new Paint();
+
+    int borderColor = ContextCompat.getColor(context, R.color.healthBarBorder);
+    int healthColor = ContextCompat.getColor(context, R.color.healthBarHealth);
+
+    borderPaint.setColor(borderColor);
+    healthPaint.setColor(healthColor);
+
+    // Draws health bar
+    //Distance, position and hp percentage variables
+    float x = (float) pokePawn.getX()+ (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter;
+    float y = (float) pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter;
+    float distanceToPlayer = 30;
+
+    float healthPointPercentage = (float) player.getPokemon().getCurrentHp() / CoreController.MAX_HEALTH_POKEMON;
+
+    //draw Border
+    float borderLeft, borderTop, borderRight, borderBottom;
+    hbar_width = spirte_dim;
+    borderLeft = x - (float) hbar_width / 2;
+    borderRight = x + (float) hbar_width / 2;
+    borderBottom = y + distanceToPlayer;
+    borderTop = borderBottom - hbar_height;
+    int increase_amout = 5;
+    int increase = 0;
+
+    if(CoreController.getReference().getCurrentPlayerUsername().compareTo(playerUsername) == 0){
+
+        borderColor = ContextCompat.getColor(context, R.color.healthBarBorder2);
+        borderPaint.setColor(borderColor);
+        increase = 1;
+    }
+
+    canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2 - increase_amout*increase),
+            borderTop - increase_amout*increase,
+            borderRight + (float) bitmapBank.getCellHeight() / 2 + increase_amout*increase,
+            borderBottom + increase_amout*increase,
+            borderPaint);
+
+    // Draw health
+    float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
+    healthWidth = hbar_width - 4 * margin;
+    healthHeight = hbar_height - 4 * margin;
+    healthLeft = borderLeft + 2 * margin;
+    healthRight = healthLeft + healthWidth * healthPointPercentage;
+    healthBottom = borderBottom - 2 * margin;
+    healthTop = healthBottom - healthHeight;
+
+    //Hp amout different percentage
+    int r, g, b;
+    int n = (int)(healthPointPercentage*100);
+    g = (255 * n) / 100;
+    r = (255 * (100 - n)) / 100;
+    b = 0;
+
+    healthPaint.setColor(Color.rgb(r,g,b));
+
+    canvas.drawRect(healthLeft + (float) bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float) bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
+
+
+}
 
     public void updateAndDrawPawns(Canvas canvas, Context context) {
         //Implement the feature where I check the pokeomn and position
@@ -212,10 +295,7 @@ public class GameEngine {
         // locks displayed cells matrix
         synchronized (displayedCells) {
 
-            //hBar variables
-//            hbar_width = bitmapBank.getCellWidth();
-
-            // Updates position of every pawn
+            // Updates position of every pawn using a for each, for each (word play) pokePawn
             pawns.forEach(new BiConsumer<String, PokePawn>() {
                 @Override
                 public void accept(String playerUsername, PokePawn pokePawn) {
@@ -242,6 +322,8 @@ public class GameEngine {
                             );
 
                             // When sprite is ready stores a reference to it in the pawn
+                            //using a dao that get them from the DB, the onResponse down, used the first time
+                            // a game starts, drawing all the pawns on the board
                             if (pokePawn.getSprite() == null) {
                                 DAOSprite daoSprite = new DAOSprite(context);
                                 daoSprite
@@ -250,86 +332,10 @@ public class GameEngine {
                                                 new Response.Listener<Bitmap>() {
                                                     @Override
                                                     public void onResponse(Bitmap response) {
-                                                        String[] list_players_in_a_cell = CoreController.getReference()
-                                                                .getAllPlayersInACellUsernames(player.getCurrentPosition());
-                                                        int players_in_a_cell = list_players_in_a_cell
-                                                                .length;
-                                                        // sets pawn sprite with pokemon sprite and draws pawn, then informs pawn updater thread that we are done
+                                                        GameEngine.this.pawnDrawer(response,player, pokePawn, canvas, context, playerUsername, in_cell_counter);
 
-                                                        int spirte_dim = bitmapBank.getCellWidth() / players_in_a_cell;
-                                                        pokePawn.setSprite(bitmapBank.scalePawn(response, bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
-
-                                                        Bitmap resized_sprite = bitmapBank.scalePawn(pokePawn.getSprite(), spirte_dim, spirte_dim);
-
-                                                        canvas.drawBitmap(resized_sprite,
-                                                                pokePawn.getX() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
-                                                                pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
-                                                                null);
-
-
-
-
-                                                        //Initializing the health bar under the pokemon
-                                                        int hbar_width, hbar_height = 20, margin = 2;
-                                                        Paint borderPaint, healthPaint;
-
-                                                        //Giving to the border and hp bg defined colors
-                                                        borderPaint = new Paint();
-                                                        healthPaint = new Paint();
-
-                                                        int borderColor = ContextCompat.getColor(context, R.color.healthBarBorder);
-                                                        int healthColor = ContextCompat.getColor(context, R.color.healthBarHealth);
-
-                                                        borderPaint.setColor(borderColor);
-                                                        healthPaint.setColor(healthColor);
-
-                                                        // Draws health bar
-                                                        //Distance, position and hp percentage variables
-                                                        float x = (float) pokePawn.getX()+ (float) bitmapBank.getCellWidth() / players_in_a_cell * (in_cell_counter );
-                                                        float y = (float) pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * (in_cell_counter);
-                                                        float distanceToPlayer = 30;
-
-                                                        float healthPointPercentage = (float) player.getPokemon().getCurrentHp() / CoreController.MAX_HEALTH_POKEMON;
-
-                                                        //draw Border
-                                                        float borderLeft, borderTop, borderRight, borderBottom;
-                                                        int increase_amout = 5;
-                                                        int increase = 0;
-                                                        hbar_width = spirte_dim ;
-                                                        borderLeft = x - (float) hbar_width / 2;
-                                                        borderRight = x + (float) hbar_width / 2;
-                                                        borderBottom = y + distanceToPlayer;
-                                                        borderTop = borderBottom - hbar_height;
-
-                                                        if(CoreController.getReference().getCurrentPlayerUsername().compareTo(playerUsername) == 0){
-                                                            borderColor = ContextCompat.getColor(context, R.color.healthBarBorder2);
-                                                            borderPaint.setColor(borderColor);
-                                                            increase = 1;
-                                                        }
-
-                                                        canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2 - increase_amout*increase),
-                                                                borderTop - increase_amout*increase,
-                                                                borderRight + (float) bitmapBank.getCellHeight() / 2 + increase_amout*increase,
-                                                                borderBottom + increase_amout*increase,
-                                                                borderPaint);
-
-
-                                                        // Draw health
-                                                        float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
-                                                        healthWidth = hbar_width - 4 * margin;
-                                                        healthHeight = hbar_height - 4 * margin;
-                                                        healthLeft = borderLeft + 2 * margin;
-                                                        healthRight = healthLeft + healthWidth * healthPointPercentage;
-                                                        healthBottom = borderBottom - 2 * margin;
-                                                        healthTop = healthBottom - healthHeight;
-
-                                                        canvas.drawRect(healthLeft + (float) bitmapBank.getCellHeight() / 2,
-                                                                healthTop,
-                                                                healthRight + (float) bitmapBank.getCellHeight() / 2,
-                                                                healthBottom,
-                                                                healthPaint);
-
-                                                        if (players_in_a_cell > 1) {
+                                                        if (CoreController.getReference()
+                                                                .getAllPlayersInACellUsernames(player.getCurrentPosition()).length > 1) {
                                                             in_cell_counter++;
                                                         } else {
                                                             in_cell_counter = 0;
@@ -351,22 +357,13 @@ public class GameEngine {
                                         );
                             } else {
 
-
-
-
                                 // Sprite is already loaded, draws pawn
                                 String[] list_players_in_a_cell = CoreController.getReference()
                                         .getAllPlayersInACellUsernames(player.getCurrentPosition());
-                                int players_in_a_cell = list_players_in_a_cell.length;
 
-
-                                int spirte_dim = bitmapBank.getCellWidth() / players_in_a_cell;
-                                pokePawn.setSprite(bitmapBank.scalePawn(pokePawn.getSprite(), bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
-
-                                Bitmap resized_sprite = bitmapBank.scalePawn(pokePawn.getSprite(), spirte_dim, spirte_dim);
 
                                 boolean in_this_cell = false;
-                                for (int i = 0; i < players_in_a_cell; i++) {
+                                for (int i = 0; i < list_players_in_a_cell.length; i++) {
                                     if (player.getUsername().compareTo(list_players_in_a_cell[i]) == 0 && list_players_in_a_cell.length > 1) {
                                         in_cell_counter = i;
                                         in_this_cell = true;
@@ -376,77 +373,8 @@ public class GameEngine {
                                 if (list_players_in_a_cell.length < 2 || !in_this_cell)
                                     in_cell_counter = 0;
 
-                                canvas.drawBitmap(resized_sprite,
-                                        pokePawn.getX() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
-                                        pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
-                                        null);
 
-
-                                //Initializing the health bar under the pokemon
-                                int hbar_width, hbar_height = 20, margin = 2;
-                                Paint borderPaint, healthPaint;
-
-                                //Giving to the border and hp bg defined colors
-                                borderPaint = new Paint();
-                                healthPaint = new Paint();
-
-                                int borderColor = ContextCompat.getColor(context, R.color.healthBarBorder);
-                                int healthColor = ContextCompat.getColor(context, R.color.healthBarHealth);
-
-                                borderPaint.setColor(borderColor);
-                                healthPaint.setColor(healthColor);
-
-                                // Draws health bar
-                                //Distance, position and hp percentage variables
-                                float x = (float) pokePawn.getX()+ (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter;
-                                float y = (float) pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter;
-                                float distanceToPlayer = 30;
-
-                                float healthPointPercentage = (float) player.getPokemon().getCurrentHp() / CoreController.MAX_HEALTH_POKEMON;
-
-                                System.out.println("test1 Percetange is " + healthPointPercentage);
-                                //draw Border
-                                float borderLeft, borderTop, borderRight, borderBottom;
-                                hbar_width = spirte_dim;
-                                borderLeft = x - (float) hbar_width / 2;
-                                borderRight = x + (float) hbar_width / 2;
-                                borderBottom = y + distanceToPlayer;
-                                borderTop = borderBottom - hbar_height;
-                                int increase_amout = 5;
-                                int increase = 0;
-
-                                if(CoreController.getReference().getCurrentPlayerUsername().compareTo(playerUsername) == 0){
-
-                                    borderColor = ContextCompat.getColor(context, R.color.healthBarBorder2);
-                                    borderPaint.setColor(borderColor);
-                                    increase = 1;
-                                }
-
-                                canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2 - increase_amout*increase),
-                                        borderTop - increase_amout*increase,
-                                        borderRight + (float) bitmapBank.getCellHeight() / 2 + increase_amout*increase,
-                                        borderBottom + increase_amout*increase,
-                                        borderPaint);
-
-                                // Draw health
-                                float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
-                                healthWidth = hbar_width - 4 * margin;
-                                healthHeight = hbar_height - 4 * margin;
-                                healthLeft = borderLeft + 2 * margin;
-                                healthRight = healthLeft + healthWidth * healthPointPercentage;
-                                healthBottom = borderBottom - 2 * margin;
-                                healthTop = healthBottom - healthHeight;
-
-                                //Hp amout different percentage
-                                int r, g, b;
-                                int n = (int)(healthPointPercentage*100);
-                                g = (255 * n) / 100;
-                                r = (255 * (100 - n)) / 100;
-                                b = 0;
-
-                                healthPaint.setColor(Color.rgb(r,g,b));
-
-                                canvas.drawRect(healthLeft + (float) bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float) bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
+                                GameEngine.this.pawnDrawer(pokePawn.getSprite(), player, pokePawn, canvas, context, playerUsername, in_cell_counter);
 
                                 in_cell_counter = 0;
 
