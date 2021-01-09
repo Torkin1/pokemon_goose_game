@@ -69,7 +69,7 @@ import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
 public class AddPlayerActivity extends AppCompatActivity {
 
-    private class PokemonHolder extends RecyclerView.ViewHolder{
+    private class PokemonHolder extends RecyclerView.ViewHolder {
         //This holder will update the view with all the contents regarding the pokemon
 
         private final ImageView ivSprite; //the imageView that will contain the pokemon that the player can choose
@@ -107,14 +107,14 @@ public class AddPlayerActivity extends AppCompatActivity {
                             .setText(pokemonClickedName);
 
                     // Hides pointing hand on old selected pokemon
-                    if (oldSelectedIndex != RecyclerView.NO_POSITION){
+                    if (oldSelectedIndex != RecyclerView.NO_POSITION) {
                         View oldSelectedHolder = AddPlayerActivity
                                 .this
                                 .getHolder()
                                 .getRvPokemonList()
                                 .getLayoutManager()
                                 .findViewByPosition(oldSelectedIndex);
-                        if (oldSelectedHolder != null){
+                        if (oldSelectedHolder != null) {
                             View oldSelectedPointingHand = oldSelectedHolder.findViewById(R.id.ivCurrentPokemonPointer);
                             endPointingHandAnimation(oldSelectedPointingHand);
                         }
@@ -130,11 +130,11 @@ public class AddPlayerActivity extends AppCompatActivity {
         }
     }
 
-    private class Holder{
+    private class Holder {
         private final AddPlayerActivity addPlayerActivity;
         private final EditText etPlayerName;
         private final EditText etPokemonName;
-        private final RecyclerView rvPokemonList ;
+        private final RecyclerView rvPokemonList;
         private final Button bAddPlayer;
         private final RecyclerView.Adapter<PokemonHolder> rvPokemonListAdapter;
         private final EditText etBoardType;
@@ -142,7 +142,7 @@ public class AddPlayerActivity extends AppCompatActivity {
         private final Button bChangeBoard;
         private final Button bStartGame;
 
-        public Holder(AddPlayerActivity addPlayerActivity){
+        public Holder(AddPlayerActivity addPlayerActivity) {
 
             // Stores reference of enclosing activity for further reference
             this.addPlayerActivity = addPlayerActivity;
@@ -211,7 +211,7 @@ public class AddPlayerActivity extends AppCompatActivity {
 
 
                     // Puts a pointing hand on it if it's the currently selected pokemon, removes it otherwise
-                    if (position == AddPlayerActivity.this.getCurrentlySelectedPokemonIndex()){
+                    if (position == AddPlayerActivity.this.getCurrentlySelectedPokemonIndex()) {
                         startPointingHandAnimation(holder.ivCurrentPokemonPointer);
                     } else {
                         endPointingHandAnimation(holder.ivCurrentPokemonPointer);
@@ -222,7 +222,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                 // also checks if is null and returns 0, otherwise returns the size of list with all the pokemons
                 @Override
                 public int getItemCount() {
-                    return (AddPlayerActivity.this.getAllPokemons() == null)? 0 : AddPlayerActivity.this.getAllPokemons().size();
+                    return (AddPlayerActivity.this.getAllPokemons() == null) ? 0 : AddPlayerActivity.this.getAllPokemons().size();
                 }
             };
             this.rvPokemonList.setAdapter(rvPokemonListAdapter);
@@ -233,13 +233,13 @@ public class AddPlayerActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     /*
-                    *       Saves player and pokemon data and adds it to the GameFactory
-                    * */
+                     *       Saves player and pokemon data and adds it to the GameFactory
+                     * */
 
                     String currentPlayerName = etPlayerName.getText().toString();
 
                     // If the user has not chosen a pokemon, prompts them to select one before continuing
-                    if (currentlySelectedPokemonIndex < 0){
+                    if (currentlySelectedPokemonIndex < 0) {
 
                         (new ToastWithIcon(
                                 addPlayerActivity,
@@ -248,8 +248,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 getString(R.string.ALERT_NO_POKEMON_SELECTED_MSG)
                         ))
                                 .show();
-                    }
-                    else {
+                    } else {
 
                         // Adds the player with the selected pokemon to the game
                         AddNewPlayerBean addNewPlayerBean = new AddNewPlayerBean();
@@ -297,11 +296,11 @@ public class AddPlayerActivity extends AppCompatActivity {
                                     type = (getResources().getStringArray(R.array.BOARD_CREATION_ALGORITHMS))[which];
                                 }
                             })
-                            .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD,new DialogInterface.OnClickListener(){
+                            .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int id){
-                                    if (type != null){
-                                        if(type.equals(BoardTypeEnumeration.PG.getType())) {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    if (type != null) {
+                                        if (type.equals(BoardTypeEnumeration.PG.getType())) {
 
                                             LocalDatabase localDatabase = (LocalDatabase) LocalDatabase.getReference(AddPlayerActivity.this);
 
@@ -310,28 +309,27 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                             .BoardPGParamsDAO()
                                                             .getBoardsPGName(); // Nomi delle board da visualizzare
 
-                                           //observer that monitor the list of possible board configurations,
+                                            //observer that monitor the list of possible board configurations,
                                             Observer<List<String>> observer = new Observer<List<String>>() {
                                                 @Override
                                                 public void onChanged(List<String> boardsName) {
                                                     boardsName.add(getString(R.string.CREATE_NEW_BOARD_SETTINGS));
                                                     new AlertDialog.Builder(addPlayerActivity)
                                                             .setTitle(R.string.DIALOG_SELECT_BOARD_TITLE)
-                                                            .setSingleChoiceItems(boardsName.toArray(new String [boardsName.size()]), -1, new DialogInterface.OnClickListener() {
+                                                            .setSingleChoiceItems(boardsName.toArray(new String[boardsName.size()]), -1, new DialogInterface.OnClickListener() {
                                                                 @Override
                                                                 public void onClick(DialogInterface dialog, int which) {
                                                                     name = boardsName.get(which);
                                                                 }
                                                             })
-                                                            .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD,new DialogInterface.OnClickListener(){
+                                                            .setPositiveButton(R.string.BUTTON_POSITIVE_SELECT_BOARD, new DialogInterface.OnClickListener() {
                                                                 @Override
-                                                                public void onClick(DialogInterface dialog, int id){
-                                                                    if (name != null){
-                                                                        if(name.equals(getString(R.string.CREATE_NEW_BOARD_SETTINGS))){
+                                                                public void onClick(DialogInterface dialog, int id) {
+                                                                    if (name != null) {
+                                                                        if (name.equals(getString(R.string.CREATE_NEW_BOARD_SETTINGS))) {
                                                                             // TODO: remove toast and start activity for creating new board settings
                                                                             Toast.makeText(AddPlayerActivity.this, R.string.TOAST_SELECT_BOARD, Toast.LENGTH_LONG).show();
-                                                                        }
-                                                                        else{//if clicked on the name choice, will load the board with that chosed name
+                                                                        } else {//if clicked on the name choice, will load the board with that chosed name
                                                                             AddPlayerActivity.this
                                                                                     .holder
                                                                                     .etBoardName
@@ -425,27 +423,27 @@ public class AddPlayerActivity extends AppCompatActivity {
 
                                                                 }
                                                             })
-                                                            .setNegativeButton(R.string.BUTTON_NEGATIVE_SELECT_BOARD, new DialogInterface.OnClickListener(){
+                                                            .setNegativeButton(R.string.BUTTON_NEGATIVE_SELECT_BOARD, new DialogInterface.OnClickListener() {
                                                                 @Override
-                                                                public void onClick(DialogInterface dialog, int id){
+                                                                public void onClick(DialogInterface dialog, int id) {
                                                                     dialog.cancel();
                                                                 }
                                                             })
                                                             .create()
                                                             .show();
-                                                }};
+                                                }
+                                            };
 
                                             boardsNameLiveData.observe((LifecycleOwner) AddPlayerActivity.this, observer);
-                                        }
-                                        else{//Soon the user can decide how the board is, and create one as they like
+                                        } else {//Soon the user can decide how the board is, and create one as they like
                                             Toast.makeText(AddPlayerActivity.this, R.string.TOAST_SELECT_BOARD, Toast.LENGTH_LONG).show();
                                         }
                                     }
                                 }
                             })
-                            .setNegativeButton(R.string.BUTTON_NEGATIVE_SELECT_BOARD, new DialogInterface.OnClickListener(){
+                            .setNegativeButton(R.string.BUTTON_NEGATIVE_SELECT_BOARD, new DialogInterface.OnClickListener() {
                                 @Override
-                                public void onClick(DialogInterface dialog, int id){
+                                public void onClick(DialogInterface dialog, int id) {
                                     dialog.cancel();
                                 }
                             })
@@ -461,7 +459,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                 public void onClick(View v) {
 
                     // If no player has been added, prompts user to add one
-                    if (controllerSelectPokemon.getAddNewPlayerBeans().isEmpty()){
+                    if (controllerSelectPokemon.getAddNewPlayerBeans().isEmpty()) {
                         (new ToastWithIcon(
                                 addPlayerActivity,
                                 ContextCompat
@@ -472,7 +470,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                     }
 
                     // If no board configuration has been added, prompts user to add one
-                    else if (addPlayerActivity.getCreateBoardPGBean() == null){
+                    else if (addPlayerActivity.getCreateBoardPGBean() == null) {
                         (new ToastWithIcon(
                                 addPlayerActivity,
                                 ContextCompat
@@ -480,11 +478,10 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 getString(R.string.ALERT_NO_BOARD_SELECTED_MSG),
                                 Toast.LENGTH_LONG
                         )).show();
-                    }
-                    else {
+                    } else {
                         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
 
-                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
 
                         // Creates a new game
@@ -556,8 +553,8 @@ public class AddPlayerActivity extends AppCompatActivity {
 
     //istance of the class mHomeWatcher
     HomeWatcher mHomeWatcher;
-    private boolean mIsBound = false;
-    private MusicService mServ;
+    private boolean mIsBound = false; //variable to check if the music should bin with the activity
+    private MusicService mServ;//istance of musicService
     //for sound effects
     private SoundPool soundPool;
 
@@ -617,7 +614,7 @@ public class AddPlayerActivity extends AppCompatActivity {
             public void onResponse(Pokemon response) {
 
                 // Atomically adds the pokemon to allPokemons and notifies the recycler view adapter about it
-                synchronized (allPokemons){
+                synchronized (allPokemons) {
                     allPokemons.add(response);
                     int pos = allPokemons.indexOf(response);
                     holder.getRvPokemonListAdapter().notifyItemChanged(pos);
@@ -626,7 +623,8 @@ public class AddPlayerActivity extends AppCompatActivity {
         });
         controllerSelectPokemon.loadAllPokemons(loadPokemonBean);
 
-        boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
+        //isSoundOn it's the bariable got from the shared prefs. where it's stored the information
+        boolean isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -646,7 +644,7 @@ public class AddPlayerActivity extends AppCompatActivity {
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        if (isMute)
+        if (isSoundOn)
             startService(music);
 
         //Start HomeWatcher
@@ -658,6 +656,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                     mServ.pauseMusic();
                 }
             }
+
             @Override
             public void onHomeLongPressed() {
                 if (mServ != null) {
@@ -668,7 +667,8 @@ public class AddPlayerActivity extends AppCompatActivity {
         mHomeWatcher.startWatch();
     }
 
-    private void startPointingHandAnimation(View pointingHandRef){
+    //The start of the animation of the hand when a pokemon is selected from the RV
+    private void startPointingHandAnimation(View pointingHandRef) {
 
         pointingHandRef.setVisibility(View.VISIBLE);
         pointingHandRef.startAnimation(
@@ -678,25 +678,25 @@ public class AddPlayerActivity extends AppCompatActivity {
         pointingHandRef.setHasTransientState(true);     // Needed to keep the animation running after the view goes off screen
     }
 
-    private void endPointingHandAnimation(View pointingHandRef){
+    private void endPointingHandAnimation(View pointingHandRef) {
         pointingHandRef.clearAnimation();
         pointingHandRef.setVisibility(View.INVISIBLE);
         pointingHandRef.setHasTransientState(false);
     }
 
-    private void setDefaultPlayerName(EditText etPlayerName){
+    private void setDefaultPlayerName(EditText etPlayerName) {
         int numOfPlayers = controllerSelectPokemon.getAddNewPlayerBeans().size();
         String defaultPlayerName = getString(R.string.PLAYER_DEFAULT_NAME) + numOfPlayers;
         etPlayerName.setText(defaultPlayerName);
     }
 
-    //Bind/Unbind music service
+    //methods to Bind/Unbind music service
 
-    private ServiceConnection Scon =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {
-            mServ = ((MusicService.ServiceBinder)binder).getService();
+            mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -704,16 +704,14 @@ public class AddPlayerActivity extends AppCompatActivity {
         }
     };
 
-    void doBindService(){
-        bindService(new Intent(this,MusicService.class),
+    void doBindService() {
+        bindService(new Intent(this, MusicService.class),
                 Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }
@@ -723,8 +721,11 @@ public class AddPlayerActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if (mServ != null) {
-            mServ.resumeMusic();
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true)) {
+            if (mServ != null) {
+                mServ.resumeMusic();
+            }
         }
     }
 
@@ -751,7 +752,7 @@ public class AddPlayerActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
         super.onBackPressed();
     }
@@ -763,7 +764,7 @@ public class AddPlayerActivity extends AppCompatActivity {
         //UNBIND music service
         doUnbindService();
         Intent music = new Intent();
-        music.setClass(this,MusicService.class);
+        music.setClass(this, MusicService.class);
         mHomeWatcher.stopWatch();
         stopService(music);
 

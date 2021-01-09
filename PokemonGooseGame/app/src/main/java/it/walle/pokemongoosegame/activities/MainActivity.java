@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     NavigationView navigationView;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
-    private boolean isMute;
+    private boolean isSoundOn;
 
     // first boot shared preference name
     private final String firstBootSharedPrefName = "isFirstBoot";
@@ -80,12 +80,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
 
-        isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
+        isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);
 
-        System.out.println("test1 and ismute is: " + isMute);
+        System.out.println("test1 and ismute is: " + isSoundOn);
 
         final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
-        if (!isMute)
+        if (!isSoundOn)
             volumeCtrl.setImageResource(R.drawable.sound_off);
         else
             volumeCtrl.setImageResource(R.drawable.sound_on);
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        if (isMute)
+        if (isSoundOn)
             startService(music);
 
 
@@ -150,14 +150,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_info:
 
                         Intent info = new Intent(MainActivity.this, InfoActivity.class);
-                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(info);
                         break;
 
                     case R.id.nav_AboutUs:
                         Intent aboutUs = new Intent(MainActivity.this, AboutusActivity.class);
-                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(aboutUs);
                         break;
@@ -175,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_share: {
 
                         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
 
 
@@ -202,7 +202,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 //                zoomAnim.cancel();
 //                zoomAnim.reset();
                 final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
-                if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                     soundPool.play(sound_click, 1, 1, 0, 0, 1);
                 startActivity(new Intent(MainActivity.this, AddPlayerActivity.class));
 
@@ -219,8 +219,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         volumeCtrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                isMute = !isMute;
-                if (!isMute) {
+                isSoundOn = !isSoundOn;
+                if (!isSoundOn) {
                     volumeCtrl.setImageResource(R.drawable.sound_off);
                     if (mServ != null)
                         mServ.stopMusic();
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 }
                 SharedPreferences.Editor editor = prefs.edit();
-                editor.putBoolean(getString(R.string.isMute_flag), isMute);
+                editor.putBoolean(getString(R.string.isSoundOn_flag), isSoundOn);
                 editor.apply();
             }
         });
@@ -255,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
         //se non è muto metto gli effetti del suono
-        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
     }
 
@@ -266,7 +266,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
             final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
-            if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+            if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                 soundPool.play(sound_back, 1, 1, 0, 0, 1);
             rotateConfigImg();
         } else
@@ -331,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onResume();
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
-        if(prefs.getBoolean(getString(R.string.isMute_flag), true)) {
+        if(prefs.getBoolean(getString(R.string.isSoundOn_flag), true)) {
             if (mServ != null) {
                 mServ.resumeMusic();
             }

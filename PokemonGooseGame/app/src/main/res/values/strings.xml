@@ -55,7 +55,7 @@
     <string name="config_image_description">Config image</string>
     <string name="TV_TITLE_ACTIVITY_LEADER_BOARD">Scoreboard</string>
     <string name="CONTENT_DESCRIPTION_IV_POSITION_CARD">image for the next score points</string>
-    <string name="isMute_flag" translatable="false">isMute</string>
+    <string name="isSoundOn_flag" translatable="false">isSoundOn</string>
     <string name="game_flag" translatable="false">game</string>
     <string name="little_hidden_treasure_description_dialog">You spot some coins shining in the grass. Coins + 50</string>
     <string name="little_hidden_treasure_title_dialog">Little hidden treasure</string>

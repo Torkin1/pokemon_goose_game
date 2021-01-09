@@ -107,7 +107,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
-        boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
+        boolean isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -128,7 +128,7 @@ public class GameActivity extends AppCompatActivity {
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        if (isMute)
+        if (isSoundOn)
             startService(music);
 
         //Start HomeWatcher
@@ -330,7 +330,7 @@ public class GameActivity extends AppCompatActivity {
                 diceImage.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
 
                         // Rolls dice
@@ -623,7 +623,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
         (new AlertDialog.Builder(GameActivity.this))
                 .setTitle(R.string.dialog_quit_title)

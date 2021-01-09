@@ -53,7 +53,7 @@ public class AboutusActivity extends AppCompatActivity {
 
         //get preferences
 
-        boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
+        boolean isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -74,7 +74,7 @@ public class AboutusActivity extends AppCompatActivity {
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        if (isMute)
+        if (isSoundOn)
             startService(music);
 
         //Start HomeWatcher
@@ -187,7 +187,7 @@ public class AboutusActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
-        if (prefs.getBoolean(getString(R.string.isMute_flag), true))
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
         super.onBackPressed();
     }
