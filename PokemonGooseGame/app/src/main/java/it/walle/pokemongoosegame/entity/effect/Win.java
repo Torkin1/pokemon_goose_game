@@ -20,16 +20,13 @@ public class Win extends Effect {
         super.setEffect_image_dialogID(R.drawable.plate);
         super.setDescription(invocationContext.getContext().getString(R.string.win_description_dialog));
         super.setTitle(invocationContext.getContext().getString(R.string.win_title));
-        super.generalDialog(invocationContext).show();
+        showDialog(generalDialog(invocationContext));
 
         // Makes the trigger user to win the game
         WinnerBean winnerBean = new WinnerBean();
         winnerBean.setWinnerUsername(invocationContext.getTriggerUsername());
         CoreController.getReference().chooseWinner(winnerBean);
 
-        Log.d("win", invocationContext.getTriggerUsername() + "wins");
-
-        generalDialog(invocationContext);
     }
 
 }

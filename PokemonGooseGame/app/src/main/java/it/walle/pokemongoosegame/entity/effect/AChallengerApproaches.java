@@ -81,9 +81,8 @@ public class AChallengerApproaches extends YellowEffect {
             CoreController.getReference().addToPlate(payed);
         }
 
-        rollDiceDialog
-                .create()
-                .show();
+        showDialog(rollDiceDialog
+                .create());
     }
 
 }

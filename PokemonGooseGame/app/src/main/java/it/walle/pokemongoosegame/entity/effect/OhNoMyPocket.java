@@ -14,13 +14,11 @@ public class OhNoMyPocket extends YellowEffect{
         super.setEffect_image_dialogID(R.drawable.oh_no);
         super.setTitle(invocationContext.getContext().getString(R.string.oh_no_my_pocket_yellow_effect_title));
         super.setDescription(invocationContext.getContext().getString(R.string.oh_no_my_pocket_yellow_effect_description));
-        super.generalDialog(invocationContext).show();
-
+        showDialog(generalDialog(invocationContext));
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
         int payed = player.pay(LOST_COINS);
         CoreController.getReference().addToPlate(payed);
 
         player.setCurrentPosition(player.getCurrentPosition() - MALUS_POSITION);
-        generalDialog(invocationContext);
     }
 }

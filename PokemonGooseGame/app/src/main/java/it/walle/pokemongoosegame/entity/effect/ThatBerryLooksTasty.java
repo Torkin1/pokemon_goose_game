@@ -74,9 +74,7 @@ public class ThatBerryLooksTasty extends YellowEffect{
                             }
                         }
 
-                        rollDiceDialog
-                                .create()
-                                .show();
+                        showDialog(rollDiceDialog.create());
                     }
                 },
 
