@@ -143,6 +143,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
         setContentView(R.layout.activity_leader_board);
 
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+        boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -162,7 +163,8 @@ public class LeaderBoardActivity extends AppCompatActivity {
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        startService(music);
+        if (isMute)
+            startService(music);
 
         //Start HomeWatcher
         mHomeWatcher = new HomeWatcher(this);

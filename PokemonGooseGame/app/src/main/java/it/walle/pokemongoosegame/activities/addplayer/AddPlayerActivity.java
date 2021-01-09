@@ -363,6 +363,8 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                                                         }
                                                                                     };
 
+                                                                                    //Ovservers the changing on the blue cells settings and after the yellow one
+                                                                                    //aftera that will pass the recieved data to the boardPGSettings
                                                                                     boardPGParamsLiveData.observe((LifecycleOwner) AddPlayerActivity.this, boardPGParamsObserver);
 
                                                                                     LiveData<List<BlueCellSettings>> blueCellSettingsLiveData =
@@ -435,7 +437,7 @@ public class AddPlayerActivity extends AppCompatActivity {
 
                                             boardsNameLiveData.observe((LifecycleOwner) AddPlayerActivity.this, observer);
                                         }
-                                        else{
+                                        else{//Soon the user can decide how the board is, and create one as they like
                                             Toast.makeText(AddPlayerActivity.this, R.string.TOAST_SELECT_BOARD, Toast.LENGTH_LONG).show();
                                         }
                                     }
@@ -502,9 +504,9 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 startActivity(new Intent(addPlayerActivity, GameActivity.class));
                                 finish();
                             }
-                        });
-                        GameFactory gameFactory = new GameFactory();
-                        gameFactory.createGame(createGameBean);
+                        });//normally when the game starts for the first time
+                        GameFactory gameFactory = new GameFactory();//new game factory istance
+                        gameFactory.createGame(createGameBean);//create a bean with all the data
                     }
                 }
             });
@@ -535,7 +537,7 @@ public class AddPlayerActivity extends AppCompatActivity {
         }
 
         public RecyclerView.Adapter<PokemonHolder> getRvPokemonListAdapter() {
-            return rvPokemonListAdapter;
+            return rvPokemonListAdapter;//returns the adapter of the recyclerView with all the pokemons
         }
 
         public Button getbChangeBoard() {
@@ -543,6 +545,7 @@ public class AddPlayerActivity extends AppCompatActivity {
         }
     }
 
+    //TAG used on the logs, so they can print the class that create the error
     private static final String TAG = AddPlayerActivity.class.getSimpleName();
 
     private Holder holder;                      // Holds all view elements
@@ -551,7 +554,7 @@ public class AddPlayerActivity extends AppCompatActivity {
     private int currentlySelectedPokemonIndex;    // Index of holder currently pointed by bouncing head
     private ControllerSelectPokemon controllerSelectPokemon; // Reference to the controller
 
-
+    //istance of the class mHomeWatcher
     HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
     private MusicService mServ;
