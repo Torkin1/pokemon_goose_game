@@ -78,6 +78,7 @@ public abstract class Effect {
 
         Dialog dialog;
 
+
         if(positiveButton == null && negativeButton == null){
             dialog = new AlertDialog.Builder(context)
                     .setView(dialog_layout)

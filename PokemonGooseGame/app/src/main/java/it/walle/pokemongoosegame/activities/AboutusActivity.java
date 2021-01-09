@@ -44,13 +44,14 @@ public class AboutusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+
         //The main should be fullScreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_aboutus);
 
         //get preferences
-        final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
 
         boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
 
@@ -73,7 +74,8 @@ public class AboutusActivity extends AppCompatActivity {
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        startService(music);
+        if (isMute)
+            startService(music);
 
         //Start HomeWatcher
         mHomeWatcher = new HomeWatcher(this);

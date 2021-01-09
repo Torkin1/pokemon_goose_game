@@ -589,6 +589,7 @@ public class AddPlayerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
         setContentView(R.layout.activity_add_player);
 
         this.controllerSelectPokemon = new ControllerSelectPokemon();
@@ -622,6 +623,8 @@ public class AddPlayerActivity extends AppCompatActivity {
         });
         controllerSelectPokemon.loadAllPokemons(loadPokemonBean);
 
+        boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
+
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
@@ -640,7 +643,8 @@ public class AddPlayerActivity extends AppCompatActivity {
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        startService(music);
+        if (isMute)
+            startService(music);
 
         //Start HomeWatcher
         mHomeWatcher = new HomeWatcher(this);

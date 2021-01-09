@@ -107,6 +107,7 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+        boolean isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -127,7 +128,8 @@ public class GameActivity extends AppCompatActivity {
         doBindService();
         Intent music = new Intent();
         music.setClass(this, MusicService.class);
-        startService(music);
+        if (isMute)
+            startService(music);
 
         //Start HomeWatcher
         mHomeWatcher = new HomeWatcher(this);

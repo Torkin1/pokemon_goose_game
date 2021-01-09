@@ -65,8 +65,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+
         super.onCreate(savedInstanceState);
+
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
 
         Bootstrap.getReference().doOnBoot(this);
 
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         isMute = prefs.getBoolean(getString(R.string.isMute_flag), true);
+
+        System.out.println("test1 and ismute is: " + isMute);
 
         final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
         if (!isMute)
@@ -139,11 +143,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     case R.id.nav_home:
 
                         Intent home = new Intent(MainActivity.this, MainActivity.class);
-                        if (prefs.getBoolean(getString(R.string.isMute_flag), false))
-                            soundPool.play(sound_back, 1, 1, 0, 0, 1);
-                        startActivity(home);
-                        rotateConfigImg();
-                        Toast.makeText(getApplicationContext(), "Hello Povero popolo", Toast.LENGTH_SHORT).show();
+                            onBackPressed();
+
                         break;
 
                     case R.id.nav_info:
@@ -329,8 +330,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onResume() {
         super.onResume();
 
-        if (mServ != null) {
-            mServ.resumeMusic();
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+        if(prefs.getBoolean(getString(R.string.isMute_flag), true)) {
+            if (mServ != null) {
+                mServ.resumeMusic();
+            }
         }
     }
 
