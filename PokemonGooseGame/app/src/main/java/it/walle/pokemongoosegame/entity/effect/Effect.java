@@ -80,12 +80,12 @@ public abstract class Effect {
 
 
         if(positiveButton == null && negativeButton == null){
-            dialog = new AlertDialog.Builder(context)
+            dialog = new AlertDialog.Builder(context, R.style.CustomMaterialDialog)
                     .setView(dialog_layout)
                     .create();
         }
         else{
-            dialog = new AlertDialog.Builder(context)
+            dialog = new AlertDialog.Builder(context, R.style.CustomMaterialDialog)
                     .setView(dialog_layout)
                     .setPositiveButton(positiveButtonText, positiveButton)
                     .setNegativeButton(negativeButtonText, negativeButton)
