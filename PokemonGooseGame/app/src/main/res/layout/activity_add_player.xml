@@ -65,27 +65,46 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
+        android:background="@null"
+        android:backgroundTint="@null"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="parent" />
 
 
+    <!--<com.google.android.material.button.MaterialButton
+        android:id="@+id/bChangeBoard"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="16dp"
+        android:insetLeft="0dp"
+        android:insetTop="0dp"
+        android:insetRight="0dp"
+        android:insetBottom="0dp"
+        app:icon="@drawable/plus"
+        app:iconPadding="0dp"
+        app:iconSize="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/etBoardName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etBoardType"
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Rounded" />-->
+
     <Button
         android:id="@+id/bChangeBoard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="16dp"
-        android:text="@string/B_CHANGE_BOARD_TEXT"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.166"
-        app:layout_constraintStart_toEndOf="@+id/rvPokemonList"
-        app:layout_constraintTop_toBottomOf="@+id/etBoardName"
-        app:layout_constraintVertical_bias="0.293" />
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/add"
+        app:layout_constraintBottom_toTopOf="@+id/rvPokemonList"
+        app:layout_constraintEnd_toEndOf="@+id/etBoardName"
+        app:layout_constraintHorizontal_bias="0.487"
+        app:layout_constraintStart_toEndOf="@+id/tvNameBoard"
+        app:layout_constraintTop_toBottomOf="@+id/etBoardName" />
 
     <TextView
         android:id="@+id/tvTypeBoard"
@@ -114,7 +133,7 @@
         style="@style/GreetingsLabel"
         android:layout_width="184dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="16dp"
         android:hint="@string/ET_BOARD_TYPE_HINT"
         app:layout_constraintBottom_toBottomOf="@+id/tvTypeBoard"
         app:layout_constraintStart_toEndOf="@+id/tvTypeBoard"
@@ -135,24 +154,33 @@
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="155dp"
-        android:layout_height="104dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/rvPokemonList"
         app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             android:id="@+id/bDone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="0dp"
+            android:autoSizeMaxTextSize="14sp"
+            android:autoSizeMinTextSize="4sp"
+            android:autoSizeTextType="uniform"
+            android:insetTop="6dp"
+            android:insetBottom="6dp"
             android:text="@string/BUTTON_DONE" />
 
         <Button
             android:id="@+id/bStartGame"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:autoSizeMaxTextSize="14sp"
+            android:autoSizeMinTextSize="4sp"
+            android:autoSizeTextType="uniform"
+            android:insetTop="6dp"
+            android:insetBottom="6dp"
             android:text="@string/BUTTON_START_GAME_TEXT" />
     </LinearLayout>
 

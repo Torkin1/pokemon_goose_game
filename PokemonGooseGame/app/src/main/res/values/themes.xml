@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.PokemonGooseGame" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimary">@color/pokemon</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -14,16 +14,10 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="CustomMaterialDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-
-        <!-- Text Color for buttons -->
-        <item name="colorPrimary">@color/healthBarHealth</item>
-
-    </style>
-
     <style name="Theme.PokemonGooseGame.noActionBar">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">true</item>
         <item name="windowActionBarOverlay">false</item>
     </style>
+
 </resources>
