@@ -21,8 +21,8 @@ public class TheTributeOfThePious extends YellowEffect {
 
 
         if (player.getMoney() > TAXES) {
-            player.setMoney(player.getMoney() - TAXES);
-            CoreController.getReference().setPlate(CoreController.getReference().getPlate() + TAXES);
+            int payed = player.pay(TAXES);
+            CoreController.getReference().addToPlate(payed);
         } else
             player.getPokemon().setCurrentHp(malus_hp);
     }

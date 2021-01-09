@@ -17,7 +17,8 @@ public class OhNoMyPocket extends YellowEffect{
         super.generalDialog(invocationContext).show();
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
-        player.setMoney(player.getMoney() - LOST_COINS);
+        int payed = player.pay(LOST_COINS);
+        CoreController.getReference().addToPlate(payed);
 
         player.setCurrentPosition(player.getCurrentPosition() - MALUS_POSITION);
         generalDialog(invocationContext);

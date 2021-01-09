@@ -19,8 +19,8 @@ public class CaughtWithoutMask extends YellowEffect{
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
 
         //Always keep the right order, first you take the money and after you take the money from him
-        CoreController.getReference().setPlate(CoreController.getReference().getPlate() + FEE);
-        player.setMoney(player.getMoney() - FEE);
+        int payed = player.pay(FEE);
+        CoreController.getReference().addToPlate(payed);
 
         player.setCurrentPosition(player.getCurrentPosition() + MALUS_POSITION);
         player.setIdleTurns(player.getNumOfIdleTurns() + 1);

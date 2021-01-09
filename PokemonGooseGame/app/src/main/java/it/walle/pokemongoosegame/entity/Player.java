@@ -29,6 +29,13 @@ public class Player {
         this.money.setValue(money);
     }
 
+    public int pay(int fee){
+        // makes the player pay up to the specified fee and returns how much they actually payed
+        int toPay = Math.min(getMoney(), fee);
+        setMoney(getMoney() - toPay);
+        return toPay;
+    }
+
     public int getNumOfIdleTurns() {
         return idleTurns;
     }
@@ -66,6 +73,7 @@ public class Player {
     }
 
     public void setCurrentPosition(int currentPosition) {
+        // Can't go back prior to first cell
         if (currentPosition < 0)
             this.currentPosition = 0;
         else

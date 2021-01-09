@@ -76,8 +76,9 @@ public class AChallengerApproaches extends YellowEffect {
         else {
             rollDiceDialog.setMessage(loseTextId);
 
-            player.setMoney(player.getMoney() - BET);
-            CoreController.getReference().setPlate(CoreController.getReference().getPlate() + BET);
+            // Makes the player pay the bet
+            int payed = player.pay(BET);
+            CoreController.getReference().addToPlate(payed);
         }
 
         rollDiceDialog
