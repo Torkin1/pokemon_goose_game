@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">PokemonGooseGame</string>
+    <string name="app_name" translatable="false">PokemonGooseGame</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="FRONT_SPRITE_DESCRIPTION">Front sprite of pokemon</string>
@@ -17,14 +17,14 @@
     <string name="TV_BOARD_NAME_TEXT">Board name:</string>
     <string name="ET_BOARD_NAME_HINT">Board name here</string>
     <string name="ADD_PLAYER_DIALOG_TITLE">%s added to the game</string>
-    <string name="ADD_PLAYER_DIALOG_MSG">Do you wish to add another player to the game?</string>
+    <string name="ADD_PLAYER_DIALOG_MSG">Add another player to the game?</string>
     <string name="YES">yes</string>
     <string name="NO">no</string>
     <string name="BUTTON_POSITIVE_SELECT_BOARD">Ok</string>
     <string name="TOAST_SELECT_BOARD">Coming soon...</string>
     <string name="BUTTON_NEGATIVE_SELECT_BOARD">Back</string>
     <string name="DIALOG_SELECT_BOARD_TITLE">Board configuration</string>
-    <string name="CREATE_NEW_BOARD_SETTINGS">Create new board settings</string>
+    <string name="CREATE_NEW_BOARD_SETTINGS">Create new board configuration</string>
     <string name="ALERT_NO_BOARD_SELECTED_TITLE">No board configuration selected!</string>
     <string name="ALERT_NO_BOARD_SELECTED_MSG">Choose a board configuration before continuing</string>
     <string name="ALERT_NO_POKEMON_SELECTED_TITLE">No pokemon selected!</string>
@@ -58,7 +58,7 @@
     <string name="CONTENT_DESCRIPTION_IV_POSITION_CARD">image for the next score points</string>
     <string name="isMute_flag" translatable="false">isMute</string>
     <string name="game_flag" translatable="false">game</string>
-    <string name="little_hidden_treasure_description_dialog">You find some coins shining in the grass. Coins + 50</string>
+    <string name="little_hidden_treasure_description_dialog">You spot some coins shining in the grass. Coins + 50</string>
     <string name="little_hidden_treasure_title_dialog">Little hidden treasure</string>
     <string name="no_place_like_home_yellow_effect">"If your pokemon is of the same type of this cell, it heals 30% "</string>
     <string name="no_place_like_home_yellow_effect_title">No Place Like Home</string>
@@ -74,18 +74,18 @@
     <string name="another_day_another_victory_title_dialog">Another day, another victory</string>
     <string name="ITS_ON_FIRE_YO_TITLE">****\'s on fire, yo!</string>
     <string name="ITS_ON_FIRE_YO_DESC">A rapper Jigglypuff appears! Its rhymes are too lit to be ignored. You lose one turn between one beat and another</string>
-    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! Le mie tasche!</string>
-    <string name="oh_no_my_pocket_yellow_effect_description">Empty pockets, you lost your wallet, after going for back 6 (if avalible) you found it but 20 coins are missing, that the plate found</string>
+    <string name="oh_no_my_pocket_yellow_effect_title">Oh no! My wallet!</string>
+    <string name="oh_no_my_pocket_yellow_effect_description">There is a hole in your pocket and your wallet must have fell out while you were walking! You retrace your steps 6 cells back, only to find your wallet was emptied. - 20 coins</string>
     <string name="that_berry_looks_tasty_dialog_title">That berry looks tasty!</string>
     <string name="that_berry_looks_tasty_dialog_description">You have found a berry! If you want your pokemon to eat it, roll your dice first</string>
     <string name="that_berry_looks_tasty_dialog_positive_button">Roll</string>
     <string name="that_berry_looks_tasty_roll_dialog_title">Chomp!</string>
     <string name="that_berry_looks_tasty_roll_dialog_message_case_1">The berry intoxicates your pokemon. -5% health</string>
     <string name="that_berry_looks_tasty_roll_dialog_message_case_6">There is a coin in the berry! +5%health, +10 coins</string>
-    <string name="that_berry_looks_tasty_roll_dialog_message_case_else">The berry heals your pokemon. +5% health</string>
+    <string name="that_berry_looks_tasty_roll_dialog_message_case_else">The berry was really tasty indeed. +5% health</string>
     <string name="that_berry_looks_tasty_dialog_negative_button">Leave it</string>
     <string name="that_little_brat_yellow_effect_title">That little brat!</string>
-    <string name="that_little_brat_yellow_effect_description">You have been robbed by Burglar psyduck! You lose half of your coins to the plate</string>
+    <string name="that_little_brat_yellow_effect_description">You have been robbed by Burglar Psyduck! You lose half of your coins to the plate</string>
     <string name="when_the_bed_traps_you_yellow_effect_title">When the bed traps you</string>
     <string name="when_the_bed_traps_you_yellow_effect_description">You feel too tired to even get out of bed. Your pokemon heals 30% health, but you lose 1 turn</string>
     <string name="caught_you_without_mask_yellow_effect_title">Caught you without a mask!</string>
@@ -93,9 +93,9 @@
     <string name="a_challenger_approaches_yellow_effect_title">A challenger approaches</string>
     <string name="a_challenger_approaches_yellow_effect_description">An opponent spots you and wants to fight. Roll a dice to see who wins</string>
     <string name="a_challenger_approaches_yellow_effect_win_case">YOU WIN! Here 20 coins for you</string>
-    <string name="a_challenger_approaches_yellow_effect_lost_case">Oh no... you lost, Better luck next time</string>
-    <string name="a_challenger_approaches_yellow_effect_run_win_case">You couldn\'t run away, BUT YOU WIN!</string>
-    <string name="a_challenger_approaches_yellow_effect_run_lost_case">You couldn\'t run from his wrath, he defeated you.You lost 20 coins</string>
+    <string name="a_challenger_approaches_yellow_effect_lost_case">Oh no... you lost, Better luck next time. - 20 coins</string>
+    <string name="a_challenger_approaches_yellow_effect_run_win_case">You can\'t just run away, it would be unsporting. You did win anyway, maybe you should put more trust in yourself. + 20 coins BUT YOU WIN!</string>
+    <string name="a_challenger_approaches_yellow_effect_run_lost_case">You can\'t just run away, it would be unsporting!</string>
     <string name="a_challenger_approaches_yellow_effect_fight_button_name">LET\'S FIGHT!</string>
     <string name="a_challenger_approaches_yellow_effect_run_button_name">RUN</string>
 </resources>
