@@ -24,6 +24,7 @@ public abstract class Effect {
 
     public abstract void doEffect(InvocationContext invocationContext);       // Implementation of the actual effect
 
+    //Overloading del metodo generalDialog per creare dialoghi cancellabili e senza pulsanti positivi e negativi
     protected Dialog generalDialog(InvocationContext invocationContext){
         return this
                 .generalDialog(
@@ -31,14 +32,32 @@ public abstract class Effect {
                         null,
                         null,
                         null,
-                        null);
+                        null,
+                        true);
+    }
+
+    //Overloading del metodo generalDialog per creare dialoghi non cancellabili e con pulsanti positivi e negativi
+    protected Dialog generalDialog(InvocationContext invocationContext,
+                                   String positiveButtonText,
+                                   DialogInterface.OnClickListener positiveButton,
+                                   String negativeButtonText,
+                                   DialogInterface.OnClickListener negativeButton){
+       return this
+               .generalDialog(
+                       invocationContext,
+                       positiveButtonText,
+                       positiveButton,
+                       negativeButtonText,
+                       negativeButton,
+                       false);
     }
 
     protected Dialog generalDialog(InvocationContext invocationContext,
                                    String positiveButtonText,
                                    DialogInterface.OnClickListener positiveButton,
                                    String negativeButtonText,
-                                   DialogInterface.OnClickListener negativeButton) {
+                                   DialogInterface.OnClickListener negativeButton,
+                                   boolean isCancelable) {
         Context context;
         context = invocationContext.getContext();
 
@@ -67,6 +86,8 @@ public abstract class Effect {
                     .setPositiveButton(positiveButtonText, positiveButton)
                     .setNegativeButton(negativeButtonText, negativeButton)
                     .create();
+
+            dialog.setCancelable(isCancelable);
         }
 
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
