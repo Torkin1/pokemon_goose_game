@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">PokemonGooseGame</string>
+    <string name="app_name" translatable="false">PokemonGooseGame</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="FRONT_SPRITE_DESCRIPTION">Front sprite of pokemon</string>
