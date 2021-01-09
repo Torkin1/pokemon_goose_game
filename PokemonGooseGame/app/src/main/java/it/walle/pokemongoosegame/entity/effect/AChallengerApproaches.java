@@ -34,31 +34,7 @@ public class AChallengerApproaches extends YellowEffect {
                     @Override
                     public void onClick(DialogInterface dialog, int which)
                     {
-                        //Players dice
-                        int my_roll = ThreadLocalRandom.current().nextInt(1, 6);
-
-                       //opponents dice
-                        int enemy_roll = ThreadLocalRandom.current().nextInt(1, 6);
-
-                        AlertDialog.Builder rollDiceDialog = new AlertDialog.Builder(invocationContext.getContext())
-                                .setTitle(R.string.a_challenger_approaches_yellow_effect_title);
-
-                        Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
-
-                        if(my_roll >= enemy_roll) {
-                            rollDiceDialog.setMessage(R.string.a_challenger_approaches_yellow_effect_win_case);
-                            player.setMoney(player.getMoney() + BET);
-                        }
-                        else {
-                            rollDiceDialog.setMessage(R.string.a_challenger_approaches_yellow_effect_lost_case);
-
-                            player.setMoney(player.getMoney() - BET);
-                            CoreController.getReference().setPlate(CoreController.getReference().getPlate() + BET);
-                        }
-
-                        rollDiceDialog
-                                .create()
-                                .show();
+                        fight(invocationContext, R.string.a_challenger_approaches_yellow_effect_win_case, R.string.a_challenger_approaches_yellow_effect_lost_case);
                     }
                 },
 
@@ -69,34 +45,44 @@ public class AChallengerApproaches extends YellowEffect {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        //Players dice
-                        int my_roll = ThreadLocalRandom.current().nextInt(1, 6);
 
-                        //opponents dice
-                        int enemy_roll = ThreadLocalRandom.current().nextInt(1, 6);
-
-                        AlertDialog.Builder rollDiceDialog = new AlertDialog.Builder(invocationContext.getContext())
-                                .setTitle(R.string.a_challenger_approaches_yellow_effect_title);
-
-                        Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
-
-                        if(my_roll >= enemy_roll) {
-                            rollDiceDialog.setMessage(R.string.a_challenger_approaches_yellow_effect_run_win_case);
-                            player.setMoney(player.getMoney() + BET);
-                        }
-                        else {
-                            rollDiceDialog.setMessage(R.string.a_challenger_approaches_yellow_effect_run_lost_case);
-
-                            player.setMoney(player.getMoney() - BET);
-                            CoreController.getReference().setPlate(CoreController.getReference().getPlate() + BET);
-                        }
-
-                        rollDiceDialog
-                                .create()
-                                .show();
+                        fight(invocationContext, R.string.a_challenger_approaches_yellow_effect_run_win_case, R.string.a_challenger_approaches_yellow_effect_run_lost_case);
                     }
                 });
         showDialog(dialog);
+    }
+
+    private void fight(InvocationContext invocationContext, int winTextId, int loseTextId){
+        ThrowDicesBean throwDicesBean = new ThrowDicesBean();
+        throwDicesBean.setNumOfFaces(6);
+        throwDicesBean.setNumOfDices(2);
+        CoreController.getReference().throwDices(throwDicesBean);
+
+        //Players dice
+        int my_roll = throwDicesBean.getExitNumbers().get(0);
+
+        //opponents dice
+        int enemy_roll = throwDicesBean.getExitNumbers().get(1);
+
+        AlertDialog.Builder rollDiceDialog = new AlertDialog.Builder(invocationContext.getContext())
+                .setTitle(R.string.a_challenger_approaches_yellow_effect_title);
+
+        Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
+
+        if(my_roll >= enemy_roll) {
+            rollDiceDialog.setMessage(winTextId);
+            player.setMoney(player.getMoney() + BET);
+        }
+        else {
+            rollDiceDialog.setMessage(loseTextId);
+
+            player.setMoney(player.getMoney() - BET);
+            CoreController.getReference().setPlate(CoreController.getReference().getPlate() + BET);
+        }
+
+        rollDiceDialog
+                .create()
+                .show();
     }
 
 }

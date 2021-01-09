@@ -20,6 +20,11 @@ public class ThrowDicesBean {
     }
 
     public void setNumOfFaces(int numOfFaces) {
+
+        // min num of faces is 1
+        if (numOfFaces < 1){
+            numOfFaces = 1;
+        }
         this.numOfFaces = numOfFaces;
     }
 

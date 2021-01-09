@@ -34,6 +34,7 @@ public class Bootstrap {
     private final static int[] YELLOW_CELLS_STARTING_INDEX = {5, 9};
     private final static String BOARD_NAME = "Default";
     private final static String[] YELLOW_EFFECT_CLASS_NAME = {
+
             LittleHiddenTreasure.class.getName(),
             NoPlaceLikeHome.class.getName(),
             ItsATrap.class.getName(),

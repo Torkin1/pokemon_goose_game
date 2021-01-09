@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import it.walle.pokemongoosegame.entity.Game;
 import it.walle.pokemongoosegame.entity.Player;
@@ -221,7 +222,7 @@ public class CoreController {
         // Generates a number of casual values using params specified in bean
         ArrayList<Integer> exitNumbers = new ArrayList<>();
         for(int i = 0; i < bean.getNumOfDices(); i++){
-            exitNumbers.add(i, new Random().nextInt(6) + 1);
+            exitNumbers.add(ThreadLocalRandom.current().nextInt(1, bean.getNumOfFaces()));
         }
         bean.setExitNumbers(exitNumbers);
     }
