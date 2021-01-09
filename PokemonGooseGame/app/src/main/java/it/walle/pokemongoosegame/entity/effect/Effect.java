@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -69,6 +70,8 @@ public abstract class Effect {
         ImageView effect_image_dialog = dialog_layout.findViewById(R.id.dialog_image);
 
 
+        effect_title_dialog.setMovementMethod(new ScrollingMovementMethod());
+        effect_description_dialog.setMovementMethod(new ScrollingMovementMethod());
         effect_description_dialog.setText(description);
         effect_title_dialog.setText(title);
         effect_image_dialog.setImageDrawable(ContextCompat.getDrawable(context, effect_image_dialogID));

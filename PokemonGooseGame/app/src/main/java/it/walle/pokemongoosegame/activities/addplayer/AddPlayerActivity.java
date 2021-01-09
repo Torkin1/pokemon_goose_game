@@ -70,10 +70,11 @@ import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 public class AddPlayerActivity extends AppCompatActivity {
 
     private class PokemonHolder extends RecyclerView.ViewHolder{
+        //This holder will update the view with all the contents regarding the pokemon
 
-        private final ImageView ivSprite;
-        private final LinearLayout llTypes;
-        private final ImageView ivCurrentPokemonPointer;
+        private final ImageView ivSprite; //the imageView that will contain the pokemon that the player can choose
+        private final LinearLayout llTypes; //the linearlayout with the various images of the type
+        private final ImageView ivCurrentPokemonPointer; // an image of a pointer, that will point the selcted pokemon
 
         public PokemonHolder(@NonNull View itemView) {
             super(itemView);
@@ -217,6 +218,8 @@ public class AddPlayerActivity extends AppCompatActivity {
                     }
                 }
 
+                //return the item on a recycler view,
+                // also checks if is null and returns 0, otherwise returns the size of list with all the pokemons
                 @Override
                 public int getItemCount() {
                     return (AddPlayerActivity.this.getAllPokemons() == null)? 0 : AddPlayerActivity.this.getAllPokemons().size();
@@ -284,6 +287,8 @@ public class AddPlayerActivity extends AppCompatActivity {
 
                 @Override
                 public void onClick(View v) {
+                    //A Dialog tha appear after clicking the change button, after you can chose the procedullary genereted type
+                    //in future fixed boards can be implement or other things, just imagine. if pressed ok a new dialog will open
                     new AlertDialog.Builder(addPlayerActivity)
                             .setTitle(R.string.DIALOG_SELECT_BOARD_TITLE)
                             .setSingleChoiceItems(R.array.BOARD_CREATION_ALGORITHMS, -1, new DialogInterface.OnClickListener() {
@@ -305,6 +310,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                             .BoardPGParamsDAO()
                                                             .getBoardsPGName(); // Nomi delle board da visualizzare
 
+                                           //observer that monitor the list of possible board configurations,
                                             Observer<List<String>> observer = new Observer<List<String>>() {
                                                 @Override
                                                 public void onChanged(List<String> boardsName) {
@@ -325,7 +331,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                                             // TODO: remove toast and start activity for creating new board settings
                                                                             Toast.makeText(AddPlayerActivity.this, R.string.TOAST_SELECT_BOARD, Toast.LENGTH_LONG).show();
                                                                         }
-                                                                        else{
+                                                                        else{//if clicked on the name choice, will load the board with that chosed name
                                                                             AddPlayerActivity.this
                                                                                     .holder
                                                                                     .etBoardName
@@ -340,7 +346,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                                                                                             .getReference(AddPlayerActivity.this))
                                                                                             .BoardPGParamsDAO()
                                                                                             .getBoardPGSettingsByName(name);
-
+                                                                            //waiting for the other data, the settings and params
                                                                             Observer<BoardPGSettings> boardPGSettingsObserver = new Observer<BoardPGSettings>() {
                                                                                 @Override
                                                                                 public void onChanged(BoardPGSettings boardPGSettings) {

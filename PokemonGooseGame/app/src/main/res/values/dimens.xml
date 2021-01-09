@@ -13,4 +13,7 @@
     <dimen name="bottom_dice_distance">36dp</dimen>
     <dimen name="up_bar_icon_dimension">25dp</dimen>
     <dimen name="start_end_margin_distance">30dp</dimen>
+    <dimen name="general_dialog_image_dim">180dp</dimen>
+    <dimen name="general_dialog_textWidth">450dp</dimen>
+    <dimen name="general_dialog_text_height">100dp</dimen>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="navigation_drawer_open">Apri l\'elenco di navigazione</string>
+    <string name="navigation_drawer_open">"Apri l'elenco di navigazione "</string>
     <string name="navigation_drawer_close">Chiudi l\'elenco di navigazione</string>
     <string name="FRONT_SPRITE_DESCRIPTION">Sprite frontale del Pokemon</string>
     <string name="TYPE_ICON_DESCRIPTION">icona del tipo del pokemon</string>
