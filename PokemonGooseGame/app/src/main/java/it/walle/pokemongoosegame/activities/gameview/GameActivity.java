@@ -65,18 +65,19 @@ public class GameActivity extends AppCompatActivity {
     private final List<SurfaceUpdaterThread> surfaceUpdaterThreads = new ArrayList<>();
 
     private
-    SurfaceView svBackground;
-    SurfaceView svBoard;
-    SurfaceView svPawn;
+    SurfaceView svBackground;//the SV of the bg
+    SurfaceView svBoard;//the SV of the board
+    SurfaceView svPawn;//the SV of the pawns
 
-    // current Player's Coin counter
+    // current Player's Coin counter, plates counter and the pokemon icon
     TextView text_coins_value, text_plate_value;
     ImageView pokemon_icon;
 
     // Health points of all players in game
     private final List<LiveData<Integer>> healths = new ArrayList<>();
 
-    HomeWatcher mHomeWatcher;
+    HomeWatcher mHomeWatcher;//music watcher
+    //all sound related variables
     private boolean mIsBound = false;
     private MusicService mServ;
     //for sound effects
@@ -85,20 +86,14 @@ public class GameActivity extends AppCompatActivity {
     //sound effect
     private int sound_back, sound_click;
 
-    //per tenere il punteggio è dummy, preferibilmente creare un oggetto
-    private int score = 0;
-
-    //usato per tenere i dati del gioco, si aggiorna ogni nuvoa versione!
+    //using the SP to keep all the games data about sound and more
     private SharedPreferences prefs;
 
-
-    //the dice image
+    //the dice image, and the 2 arrows
     private ImageView diceImage, up_page_arrow, down_page_arrow;
 
-    //Variabile che controlla se una pedina si deve muovere oppure no.
+    //Variable that checks if the pawn should move or not
     boolean pawnMove = true;
-
-    RelativeLayout game_menu_layout;//getting the realtive layout
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,8 +101,9 @@ public class GameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        //initilize the SP
         prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
-        boolean isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);
+        boolean isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);//variable for sound control
 
         //inizilizzo il suono
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
@@ -182,7 +178,7 @@ public class GameActivity extends AppCompatActivity {
                                 }
 
                             }
-                        };
+                        };//creates a  dialog for the looser
                         DialogManager.getInstance().enqueueDialog(loseDialog, onDismissLoseDialogListener);
                     }
                 }
@@ -235,7 +231,7 @@ public class GameActivity extends AppCompatActivity {
         up_page_arrow = findViewById(R.id.page_up_img);
         down_page_arrow = findViewById(R.id.page_down_img);
 
-        up_page_arrow.setImageResource(R.drawable.up_arrow);
+        up_page_arrow.setImageResource(R.drawable.up_arrow);//set the up arrow as available
 
         // waits for the svBoard to be drawn on screen
         svBoard.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -256,7 +252,7 @@ public class GameActivity extends AppCompatActivity {
                     public void surfaceCreated(SurfaceHolder holder) {
                         svBoard.getHolder().setSizeFromLayout();
 
-                        // Do some drawing when surface is ready
+                        // Do some drawing when surface is ready of the board
                         SurfaceUpdaterThread boardThread = new BoardThread(svBoard, GameActivity.this);
                         surfaceUpdaterThreads.add(boardThread);
                         boardThread.start();
@@ -281,7 +277,7 @@ public class GameActivity extends AppCompatActivity {
                     public void surfaceCreated(SurfaceHolder holder) {
                         svBackground.getHolder().setSizeFromLayout();
 
-                        // Do some drawing when surface is ready
+                        // Do some drawing when surface is ready, about the bg
                         SurfaceUpdaterThread backgroundThread = new BackgroundThread(svBackground, GameActivity.this);
                         surfaceUpdaterThreads.add(backgroundThread);
                         backgroundThread.start();
@@ -306,7 +302,7 @@ public class GameActivity extends AppCompatActivity {
                     public void surfaceCreated(SurfaceHolder holder) {
                         svPawn.getHolder().setSizeFromLayout();
 
-                        // Do some drawing when surface is ready
+                        // Do some drawing when surface is ready of the pawns
                         SurfaceUpdaterThread pawnThread = new PawnThread(svPawn, GameActivity.this);
                         surfaceUpdaterThreads.add(pawnThread);
                         pawnThread.start();
@@ -338,7 +334,7 @@ public class GameActivity extends AppCompatActivity {
                         throwDicesBean.setNumOfFaces(6);
                         throwDicesBean.setNumOfDices(1);
                         CoreController.getReference().throwDices(throwDicesBean);
-                        int res = throwDicesBean.getExitNumbers().get(0);
+                        int res = throwDicesBean.getExitNumbers().get(0);//gets the number from the controller-s dice
 
                         // displays roll result
                         rotateDice(res);
@@ -382,14 +378,14 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        killSurfaceUpdaterThreads();
+        killSurfaceUpdaterThreads();//kill the thread in stop to, so no more requests should have be done
         super.onStop();
     }
 
     @Override
     protected void onPause() {
 
-        killSurfaceUpdaterThreads();
+        killSurfaceUpdaterThreads();//onPause kill the htread anyway, preventing errors
         super.onPause();
 
         //Detect idle screen
@@ -400,7 +396,7 @@ public class GameActivity extends AppCompatActivity {
             isScreenOn = pm.isScreenOn();
         }
 
-        if (!isScreenOn) {
+        if (!isScreenOn) {//iff screen turned off pause the musc
             if (mServ != null) {
                 mServ.pauseMusic();
             }
@@ -454,7 +450,7 @@ public class GameActivity extends AppCompatActivity {
         Animation anim = AnimationUtils.loadAnimation(this, R.anim.dice_rotation);
         diceImage.startAnimation(anim);
 
-        try {
+        try {//try to get the image with this value
             diceImage.setImageResource(DrawableGetter.getReference().getDiceDrawableId(i));
         } catch (DrawableNotFoundException e) {
             Log.e(TAG, e.getMessage(), e);
@@ -482,17 +478,17 @@ public class GameActivity extends AppCompatActivity {
         // updates pawn positions
         GameEngine.getInstance().getPawnSemaphore().release();
 
-        // far giocare il player successivo
+        // set next turn, so the next player can play too
         nextTurn();
 
     }
 
     private void nextTurn(){
-        //settare il turno successivo e far giocare il player successivo
+        //sets next turn so next player can play
         if (CoreController.getReference().getPlayers().size() != 0) {
             CoreController.getReference().nextTurn();
             playerTurn();
-        } else {
+        } else {//if there are no more player, end the game and start the a leaderboard activity
             startActivity(new Intent(this, LeaderBoardActivity.class));
             finish();
         }
@@ -502,13 +498,13 @@ public class GameActivity extends AppCompatActivity {
         CoreController coreController = CoreController.getReference();
 
 
-        //Controlla se ci sono ancora giocatori nella partita
+        //check if there are  players in the game
         if (coreController.getPlayers().size() != 0) {
 
             String playerTurn = coreController.getCurrentPlayerUsername();
             String coins = Integer.toString(coreController.getCurrentPlayerCoins());
 
-            //Cambiare nome e monete del giocatore in turno
+            //Change player coins and name.
             TextView tvPlayerTurn = findViewById(R.id.text_player_turn);
             tvPlayerTurn.setText(playerTurn);
             text_coins_value.setText(coins);
@@ -520,6 +516,7 @@ public class GameActivity extends AppCompatActivity {
             Player player = CoreController.getReference().getPlayerByUsername(CoreController.getReference().getCurrentPlayerUsername());
 
 
+            //draws the icons in the top fo the view to make the player understand and remember the his pokemon
             DAOSprite daoSprite = new DAOSprite(this);
             daoSprite
                     .loadSprite(
@@ -543,19 +540,19 @@ public class GameActivity extends AppCompatActivity {
                             }
                     );
 
-            //Risolvi stayInCellEffect
+            //solves stayInCellEffect
             MoveBean stayInCellBean = new MoveBean();
             stayInCellBean.setPlayerUsername(playerTurn);
             stayInCellBean.setBoardIndex(coreController.getCurrentPlayerPosition());
             coreController.stayInCell(stayInCellBean);
 
-            //Controlla se il giocatore deve saltare il turno
+            //Check if the player has to skip the turn
             SkipTurnBean skipTurnBean = new SkipTurnBean();
             skipTurnBean.setPlayerUsername(playerTurn);
             coreController.skipTurn(skipTurnBean);
             if (!skipTurnBean.isHasSkipped()) {
 
-                //Chiedi all'utente di lanciare il dado ed abilita il lancio
+                //Ask the player to trow the dice and abilitates the dice
                 new ToastWithIcon(this,
                         ContextCompat
                                 .getDrawable(this,
@@ -622,9 +619,11 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //control if the sound is on, if it is sound effect for back pressed
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
         if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
+        //a dialog checks if the user want to exit or not
         (new AlertDialog.Builder(GameActivity.this))
                 .setTitle(R.string.dialog_quit_title)
                 .setMessage(R.string.dialog_quit_message)

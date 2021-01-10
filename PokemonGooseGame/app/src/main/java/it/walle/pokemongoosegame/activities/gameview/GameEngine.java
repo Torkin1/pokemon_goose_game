@@ -193,29 +193,33 @@ public class GameEngine {
 
 private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas canvas, Context context, String playerUsername, int in_cell_counter){
 
-    // Sprite is already loaded, draws pawn
+    //From the corecontroller i take a list with all the players in a cell
     String[] list_players_in_a_cell = CoreController.getReference()
             .getAllPlayersInACellUsernames(player.getCurrentPosition());
+    //saving the length of this list as a variable so it's easier to use it
     int players_in_a_cell = list_players_in_a_cell.length;
 
+    //saving the dimension of the sprite as an int variable,
+    // the choice is made by using a full cell width divided by the person on that cell
     int spirte_dim = bitmapBank.getCellWidth() / players_in_a_cell;
+    //here I'll change the dimension of the sprite, but at the full dimension, so I'll store it in a good quality
     pokePawn.setSprite(bitmapBank.scalePawn(sprite, bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
 
-    pokePawn.setSprite(bitmapBank.scalePawn(pokePawn.getSprite(), bitmapBank.getCellWidth(), bitmapBank.getCellWidth()));
-
+    //Now I'll resize the bitmap after saving it, this will be drawn
     Bitmap resized_sprite = bitmapBank.scalePawn(pokePawn.getSprite(), spirte_dim, spirte_dim);
 
+    //drawing the resized bitmap, in and moved by a distance the one from the other
     canvas.drawBitmap(resized_sprite,
             pokePawn.getX() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
             pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter,
             null);
 
 
-    //Initializing the health bar under the pokemon
-    int hbar_width, hbar_height = 20, margin = 2;
+    //Initializing the health bar under the pokemon, first costants and variable
+    int hbar_width, HBAR_HEIGHT = 20, MARGIN = 2;
     Paint borderPaint, healthPaint;
 
-    //Giving to the border and hp bg defined colors
+    //Giving to the border and hp bar default colors
     borderPaint = new Paint();
     healthPaint = new Paint();
 
@@ -226,10 +230,10 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
     healthPaint.setColor(healthColor);
 
     // Draws health bar
-    //Distance, position and hp percentage variables
+    //Distance, position and hp percentage variables and costants
     float x = (float) pokePawn.getX()+ (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter;
     float y = (float) pokePawn.getY() + (float) bitmapBank.getCellWidth() / players_in_a_cell * in_cell_counter;
-    float distanceToPlayer = 30;
+    float DISTANCE_TO_THE_PLAYER = 30;
 
     float healthPointPercentage = (float) player.getPokemon().getCurrentHp() / CoreController.MAX_HEALTH_POKEMON;
 
@@ -238,34 +242,36 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
     hbar_width = spirte_dim;
     borderLeft = x - (float) hbar_width / 2;
     borderRight = x + (float) hbar_width / 2;
-    borderBottom = y + distanceToPlayer;
-    borderTop = borderBottom - hbar_height;
-    int increase_amout = 5;
+    borderBottom = y + DISTANCE_TO_THE_PLAYER;
+    borderTop = borderBottom - HBAR_HEIGHT;
+    //costant and variable that make the player of this turn, border bigger
+    int INCREASE_AMOUNT = 7;
     int increase = 0;
 
+    //check if the player is the one playing this turn and I'll make this hp border different
     if(CoreController.getReference().getCurrentPlayerUsername().compareTo(playerUsername) == 0){
-
         borderColor = ContextCompat.getColor(context, R.color.healthBarBorder2);
         borderPaint.setColor(borderColor);
         increase = 1;
     }
 
-    canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2 - increase_amout*increase),
-            borderTop - increase_amout*increase,
-            borderRight + (float) bitmapBank.getCellHeight() / 2 + increase_amout*increase,
-            borderBottom + increase_amout*increase,
+    //Draws the border of the heatlh bar
+    canvas.drawRect(borderLeft + (float) (bitmapBank.getCellHeight() / 2 - INCREASE_AMOUNT*increase),
+            borderTop - INCREASE_AMOUNT*increase,
+            borderRight + (float) bitmapBank.getCellHeight() / 2 + INCREASE_AMOUNT*increase,
+            borderBottom + INCREASE_AMOUNT*increase,
             borderPaint);
 
     // Draw health
     float healthLeft, healthTop, healthRight, healthBottom, healthWidth, healthHeight;
-    healthWidth = hbar_width - 4 * margin;
-    healthHeight = hbar_height - 4 * margin;
-    healthLeft = borderLeft + 2 * margin;
+    healthWidth = hbar_width - 4 * MARGIN;
+    healthHeight = HBAR_HEIGHT - 4 * MARGIN;
+    healthLeft = borderLeft + 2 * MARGIN;
     healthRight = healthLeft + healthWidth * healthPointPercentage;
-    healthBottom = borderBottom - 2 * margin;
+    healthBottom = borderBottom - 2 * MARGIN;
     healthTop = healthBottom - healthHeight;
 
-    //Hp amout different percentage
+    //Hp amout different percentage, chaging the hpBar color by the percentage
     int r, g, b;
     int n = (int)(healthPointPercentage*100);
     g = (255 * n) / 100;
@@ -274,6 +280,7 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
 
     healthPaint.setColor(Color.rgb(r,g,b));
 
+    //draws the hpBar
     canvas.drawRect(healthLeft + (float) bitmapBank.getCellHeight() / 2, healthTop, healthRight + (float) bitmapBank.getCellHeight() / 2, healthBottom, healthPaint);
 
 
@@ -334,6 +341,7 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                                                     public void onResponse(Bitmap response) {
                                                         GameEngine.this.pawnDrawer(response,player, pokePawn, canvas, context, playerUsername, in_cell_counter);
 
+                                                        //control how many pawns are in that pawn
                                                         if (CoreController.getReference()
                                                                 .getAllPlayersInACellUsernames(player.getCurrentPosition()).length > 1) {
                                                             in_cell_counter++;
@@ -341,6 +349,7 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                                                             in_cell_counter = 0;
                                                         }
 
+                                                        //release the sempahore of drawing pawn and hpbar
                                                         spriteSemaphore.release();
 
                                                     }
@@ -361,7 +370,10 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                                 String[] list_players_in_a_cell = CoreController.getReference()
                                         .getAllPlayersInACellUsernames(player.getCurrentPosition());
 
-
+                                //now a different approach, because now there are various entrance and checks, and
+                                //possibly more cell with more than one pokemon, so it checks if the pawn that is now
+                                //onDraw, it's alone or with more cells, and checks how many, using the  position on the
+                                //array with the players in a cell
                                 boolean in_this_cell = false;
                                 for (int i = 0; i < list_players_in_a_cell.length; i++) {
                                     if (player.getUsername().compareTo(list_players_in_a_cell[i]) == 0 && list_players_in_a_cell.length > 1) {
@@ -370,14 +382,18 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                                         break;
                                     }
                                 }
+                                //to prevent errors while in the list there's only one pawn, that's
+                                //the one in now onDraw, to be drawn at the right size
                                 if (list_players_in_a_cell.length < 2 || !in_this_cell)
                                     in_cell_counter = 0;
 
-
+                                //calling the method to draw
                                 GameEngine.this.pawnDrawer(pokePawn.getSprite(), player, pokePawn, canvas, context, playerUsername, in_cell_counter);
 
+                                //in case the counter wasn't updated, better start from 0 the counter
                                 in_cell_counter = 0;
 
+                                //release the semaphore
                                 spriteSemaphore.release();
                             }
 
@@ -418,19 +434,17 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
     }
 
     public void updateAndDrawBoard(Canvas canvas, Context context) {
-
-
+        //variables for the text with style and colors
         Paint paint = new Paint();
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
-
         paint.setColor(Color.BLACK);
         paint.setTextSize(30);
+
+        //variables that decide the direcion, the page number
         int cell_path_direction, page_number_cell_path_direction;
-
-        Board board = CoreController.getReference().getBoard();
-
-        int cellIndex = currentBoardPage * CELLS_IN_A_SCREEN;
+        Board board = CoreController.getReference().getBoard();//initilize the board
+        int cellIndex = currentBoardPage * CELLS_IN_A_SCREEN;//to know at which exact cell I'm in
 
         // locks displayed cells matrix
         synchronized (displayedCells) {
@@ -469,8 +483,12 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                         } else {
                             colToOccupy = cols - 1 - j;
                         }
+                        //sets the direction in this variable
                         cell_path_direction = calculateXByCol(context, graphicCell, colToOccupy);
-                        page_number_cell_path_direction = graphicCell.getCellImgX() + AppConstants.getInstance(context).CELL_MARGIN * 2 + (AppConstants.getInstance(context).CELL_MARGIN +
+                        //how much should move, and which direction
+                        page_number_cell_path_direction = graphicCell.getCellImgX() +
+                                AppConstants.getInstance(context).CELL_MARGIN * 2 +
+                                (AppConstants.getInstance(context).CELL_MARGIN +
                                 bitmapBank.getCellWidth()) * colToOccupy;
 
                         // Sets graphic cell fields with newly calculated values
@@ -489,8 +507,12 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                         if (boardCell instanceof BlueCell) {
                             BlueCell boardBlueCell = (BlueCell) boardCell;
                             canvas.drawText(boardBlueCell.getTitle(), page_number_cell_path_direction,
-                                    AppConstants.getInstance(context).SCREEN_HEIGHT + AppConstants.getInstance(context).CELL_MARGIN * 4 - (bitmapBank.getCellWidth() + HEIGHT_MARGIN) -
-                                            (bitmapBank.getCellWidth() + AppConstants.getInstance(context).CELL_MARGIN) * i, paint);
+                                    AppConstants.getInstance(context).SCREEN_HEIGHT +
+                                            AppConstants.getInstance(context).CELL_MARGIN * 4 -
+                                            (bitmapBank.getCellWidth() + HEIGHT_MARGIN) -
+                                            (bitmapBank.getCellWidth() +
+                                                    AppConstants.getInstance(context).CELL_MARGIN) * i,
+                                    paint);
                         }
 
 
@@ -500,14 +522,13 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                         Bitmap type_icon;
                         if (id_name != null) {
 
-                            //using the draable gett to get the right image type
+                            //using the drawable get to get the right image type
                             try {//hope this works otherwise we had to remake this again!! (I dont wanna)
                                 typeDrawableId = DrawableGetter.getReference().getTypeDrawableId(id_name);
-
                             } catch (DrawableNotFoundException e) {
                                 Log.e(TAG, e.getMessage(), e);
                             }
-
+                            //Add the bitmap with the icon to this variable
                             type_icon = ((BitmapDrawable) ResourcesCompat.getDrawable(context.getResources(), typeDrawableId, null)).getBitmap();
 
                             type_icon = bitmapBank.scaleTypeIcon(type_icon);
@@ -521,7 +542,6 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
 
                         }
 
-
                         // Draws cell board index
                         canvas.drawText(String.valueOf(cellIndex),
                                 (page_number_cell_path_direction + bitmapBank.getCellWidth() * 2 / 3),
@@ -532,6 +552,7 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                         // Stores drawn cell in displayed cells matrix
                         displayedCells[i][colToOccupy] = graphicCell;
 
+                        //next cell
                         cellIndex++;
 
                     } else {

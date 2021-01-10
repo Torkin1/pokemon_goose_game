@@ -22,7 +22,7 @@
 
     <style name="CustomMaterialDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <!-- Text Color for buttons -->
-        <item name="colorPrimary">@color/pokemon</item>
+        <item name="colorPrimary">@color/pokemon2</item>
     </style>
 
 </resources>
