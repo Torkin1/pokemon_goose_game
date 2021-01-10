@@ -72,6 +72,7 @@ public class GameActivity extends AppCompatActivity {
     // current Player's Coin counter, plates counter and the pokemon icon
     TextView text_coins_value, text_plate_value;
     ImageView pokemon_icon;
+    ImageView config_button;
 
     // Health points of all players in game
     private final List<LiveData<Integer>> healths = new ArrayList<>();
@@ -145,6 +146,22 @@ public class GameActivity extends AppCompatActivity {
             }
         });
         mHomeWatcher.startWatch();
+
+        config_button = findViewById(R.id.config_game_btn);
+        config_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Dialog workInProgress = (new AlertDialog.Builder(GameActivity.this))
+                        .setTitle(R.string.work_in_progress_dialog_title)
+                        .setIcon(R.drawable.work_in_progress_icon)
+                        .setMessage(R.string.work_in_progress_dialog_description)
+                        .create();
+
+                DialogManager.getInstance().enqueueDialog(workInProgress);
+
+            }
+        });
 
         // binds players pokemon healths to observers
         for (Player p : CoreController.getReference().getPlayers()) {
@@ -373,7 +390,6 @@ public class GameActivity extends AppCompatActivity {
         });
 
 
-
     }
 
     @Override
@@ -483,7 +499,7 @@ public class GameActivity extends AppCompatActivity {
 
     }
 
-    private void nextTurn(){
+    private void nextTurn() {
         //sets next turn so next player can play
         if (CoreController.getReference().getPlayers().size() != 0) {
             CoreController.getReference().nextTurn();
@@ -526,7 +542,7 @@ public class GameActivity extends AppCompatActivity {
                                 public void onResponse(Bitmap response) {
 
                                     // sets pawn sprite with pokemon sprite and draws pawn, then informs pawn updater thread that we are done
-                                    Drawable sprite  = new BitmapDrawable(getResources(), response);
+                                    Drawable sprite = new BitmapDrawable(getResources(), response);
                                     pokemon_icon.setImageDrawable(sprite);
                                 }
                             },
@@ -566,13 +582,13 @@ public class GameActivity extends AppCompatActivity {
                         .setTitle(playerTurn)
                         .setMessage(R.string.DIALOG_MESSAGE_SKIP_TURN)
                         .create();
-                        DialogInterface.OnDismissListener onDismissSkipTurnDialogListener = new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
-                                dialog.cancel();
-                                nextTurn();
-                            }
-                        };
+                DialogInterface.OnDismissListener onDismissSkipTurnDialogListener = new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        dialog.cancel();
+                        nextTurn();
+                    }
+                };
                 DialogManager.getInstance().enqueueDialog(skipTurnDialog, onDismissSkipTurnDialogListener);
             }
 
