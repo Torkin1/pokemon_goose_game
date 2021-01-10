@@ -13,13 +13,16 @@ import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 
 public class BitmapBank {
 
+    //The class is incomplete, has to be a bigger that can mange all the images on the project
+    //and convert/size/move etcc
+
     private static final String TAG = BitmapBank.class.getSimpleName();
     //bg reff
     Bitmap background, pawn, cell;
-    Resources res;
+    Resources res;//a ress variable
 
     public BitmapBank(Resources res, Context context) {
-        //Now I take normal iamges and covert them to bitmaps
+        //passing the res, adn setting it, after we create the bitmaps
         this.res = res;
         background = BitmapFactory.decodeResource(res, R.drawable.bg_large);
 
@@ -28,14 +31,16 @@ public class BitmapBank {
         pawn = BitmapFactory.decodeResource(res, R.drawable.crab_with_a_knife);
 
 
+        //directly scale some of the images
+        //in the future all will be done only by calculating the dimension in a percentage of the screen
         cell = scaleCell(cell);
         //scale the board
 
-        //to scale the pawn  image
+        //to scale the pawn image
         pawn = scalePawn(pawn, getCellWidth(), getCellHeight());
 
         //to scale the bg  image
-        background = scaleImage(background, context);//care, if is a moving bg, check the smoothness, can tell a lot
+        background = scaleBg(background, context);//care, if is a moving bg, check the smoothness, can tell a lot
 
     }
 
@@ -115,15 +120,14 @@ public class BitmapBank {
 
 
     //scale the image checking the devices sizes
-    public Bitmap scaleImage(Bitmap bitmap, Context context) {
-        float widthHeightRatio = getBackgroundWidth() / getBackgroundHeight();
+    public Bitmap scaleBg(Bitmap bitmap, Context context) {
+
         /*
          * We'll multiply widthHeightRatio with screenHeight to get scaled width of the bitmap
          * then call createScaledBitmap() to create new bitmap, scaled from an existing bitmap,
          * when possibile
          * */
 
-        int backgroundScaleWidth = (int) widthHeightRatio * AppConstants.getInstance(context).SCREEN_HEIGHT;
         return Bitmap.createScaledBitmap(bitmap, AppConstants.getInstance(context).SCREEN_WIDTH, AppConstants.getInstance(context).SCREEN_HEIGHT, false);//chiamo il metodo nel costruttore
     }
 

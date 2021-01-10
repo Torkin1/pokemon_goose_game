@@ -18,6 +18,7 @@ public class BackgroundThread extends SurfaceUpdaterThread {
         long startTime, loopTime; //loop and start time duration
         long DELAY = 33; //delay in millisecs, etrween screen refresh
         // TODO: call update methods only if there are some updates
+        //bg is always moving so always need to be called...
         startTime = SystemClock.uptimeMillis();
         //locking the canvas
 

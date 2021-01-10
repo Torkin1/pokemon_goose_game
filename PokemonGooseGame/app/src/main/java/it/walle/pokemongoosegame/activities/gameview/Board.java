@@ -1,12 +1,12 @@
 package it.walle.pokemongoosegame.activities.gameview;
 
 public class Board {
-    //declaring the new pawn res
+    //declaring the new board res
 
     int boardImageX = 0, boardImageY = 0;
 
+    //delcraing the initial position, in case
     public Board() {
-
         boardImageX = 70;
         boardImageY = 70;
     }

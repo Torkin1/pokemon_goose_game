@@ -2,16 +2,15 @@ package it.walle.pokemongoosegame.activities.gameview;
 
 
 public class Background {
-    //classe per dare effetti al background, come movimento o altro.
+    //Class that make help use teh iamge as a different object, can after be resized, or adding movement or other
 
+    //the background starts from the start of the Screen
     int bgImageX = 0, bgImageY = 0, bgImgVelocity;
 
     public Background() {
-
         bgImageX = 0;
         bgImageY = 0;
-        bgImgVelocity = 3;
-
+        bgImgVelocity = 3;//Velocity, the variable of the movement speed
     }
 
     //getter method for getting the x-coordinated

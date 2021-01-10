@@ -3,16 +3,9 @@ package it.walle.pokemongoosegame.activities.gameview;
 
 public class GraphicCell {
 
+    //set the position to the start, in case something fails
     private int cellImgX = 0, cellImgY = 0;
     private int cellIndex;
-/*
-    public Cell(Context context) {
-        cellImgX = AppConstants.getInstance(context).CELL_MARGIN + AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH;
-        cellImgY = AppConstants.getInstance(context).SCREEN_HEIGHT - AppConstants.getInstance(context).LEFT_GAME_MENU_WIDTH - AppConstants.getInstance(context).CELL_MARGIN;
-
-    }
-
- */
 
     //setters and getters
 
