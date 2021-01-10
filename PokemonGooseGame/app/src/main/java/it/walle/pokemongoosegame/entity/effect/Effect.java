@@ -25,8 +25,8 @@ public abstract class Effect {
 
     public abstract void doEffect(InvocationContext invocationContext);       // Implementation of the actual effect
 
-    //Overloading del metodo generalDialog per creare dialoghi cancellabili e senza pulsanti positivi e negativi
-    protected Dialog generalDialog(InvocationContext invocationContext){
+    //Overloading of the general dialog to create a cancellable dialog with buttons
+    protected Dialog generalDialog(InvocationContext invocationContext) {
         return this
                 .generalDialog(
                         invocationContext,
@@ -37,20 +37,20 @@ public abstract class Effect {
                         true);
     }
 
-    //Overloading del metodo generalDialog per creare dialoghi non cancellabili e con pulsanti positivi e negativi
+    //Overloading of the general dialog to create a NOT cancellable dialog with buttons
     protected Dialog generalDialog(InvocationContext invocationContext,
                                    String positiveButtonText,
                                    DialogInterface.OnClickListener positiveButton,
                                    String negativeButtonText,
-                                   DialogInterface.OnClickListener negativeButton){
-       return this
-               .generalDialog(
-                       invocationContext,
-                       positiveButtonText,
-                       positiveButton,
-                       negativeButtonText,
-                       negativeButton,
-                       false);
+                                   DialogInterface.OnClickListener negativeButton) {
+        return this
+                .generalDialog(
+                        invocationContext,
+                        positiveButtonText,
+                        positiveButton,
+                        negativeButtonText,
+                        negativeButton,
+                        false);
     }
 
     protected Dialog generalDialog(InvocationContext invocationContext,
@@ -62,29 +62,30 @@ public abstract class Effect {
         Context context;
         context = invocationContext.getContext();
 
-        LayoutInflater dialog_layout_inflater = LayoutInflater.from(context);
+        LayoutInflater dialog_layout_inflater = LayoutInflater.from(context);//inflating a view to be added to the dialog
 
+        //all the views
         LinearLayout dialog_layout = (LinearLayout) dialog_layout_inflater.inflate(R.layout.general_dialog, null);
         TextView effect_description_dialog = dialog_layout.findViewById(R.id.dialog_description_text);
         TextView effect_title_dialog = dialog_layout.findViewById(R.id.dialog_title_text);
         ImageView effect_image_dialog = dialog_layout.findViewById(R.id.dialog_image);
 
-
-        effect_title_dialog.setMovementMethod(new ScrollingMovementMethod());
+        effect_title_dialog.setMovementMethod(new ScrollingMovementMethod());//make the text scroallable
         effect_description_dialog.setMovementMethod(new ScrollingMovementMethod());
+
+        //set the needed variables
         effect_description_dialog.setText(description);
         effect_title_dialog.setText(title);
         effect_image_dialog.setImageDrawable(ContextCompat.getDrawable(context, effect_image_dialogID));
 
         Dialog dialog;
 
-
-        if(positiveButton == null && negativeButton == null){
+        //checks if the buttons are null, if yes they're not requested, otherwise create them
+        if (positiveButton == null && negativeButton == null) {
             dialog = new AlertDialog.Builder(context, R.style.CustomMaterialDialog)
                     .setView(dialog_layout)
                     .create();
-        }
-        else{
+        } else {
             dialog = new AlertDialog.Builder(context, R.style.CustomMaterialDialog)
                     .setView(dialog_layout)
                     .setPositiveButton(positiveButtonText, positiveButton)
@@ -94,17 +95,18 @@ public abstract class Effect {
             dialog.setCancelable(isCancelable);
         }
 
+        //make the bg. transparent
         dialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-        dialog.getWindow().setGravity(Gravity.CENTER);
+        dialog.getWindow().setGravity(Gravity.CENTER);//the layout should be centered
 
         return dialog;
     }
 
-    protected void showDialog(Dialog dialog){
+    protected void showDialog(Dialog dialog) {
         DialogManager.getInstance().enqueueDialog(dialog);
     }
 
-    protected void showDialog(Dialog dialog, DialogInterface.OnDismissListener onDismissListener){
+    protected void showDialog(Dialog dialog, DialogInterface.OnDismissListener onDismissListener) {
         DialogManager.getInstance().enqueueDialog(dialog, onDismissListener);
     }
 
@@ -129,9 +131,10 @@ public abstract class Effect {
         this.title = title;
     }
 
-    protected void setEffect_image_dialogID(int effect_image_dialogID){
-        this.effect_image_dialogID =effect_image_dialogID;
+    protected void setEffect_image_dialogID(int effect_image_dialogID) {
+        this.effect_image_dialogID = effect_image_dialogID;
     }
 
-    public void DialogBuilder(){}
+    public void DialogBuilder() {
+    }
 }

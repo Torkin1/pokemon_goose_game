@@ -2,7 +2,6 @@ package it.walle.pokemongoosegame.entity.board.pgsettings;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
-import androidx.room.PrimaryKey;
 
 @Entity (primaryKeys = {"boardSettingsName", "yellowEffectClassName"})
 public class WhatYellowEffectName {

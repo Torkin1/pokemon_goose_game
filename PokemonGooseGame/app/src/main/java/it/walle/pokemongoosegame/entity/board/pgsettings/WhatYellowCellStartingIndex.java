@@ -11,6 +11,7 @@ public class WhatYellowCellStartingIndex {
     @NonNull
     private int index;                          // The starting index
 
+    //the method should be anothed with nonNull, checkinf for bug from last update
     public String getBoardSettingsName() {
         return boardSettingsName;
     }

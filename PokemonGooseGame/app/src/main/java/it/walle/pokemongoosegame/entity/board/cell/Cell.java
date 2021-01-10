@@ -3,6 +3,7 @@ package it.walle.pokemongoosegame.entity.board.cell;
 import it.walle.pokemongoosegame.entity.effect.Effect;
 
 public class Cell {
+    //all cells attributes, some aren't used yet
     private String type;
     private Effect entryEffect;
     private Effect exitEffect;

@@ -14,26 +14,24 @@ import it.walle.pokemongoosegame.game.ThrowDicesBean;
 
 public class AChallengerApproaches extends YellowEffect {
 
-    int BET = 20;
+    int BET = 20; //this class constants
 
     @Override
     public void doEffect(InvocationContext invocationContext) {
+        //set the dialog
         super.setEffect_image_dialogID(R.drawable.ash);
         super.setTitle(invocationContext.getContext().getString(R.string.a_challenger_approaches_yellow_effect_title));
         super.setDescription(invocationContext.getContext().getString(R.string.a_challenger_approaches_yellow_effect_description));
 
-
-
+        //using the overloaded method version so buttons can be added
         Dialog dialog = generalDialog(invocationContext,
-
                 invocationContext
                         .getContext()
                         .getString(R.string.a_challenger_approaches_yellow_effect_fight_button_name),
 
                 new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which)
-                    {
+                    @Override//createad a positive button
+                    public void onClick(DialogInterface dialog, int which) {
                         fight(invocationContext, R.string.a_challenger_approaches_yellow_effect_win_case, R.string.a_challenger_approaches_yellow_effect_lost_case);
                     }
                 },
@@ -43,7 +41,7 @@ public class AChallengerApproaches extends YellowEffect {
                         .getString(R.string.a_challenger_approaches_yellow_effect_run_button_name),
 
                 new DialogInterface.OnClickListener() {
-                    @Override
+                    @Override//created a negative button
                     public void onClick(DialogInterface dialog, int which) {
 
                         fight(invocationContext, R.string.a_challenger_approaches_yellow_effect_run_win_case, R.string.a_challenger_approaches_yellow_effect_run_lost_case);
@@ -52,7 +50,9 @@ public class AChallengerApproaches extends YellowEffect {
         showDialog(dialog);
     }
 
-    private void fight(InvocationContext invocationContext, int winTextId, int loseTextId){
+    //the procedure is the same for the if and else, just different results
+    //using this method so we don't have to duplicate code
+    private void fight(InvocationContext invocationContext, int winTextId, int loseTextId) {
         ThrowDicesBean throwDicesBean = new ThrowDicesBean();
         throwDicesBean.setNumOfFaces(6);
         throwDicesBean.setNumOfDices(2);
@@ -69,11 +69,10 @@ public class AChallengerApproaches extends YellowEffect {
 
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
 
-        if(my_roll >= enemy_roll) {
+        if (my_roll >= enemy_roll) {
             rollDiceDialog.setMessage(winTextId);
             player.setMoney(player.getMoney() + BET);
-        }
-        else {
+        } else {
             rollDiceDialog.setMessage(loseTextId);
 
             // Makes the player pay the bet

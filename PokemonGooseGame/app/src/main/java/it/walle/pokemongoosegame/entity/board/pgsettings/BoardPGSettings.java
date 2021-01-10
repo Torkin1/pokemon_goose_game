@@ -12,10 +12,11 @@ public class BoardPGSettings {
     private BoardPGParams boardPGParams;                                            // Additional params needed by BoardFactoryPG
     @Relation(parentColumn = "name", entityColumn = "boardSettingsName")
     private List<WhatYellowCellStartingIndex> yellowCellStartingIndexes;            // Starting from these indexes, there will be one yellow cell every yellowCellDelta cells .
-    @Relation(parentColumn = "name", entityColumn = "boardSettingsName" )
+    @Relation(parentColumn = "name", entityColumn = "boardSettingsName")
     private List<BlueCellSettings> blueCellSettings;                                // Parameters needed by board factory to inject blue cells in the board, one for each blue cell
-    @Relation(parentColumn = "name", entityColumn = "boardSettingsName" )
+    @Relation(parentColumn = "name", entityColumn = "boardSettingsName")
     private List<WhatYellowEffectName> yellowEffectNames;                           // Yellow effect names which can be injected in the board
+
     @Relation(parentColumn = "name", entityColumn = "name")
 
     public BoardPGParams getBoardPGParams() {
