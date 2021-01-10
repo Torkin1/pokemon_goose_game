@@ -14,7 +14,7 @@ public class YellowEffectDeck {
     private static final String TAG = YellowEffectDeck.class.getSimpleName();
     private final List<WhatYellowEffectName> effectNames = new ArrayList<>();
 
-    public YellowEffect drawYellowEffect(){
+    public YellowEffect drawYellowEffect() {
 
         // If there are available yellow effects, picks a random available yellow effect class name, else returns null
         int yellowEffectRandomIndex;
@@ -24,7 +24,7 @@ public class YellowEffectDeck {
         while (!effectNames.isEmpty() && !chosen) {
 
             // gets a random yellow effect name from the available ones
-            yellowEffectRandomIndex  = new Random().nextInt(effectNames.size());
+            yellowEffectRandomIndex = new Random().nextInt(effectNames.size());
             randomYellowEffectClassName = effectNames
                     .get(yellowEffectRandomIndex)
                     .getYellowEffectClassName();
@@ -43,7 +43,7 @@ public class YellowEffectDeck {
         }
 
         // At this point, if no effect is picked means that the deck is empty
-        if (yellowEffect == null){
+        if (yellowEffect == null) {
             throw new IllegalStateException("Can't draw yellow effects from an empty deck");
         }
 
@@ -51,7 +51,7 @@ public class YellowEffectDeck {
 
     }
 
-    public void addToDeck(WhatYellowEffectName ... names){
+    public void addToDeck(WhatYellowEffectName... names) {
 
         // Adds input yellow names to deck
         effectNames.addAll(Arrays.asList(names));

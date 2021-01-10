@@ -2,6 +2,7 @@ package it.walle.pokemongoosegame.entity.pokeapi.type;
 
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPointer;
 
+//class used to get all the relations for the fight part
 public class DamageRelations {
     private EntityPointer[] double_damage_from;
     private EntityPointer[] double_damage_to;

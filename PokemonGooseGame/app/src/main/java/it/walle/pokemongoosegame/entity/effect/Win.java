@@ -17,6 +17,7 @@ public class Win extends Effect {
 
     @Override
     public void doEffect(InvocationContext invocationContext) {
+        //setting the dialog
         super.setEffect_image_dialogID(R.drawable.plate);
         super.setDescription(invocationContext.getContext().getString(R.string.win_description_dialog));
         super.setTitle(invocationContext.getContext().getString(R.string.win_title));

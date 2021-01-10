@@ -4,6 +4,7 @@ import it.walle.pokemongoosegame.entity.pokeapi.Name;
 
 public class Type {
 
+    //all the type attributes
     private int id;
     private String name = "";
     private DamageRelations damage_relations;
@@ -28,6 +29,7 @@ public class Type {
         this.id = id;
     }
 
+    //for the fight part
     public DamageRelations getDamage_relations() {
         return damage_relations;
     }

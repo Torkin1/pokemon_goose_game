@@ -11,6 +11,7 @@ public class Sprites {
     private String front_shiny_female;
     private Other other;
 
+    //getter and setter for any version... there are to many, nintedo please stop
     public String getBack_default() {
         return back_default;
     }

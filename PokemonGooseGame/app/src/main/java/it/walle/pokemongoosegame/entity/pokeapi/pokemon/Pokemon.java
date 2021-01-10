@@ -18,6 +18,7 @@ public class Pokemon{
     private int maxHp;                                                            // Max pokemon health
 
     public Pokemon(){}
+    //all the getters and setters
 
     public Sprites getSprites() {
         return sprites;
@@ -71,17 +72,19 @@ public class Pokemon{
         return currentHp.getValue();
     }
 
+    //set hp, if less than 0, then its 0
     public void setCurrentHp(Integer currentHp) {
         if(currentHp < 0)
             this.currentHp.setValue(0);
         else
             this.currentHp.setValue(currentHp);
     }
-
+    //there is always an obs. on the hp status, in case it's 0
     public void observeCurrentHp(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
         this.currentHp.observe(lifecycleOwner, observer);
     }
 
+    //class to increase the hp, and control if its or not higher than max hp
     public void heal(int healAmount){
         if(healAmount + getCurrentHp() > getMaxHp())
             setCurrentHp(getMaxHp());

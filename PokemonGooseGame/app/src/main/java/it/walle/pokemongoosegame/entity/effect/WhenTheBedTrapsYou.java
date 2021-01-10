@@ -13,6 +13,7 @@ public class WhenTheBedTrapsYou extends YellowEffect{
 
         showDialog(generalDialog(invocationContext));
 
+        //used a heal class to prevent to much heal, more than max hp
         Player player = CoreController.getReference().getPlayerByUsername(invocationContext.getTriggerUsername());
         player.getPokemon().heal(player.getPokemon().getCurrentHp() + player.getPokemon().getMaxHp()*30/100);
         player.setIdleTurns(player.getNumOfIdleTurns() + 1);

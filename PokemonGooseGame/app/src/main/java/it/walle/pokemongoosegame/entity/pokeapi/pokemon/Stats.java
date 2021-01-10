@@ -8,6 +8,7 @@ public class Stats {
 
     public Stats(){}
 
+    //getter and setter
     public int getBase_stat() {
         return base_stat;
     }

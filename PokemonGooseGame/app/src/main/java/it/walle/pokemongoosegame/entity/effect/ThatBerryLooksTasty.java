@@ -12,9 +12,13 @@ import it.walle.pokemongoosegame.game.ThrowDicesBean;
 public class ThatBerryLooksTasty extends YellowEffect{
     @Override
     public void doEffect(InvocationContext invocationContext) {
+        //setting the dialog
+
         super.setEffect_image_dialogID(R.drawable.that_berry_looks_tasty);
         super.setDescription(invocationContext.getContext().getString(R.string.that_berry_looks_tasty_dialog_description));
         super.setTitle(invocationContext.getContext().getString(R.string.that_berry_looks_tasty_dialog_title));
+        //Create the overloaded version with the buttons
+        //for almost any result will be a different effecet
         Dialog dialog = generalDialog(invocationContext,
 
                 invocationContext
@@ -88,6 +92,7 @@ public class ThatBerryLooksTasty extends YellowEffect{
                         dialog.cancel();
                     }
                 });
+
         showDialog(dialog);
     }
 }

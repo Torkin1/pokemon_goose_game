@@ -7,6 +7,7 @@ public class InvocationContext {
     private int whereTriggered;             // Where the effect was triggered
     private Context context;
 
+    //setters and getters
     public String getTriggerUsername() {
         return triggerUsername;
     }

@@ -80,6 +80,7 @@ public class Player {
             this.currentPosition = currentPosition;
     }
 
+    //always keep on eye on the money! ALWAYS
     public void observeMoney(LifecycleOwner lifecycleOwner, Observer<Integer> observer) {
         money.observe(lifecycleOwner, observer);
     }
