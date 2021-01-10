@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.selectpokemon;
+package it.walle.pokemongoosegame.activities.addplayer.selectpokemon;
 
 public class SelectPokemonBean {//did we need this anymore? in the future for the fight yes
     private String pokemon;

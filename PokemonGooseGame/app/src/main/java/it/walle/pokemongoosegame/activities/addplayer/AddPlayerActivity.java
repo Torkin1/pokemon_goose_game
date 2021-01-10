@@ -62,8 +62,8 @@ import it.walle.pokemongoosegame.game.GameFactory;
 import it.walle.pokemongoosegame.activities.gameview.GameActivity;
 import it.walle.pokemongoosegame.sound.MusicService;
 import it.walle.pokemongoosegame.graphics.ToastWithIcon;
-import it.walle.pokemongoosegame.selectpokemon.ControllerSelectPokemon;
-import it.walle.pokemongoosegame.selectpokemon.LoadPokemonBean;
+import it.walle.pokemongoosegame.activities.addplayer.selectpokemon.ControllerSelectPokemon;
+import it.walle.pokemongoosegame.activities.addplayer.selectpokemon.LoadPokemonBean;
 import it.walle.pokemongoosegame.utils.DrawableGetter;
 import it.walle.pokemongoosegame.utils.DrawableNotFoundException;
 

@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.selectpokemon;
+package it.walle.pokemongoosegame.activities.addplayer.selectpokemon;
 
 import android.content.Context;
 

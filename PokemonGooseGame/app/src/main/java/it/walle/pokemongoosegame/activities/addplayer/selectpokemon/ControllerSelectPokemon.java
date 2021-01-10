@@ -1,6 +1,4 @@
-package it.walle.pokemongoosegame.selectpokemon;
-
-import android.util.Log;
+package it.walle.pokemongoosegame.activities.addplayer.selectpokemon;
 
 import com.android.volley.Response;
 
@@ -61,17 +59,6 @@ public class ControllerSelectPokemon{
         },
                 null);
     }
-
-    //FIXME: SelectPokemonBean has no method called getPlayer
-    /*public void selectPokemon(SelectPokemonBean selectPokemonBean) {
-        selectPokemonBean
-                .getPlayer()
-                .setPokemon(
-                        selectPokemonBean
-                        .getPokemon()
-                );
-    }
-    */
 
     public void getNumOfPokemons(GetNumOfPokemonBean bean){
         daoPokemon
