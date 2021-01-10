@@ -8,8 +8,7 @@ import it.walle.pokemongoosegame.boardfactory.procedurallygenerated.CreateBoardP
 public enum BoardFactoryType {
 
     // Registers all associations between board types and board factories
-    PROCEDURALLY_GENERATED (BoardFactoryPG.class, CreateBoardPGBean.class, "PG")
-    ;
+    PROCEDURALLY_GENERATED (BoardFactoryPG.class, CreateBoardPGBean.class, "PG");
 
     private final Class<? extends CreateBoardBean> createBoardBeanType;
     private final Class<? extends BoardFactory> boardFactoryType;

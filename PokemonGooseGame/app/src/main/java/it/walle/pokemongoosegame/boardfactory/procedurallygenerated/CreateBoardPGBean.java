@@ -6,6 +6,7 @@ import it.walle.pokemongoosegame.boardfactory.CreateBoardBean;
 import it.walle.pokemongoosegame.entity.board.pgsettings.BoardPGSettings;
 
 public class CreateBoardPGBean extends CreateBoardBean {
+
     private BoardPGSettings boardSettings;                                  // Settings used by the board factory to pocedurally generate a new board
     private CreateBoardPGHandlerCallback CreateBoardPGHandlerCallback;           // Creation is ran on another thread, a listener is needed to use the newly created board
     private Handler handler;
@@ -26,4 +27,5 @@ public class CreateBoardPGBean extends CreateBoardBean {
         this.CreateBoardPGHandlerCallback = createBoardPGHandlerCallback;
         this.handler = new Handler(this.CreateBoardPGHandlerCallback);
     }
+
 }

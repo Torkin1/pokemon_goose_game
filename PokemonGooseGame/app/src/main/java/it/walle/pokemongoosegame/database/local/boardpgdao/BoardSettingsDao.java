@@ -53,6 +53,7 @@ public class BoardSettingsDao {
     )
     {
 
+        //a thread will always kepp an eye on the changin
         (new Thread(new Runnable() {
             @Override
             public void run() {
@@ -66,6 +67,7 @@ public class BoardSettingsDao {
                             .storeBlueCellSettingsToBoardCellSettings(blueCellSettingsList.get(i));
                 }
 
+                //calculate where the yellow cell has to be added
                 for (int i = 0; i < whatYellowCellStartingIndexList.size(); i++) {
                     ((LocalDatabase) LocalDatabase.getReference(context))
                             .WhatYellowCellStartingIndexDAO()

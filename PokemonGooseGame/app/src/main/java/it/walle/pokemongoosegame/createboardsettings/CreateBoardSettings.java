@@ -51,6 +51,7 @@ public class CreateBoardSettings {
         boardPGParams.setName(bean.getBoardPGParamsName());
     }
 
+    //Do not delete, no time to implement it all, it will be used one day
     public void setBlueCellSettings(){
         for(int i = 0; i < bean.getBlueCellIndex().size(); i++){
             BlueCellSettings blueCellSettings = new BlueCellSettings();

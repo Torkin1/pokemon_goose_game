@@ -8,7 +8,7 @@ public class CreateBoardSettingsBean {
     private String boardPGParamsName;                   //Board name
     private String boardSettingsName;
     private List<Integer> yellowCellStartingIndex;      //Starting index of the yellow cells
-    private List<String> blueCellName;
+    private List<String> blueCellName;                  //blue cell has their own name, need a variable for it
     private List<Integer> blueCellIndex;
     private String[] yellowEffectClassName;         //The name of the class of the corresponding effect
 

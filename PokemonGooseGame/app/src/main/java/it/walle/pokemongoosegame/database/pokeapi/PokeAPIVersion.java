@@ -2,7 +2,7 @@ package it.walle.pokemongoosegame.database.pokeapi;
 
 public enum PokeAPIVersion {
 
-    V2 (2),
+    V2(2),
     ;
 
     private int version;

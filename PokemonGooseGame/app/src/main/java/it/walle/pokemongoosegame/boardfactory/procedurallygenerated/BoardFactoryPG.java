@@ -39,7 +39,6 @@ public class BoardFactoryPG extends BoardFactory {
 
     @Override
     public void createBoard() throws UnableToCreateBoardException {
-
                 try {
                     BoardFactoryPG.this.createBoardProcedurallyGenerated((CreateBoardPGBean) BoardFactoryPG.this.bean);
                 } catch (ClassCastException | UnableToSetTypesException e){
@@ -60,24 +59,20 @@ public class BoardFactoryPG extends BoardFactory {
 
     private void createBoardProcedurallyGenerated(CreateBoardPGBean bean) throws UnableToSetTypesException {
 
-        Board board = new Board();
-        List<BlueCell> blueCells = new ArrayList<>();
-        List<String> pokemonTypes = new ArrayList<>();
-        Semaphore pokemonTypesSemaphore = new Semaphore(0);
+        Board board = new Board();//declare a board object
+        List<BlueCell> blueCells = new ArrayList<>();//list of blue cells
+        List<String> pokemonTypes = new ArrayList<>();//list with all pokemons type
+        Semaphore pokemonTypesSemaphore = new Semaphore(0);//semaphore for the types while adding them
 
         // Populates pokemonTypes with types queried from pokeapi.
         DAOType.getReference(context).loadAllTypePointers(
                 new Response.Listener<EntityPack>() {
                     @Override
                     public void onResponse(EntityPack response) {
-
-                        Log.d(TAG, "correctly received type pointers");
-
                         // Adds all type names to pokemonTypes
                         for (EntityPointer ep : response.getResults()){
                             pokemonTypes.add(ep.getName());
                         }
-
                         // adds a token to the semaphore
                         pokemonTypesSemaphore.release();
                     }
@@ -86,9 +81,7 @@ public class BoardFactoryPG extends BoardFactory {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
                         Log.e(TAG, error.getMessage(), error);
-
                         // adds a token to the semaphore
                         pokemonTypesSemaphore.release();
                     }
@@ -132,7 +125,8 @@ public class BoardFactoryPG extends BoardFactory {
 
             Cell cell = null;
 
-            // Adds a random yellow effect if the cell is to be inserted at an any yellow cell position, unless it is the first or the last position on the board
+            // Adds a random yellow effect if the cell is to be inserted at an any yellow cell position,
+            // unless it is the first or the last position on the board
             if (bean.getBoardSettings().getYellowCellStartingIndexes() != null){
                 int currentStartingIndex;
                 int yellowCellDelta = bean.getBoardSettings().getBoardPGParams().getYellowCellDelta();
@@ -161,7 +155,6 @@ public class BoardFactoryPG extends BoardFactory {
 
         // If list of types is available, sets a random type to every cell
         try {
-
             // Waits for pokeapi to return pokemon types
             pokemonTypesSemaphore.acquire();
 

@@ -3,9 +3,9 @@ package it.walle.pokemongoosegame.database.pokeapi;
 public class PokeAPIGetter {
 
     private final String BASE;
-    private final String TYPE_BY_NAME = "type/%s";
-    private final String ALL_TYPE_POINTERS = "type/";
-    private final String POKEMON_BY_NAME = "pokemon/%s";
+    private final String TYPE_BY_NAME = "type/%s";//constants string used to reference the type
+    private final String ALL_TYPE_POINTERS = "type/";//constant string used to reference all the types
+    private final String POKEMON_BY_NAME = "pokemon/%s";//constant string used to reference the pokemon
     private final String ALL_POKEMON_POINTERS = "pokemon?limit=%d";
     private final String POKEMON = "pokemon";
 
@@ -34,6 +34,7 @@ public class PokeAPIGetter {
         return builder.toString();
     }
 
+    //the used getters, add more if needed
     public String getTypeByName(String name){
         return buildAPI(String.format(TYPE_BY_NAME, name));
     }

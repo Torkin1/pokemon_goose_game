@@ -6,6 +6,7 @@ import androidx.room.PrimaryKey;
 
 @Entity(primaryKeys = {"boardSettingsName", "blueCellName"})
 public class BlueCellSettings {
+
     @NonNull
     private String boardSettingsName;       // The name of the corresponding board configuration
     @NonNull

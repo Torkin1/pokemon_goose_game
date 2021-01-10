@@ -22,7 +22,6 @@ public abstract class CreateBoardPGHandlerCallback implements Handler.Callback {
         return true;
     }
 
-
     public abstract void handleBoard(CreateBoardBean bean);     // What to do with the bean populated with the board
     public abstract void handleException(Exception e);          // Recovers from the generated exception
 }

@@ -10,7 +10,6 @@ public abstract class CreateBoardBean {
     private Handler.Callback callback;      // Just in case the board is generated asynchronously
     private Handler handler;
 
-
     public Board getBoard() {
         return board;
     }

@@ -12,6 +12,7 @@ import it.walle.pokemongoosegame.entity.board.Board;
 
 public abstract class BoardFactory {
 
+    //Constants that control the right working of the board
     public static final int CREATE_BOARD_OK = 0;
     public static final int CREATE_BOARD_FAILURE = - 1;
 
@@ -50,11 +51,10 @@ public abstract class BoardFactory {
         return null;
     }
 
-
-
     public BoardFactory(Context context, CreateBoardBean bean){
         this.context = context;
         this.bean = bean;
     }
+
     public abstract void createBoard() throws UnableToCreateBoardException;
 }

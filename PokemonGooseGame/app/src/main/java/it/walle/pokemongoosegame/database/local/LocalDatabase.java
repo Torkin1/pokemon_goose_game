@@ -21,23 +21,31 @@ import it.walle.pokemongoosegame.entity.board.pgsettings.WhatYellowEffectName;
         BlueCellSettings.class,
         WhatYellowCellStartingIndex.class,
         WhatYellowEffectName.class,
-}, version = 1)
+},
+        version = 1)
+
 public abstract class LocalDatabase extends RoomDatabase {
     private static RoomDatabase ref = null;
-    public static RoomDatabase getReference(Context context){
-        if (ref == null){
+
+    //room DB to controll all the local data
+    public static RoomDatabase getReference(Context context) {
+        if (ref == null) {
             ref = Room
                     .databaseBuilder(
-                        context.getApplicationContext(),
+                            context.getApplicationContext(),
                             LocalDatabase.class,
                             LocalDatabase.class.getName()
                     ).build();
         }
         return ref;
     }
+
     // DAO getters here
     public abstract BlueCellSettingsDAO BlueCellSettingsDAO();
+
     public abstract BoardPGParamsDAO BoardPGParamsDAO();
+
     public abstract WhatYellowCellStartingIndexDAO WhatYellowCellStartingIndexDAO();
+
     public abstract WhatYellowEffectNameDAO WhatYellowEffectNameDAO();
 }
