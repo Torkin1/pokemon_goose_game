@@ -30,6 +30,7 @@ import mehdi.sakout.aboutpage.Element;
 
 public class AboutusActivity extends AppCompatActivity {
 
+    //music watcher
     HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
     private MusicService mServ;
@@ -95,8 +96,7 @@ public class AboutusActivity extends AppCompatActivity {
             }
         });
         mHomeWatcher.startWatch();
-
-
+        //elemts to be displayed
         Element adsElement = new Element();
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
@@ -114,6 +114,7 @@ public class AboutusActivity extends AppCompatActivity {
         setContentView(aboutPage);
     }
 
+    //create an copyright element
     private Element createCopyright() {
         Element copyright = new Element();
         @SuppressLint("DefaultLocale") final String copyrightString = String.format("Copyright %d by Wall-E Team", Calendar.getInstance().get(Calendar.YEAR));

@@ -1,7 +1,5 @@
 package it.walle.pokemongoosegame.activities.addplayer;
 
-import it.walle.pokemongoosegame.game.ThrowDicesBean;
-
 public enum BoardTypeEnumeration {
     PG("Procedurally generated"),
     ;

@@ -19,7 +19,7 @@ import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.sound.MusicService;
 
 public class InfoActivity extends AppCompatActivity {
-
+    //music watcher
     HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
     private MusicService mServ;
@@ -35,7 +35,7 @@ public class InfoActivity extends AppCompatActivity {
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        
+
         setContentView(R.layout.activity_info);
 
         boolean isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);
@@ -70,6 +70,7 @@ public class InfoActivity extends AppCompatActivity {
                     mServ.pauseMusic();
                 }
             }
+
             @Override
             public void onHomeLongPressed() {
                 if (mServ != null) {
@@ -82,11 +83,11 @@ public class InfoActivity extends AppCompatActivity {
 
     //Bind/Unbind music service
 
-    private ServiceConnection Scon =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {
-            mServ = ((MusicService.ServiceBinder)binder).getService();
+            mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -94,16 +95,14 @@ public class InfoActivity extends AppCompatActivity {
         }
     };
 
-    void doBindService(){
-        bindService(new Intent(this,MusicService.class),
+    void doBindService() {
+        bindService(new Intent(this, MusicService.class),
                 Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }
@@ -145,7 +144,7 @@ public class InfoActivity extends AppCompatActivity {
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
         super.onBackPressed();
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -153,7 +152,7 @@ public class InfoActivity extends AppCompatActivity {
         //UNBIND music service
         doUnbindService();
         Intent music = new Intent();
-        music.setClass(this,MusicService.class);
+        music.setClass(this, MusicService.class);
         mHomeWatcher.stopWatch();
         stopService(music);
 

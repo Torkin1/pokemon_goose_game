@@ -37,14 +37,12 @@ import it.walle.pokemongoosegame.sound.MusicService;
 import it.walle.pokemongoosegame.sound.SoundEffects;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    DrawerLayout drawerLayout;
-    NavigationView navigationView;
+
+    DrawerLayout drawerLayout;//declare the drawer for the menu
+    NavigationView navigationView;//navigation menu
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
-    private boolean isSoundOn;
-
-    // first boot shared preference name
-    private final String firstBootSharedPrefName = "isFirstBoot";
+    private boolean isSoundOn;//variable for sound control
 
     //for sound effects
     private SoundPool soundPool;
@@ -68,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         super.onCreate(savedInstanceState);
 
+        //declare a SP variable to check games preferences
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
 
         Bootstrap.getReference().doOnBoot(this);
@@ -76,14 +75,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //The main should be fullScreen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
         setContentView(R.layout.activity_main);
 
-
+        //set this local variable, for better usage, from the prefs
         isSoundOn = prefs.getBoolean(getString(R.string.isSoundOn_flag), true);
 
-        System.out.println("test1 and ismute is: " + isSoundOn);
-
+        //declare the volume control image, that will be turned on if sound is on, and down if muted
         final ImageView volumeCtrl = findViewById(R.id.volumeCtrl);
         if (!isSoundOn)
             volumeCtrl.setImageResource(R.drawable.sound_off);
@@ -101,8 +98,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (isSoundOn)
             startService(music);
 
-
-//Start HomeWatcher
+        //Start HomeWatcher
         mHomeWatcher = new HomeWatcher(this);
         mHomeWatcher.setOnHomePressedListener(new HomeWatcher.OnHomePressedListener() {
             @Override
@@ -133,18 +129,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setUpToolbar();
 
         //The menu has to be clickable
-
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-
-
+                //all the cases that exist in the navigation menu
+                //all have click sound or back sound, depends on the action
                 switch (menuItem.getItemId()) {
+
                     case R.id.nav_home:
-
                         Intent home = new Intent(MainActivity.this, MainActivity.class);
-                            onBackPressed();
-
+                        onBackPressed();
                         break;
 
                     case R.id.nav_info:
@@ -161,8 +155,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(aboutUs);
                         break;
-
-
 //TODO
 
 //                    case  R.id.nav_Policy:{
@@ -177,8 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                         if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
-
-
+                        //creating a dummy share option
                         sharingIntent.setType("text/plain");
                         String shareBody = "http://play.google.com/store/apps/detail?id=" + getPackageName();
                         String shareSub = "Try now";
@@ -197,25 +188,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         findViewById(R.id.play_button_img).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if creates bugs, stop the animation from here, and use different global variables!
-//                play_button_img.clearAnimation();
-//                zoomAnim.cancel();
-//                zoomAnim.reset();
-                final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+                //the play image in the main activity
                 if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                     soundPool.play(sound_click, 1, 1, 0, 0, 1);
                 startActivity(new Intent(MainActivity.this, AddPlayerActivity.class));
 
             }
         });
-
-
+        //adding effect tot the play button
         ImageView play_button_img = findViewById(R.id.play_button_img);
         Animation zoomAnim = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.zoom_in);
         play_button_img.startAnimation(zoomAnim);
 
-
-
+        //controlling the volume image in case there's a click on the icon, and make the chages on prefs too
         volumeCtrl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -240,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-        //inizilizzo il suono
+        //inizilize the sound
         AudioAttributes audioAttributes = new AudioAttributes.Builder()
                 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
                 .setUsage(AudioAttributes.USAGE_GAME)
@@ -250,16 +235,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .build();
 
 
-        //prendere da  file
+        //bring sound from files
         sound_back = soundPool.load(this, R.raw.back_sound_poke, 1);
         sound_click = soundPool.load(this, R.raw.beep_sound_poke, 1);
 
-        //se non è muto metto gli effetti del suono
+        //if sound is on, pute the effects on
         if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
     }
 
-    //So don't close after i go back and I'm in the menu
+    //control so don't close the activity after I press back and I'm in the menu
     @Override
     public void onBackPressed() {
         soundEffects = new SoundEffects(this);
@@ -278,7 +263,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return false;
     }
 
+    //creating the Toolbar
     public void setUpToolbar() {
+        //I made a gimmick to make all the bar without title and transparent so looks like clicking on the engine
         drawerLayout = findViewById(R.id.drawer_layout);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -292,7 +279,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void rotateConfigImg() {
         //config img ruotates
-
         ImageView img = (ImageView) findViewById(R.id.config_btn);
         Animation aniRotate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
         img.startAnimation(aniRotate);
@@ -329,9 +315,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
-
+        //Controll this otherwise if you press back from an activity, will go back, but the onResume
+        //will be called not the onCreate
         final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
-        if(prefs.getBoolean(getString(R.string.isSoundOn_flag), true)) {
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true)) {
             if (mServ != null) {
                 mServ.resumeMusic();
             }
@@ -365,7 +352,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private void stopMusic(){
+    private void stopMusic() {
         //Detect idle screen
         PowerManager pm = (PowerManager)
                 getSystemService(Context.POWER_SERVICE);

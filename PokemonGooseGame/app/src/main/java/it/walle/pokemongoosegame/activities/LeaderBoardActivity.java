@@ -49,12 +49,13 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
 
     private class PositionsAdapter extends RecyclerView.Adapter<PositionsAdapter.PositionsHolder> {
-        private List<WinnerBean> winnerBeanList;
+        private List<WinnerBean> winnerBeanList;//the list with all the finalists
 
         PositionsAdapter(List<WinnerBean> winnerBeanList) {
             this.winnerBeanList = winnerBeanList;
         }
 
+        //create this holder for the card view, used by the RV to create the leader board
         @NonNull
         @Override
         public PositionsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -66,12 +67,13 @@ public class LeaderBoardActivity extends AppCompatActivity {
         public void onBindViewHolder(@NonNull PositionsHolder holder, int position) {
             WinnerBean winnerBean = winnerBeanList.get(position);
 
+            //sets the infos about the player
             holder.tvPosition.setText(Integer.toString(position + 1));
             holder.tvPlayerName.setText(winnerBean.getWinnerUsername());
             holder.tvScore.setText(Integer.toString(winnerBean.getScore()));
 
             // If it's the first player it is the winner of the game
-            if (position == 0){
+            if (position == 0) {
                 holder.ivWinner.setVisibility(View.VISIBLE);
             }
         }
@@ -82,14 +84,14 @@ public class LeaderBoardActivity extends AppCompatActivity {
         }
 
         private class PositionsHolder extends RecyclerView.ViewHolder {
-
+            //declare the RV's elements
             private final TextView tvPosition;
             private final TextView tvPlayerName;
             private final TextView tvScore;
             private final ImageView ivWinner;
 
             public PositionsHolder(@NonNull View itemView) {
-                super(itemView);
+                super(itemView);//initialize the RV's element
                 this.tvPosition = itemView.findViewById(R.id.tvPosition);
                 this.tvPlayerName = itemView.findViewById(R.id.tvPlayerName);
                 this.tvScore = itemView.findViewById(R.id.tvScore);
@@ -98,7 +100,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
         }
     }
 
-    private class Holder {
+    private class Holder {//RV's holder
         private final LeaderBoardActivity leaderBoardActivity;
         private final Button btnHome;
         private final RecyclerView rvPositions;
@@ -106,15 +108,16 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
         public Holder(LeaderBoardActivity leaderBoardActivity) {
             this.leaderBoardActivity = leaderBoardActivity;
-            this.btnHome = leaderBoardActivity.findViewById(R.id.btnHome);
+            this.btnHome = leaderBoardActivity.findViewById(R.id.btnHome);//initiliaze the home button
 
             this.btnHome.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     finish();
-                }
+                }//if clicked finish the activity
             });
 
+            //check the position and put them in the correct order
             this.rvPositions = leaderBoardActivity.findViewById(R.id.rvPositions);
             this.rvPositions.setLayoutManager(new LinearLayoutManager(leaderBoardActivity));
             this.rvPositions.setAdapter(new PositionsAdapter(winnerBeanList));
@@ -126,8 +129,9 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
     }
 
-    private Holder holder;
-    private List<WinnerBean> winnerBeanList;
+    private Holder holder;//declare the holder
+    private List<WinnerBean> winnerBeanList;//declare the win list
+    //music related vars
     private SoundPool soundPool;
     HomeWatcher mHomeWatcher;
     private boolean mIsBound = false;
@@ -175,6 +179,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
                     mServ.pauseMusic();
                 }
             }
+
             @Override
             public void onHomeLongPressed() {
                 if (mServ != null) {
@@ -183,10 +188,6 @@ public class LeaderBoardActivity extends AppCompatActivity {
             }
         });
         mHomeWatcher.startWatch();
-
-        //prendere da  file
-
-
 
         //variables for the personalized confetti animation
         ConstraintLayout leaderBoard = findViewById(R.id.leader_board_layout);
@@ -234,11 +235,12 @@ public class LeaderBoardActivity extends AppCompatActivity {
                         Bitmap confetti_img = allPossibleConfetti.get(random.nextInt(numConfetti));
                         confetti_img = bitmapBank.scaleConfetti(confetti_img);
                         return new BitmapConfetto(confetti_img);
-                    }};
+                    }
+                };
 
-                final ConfettiSource confettiSource = new ConfettiSource(0, 20,  leaderBoard.getWidth(), 20);
+                final ConfettiSource confettiSource = new ConfettiSource(0, 20, leaderBoard.getWidth(), 20);
 
-                //now spark
+                //now spark, starts the animation with the new configured confetti
                 new ConfettiManager(LeaderBoardActivity.this, confettoGenerator, confettiSource, leaderBoard)
 
                         .setEmissionDuration(2000)
@@ -250,35 +252,35 @@ public class LeaderBoardActivity extends AppCompatActivity {
                         .setTouchEnabled(true)
                         .animate();
 
-
+                //starts celebration music if sounds on
                 if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
                     soundPool.play(sound_click, 1, 1, 0, 0, 1);
-                }
-            });
+            }
+        });
 
 
-            //Set full screen
-            getWindow().
+        //Set full screen
+        getWindow().
+                setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                        WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-            setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        //Get the winners from the controller
+        winnerBeanList = CoreController.getReference().
 
-            //Get the winners from the controller
-            winnerBeanList =CoreController.getReference().
+                endGame();
 
-            endGame();
+        this.holder = new
 
-        this.holder =new
-
-            Holder(this);
-        }
+                Holder(this);
+    }
 
     //Bind/Unbind music service
 
-    private ServiceConnection Scon =new ServiceConnection(){
+    private ServiceConnection Scon = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName name, IBinder
                 binder) {
-            mServ = ((MusicService.ServiceBinder)binder).getService();
+            mServ = ((MusicService.ServiceBinder) binder).getService();
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -286,16 +288,14 @@ public class LeaderBoardActivity extends AppCompatActivity {
         }
     };
 
-    void doBindService(){
-        bindService(new Intent(this,MusicService.class),
+    void doBindService() {
+        bindService(new Intent(this, MusicService.class),
                 Scon, Context.BIND_AUTO_CREATE);
         mIsBound = true;
     }
 
-    void doUnbindService()
-    {
-        if(mIsBound)
-        {
+    void doUnbindService() {
+        if (mIsBound) {
             unbindService(Scon);
             mIsBound = false;
         }
@@ -332,6 +332,7 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //if soundson, make back sound
         final SharedPreferences prefs = getSharedPreferences("game", MODE_PRIVATE);
         if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
             soundPool.play(sound_back, 1, 1, 0, 0, 1);
@@ -345,9 +346,9 @@ public class LeaderBoardActivity extends AppCompatActivity {
         //UNBIND music service
         doUnbindService();
         Intent music = new Intent();
-        music.setClass(this,MusicService.class);
+        music.setClass(this, MusicService.class);
         mHomeWatcher.stopWatch();
         stopService(music);
 
     }
-    }
+}
