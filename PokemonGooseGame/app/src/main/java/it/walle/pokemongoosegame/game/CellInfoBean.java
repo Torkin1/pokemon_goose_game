@@ -6,6 +6,8 @@ public class CellInfoBean {
     private int requestedIndex;     // The index of the requested cell
     private Cell cell;              // The requested cell
 
+    //setters and getters
+
     public int getRequestedIndex() {
         return requestedIndex;
     }

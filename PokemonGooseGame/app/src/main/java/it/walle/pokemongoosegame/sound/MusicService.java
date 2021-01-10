@@ -11,11 +11,13 @@ import it.walle.pokemongoosegame.R;
 
 public class MusicService extends Service implements MediaPlayer.OnErrorListener {
 
+    //class used to bind the music with all the activities
     private final IBinder mBinder = new ServiceBinder();
-    MediaPlayer mPlayer;
+    MediaPlayer mPlayer;//var of media
     private int length = 0;
+    int VOLUME = 5;
 
-    public MusicService() {
+    public MusicService() {//constructor
     }
 
     public class ServiceBinder extends Binder {
@@ -27,18 +29,18 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
     @Override
     public IBinder onBind(Intent arg0) {
         return mBinder;
-    }
+    }//binds to the recived context
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        mPlayer = MediaPlayer.create(this, R.raw.song); //replace with your song name!
+        mPlayer = MediaPlayer.create(this, R.raw.song); //loading the song
         mPlayer.setOnErrorListener(this);
 
         if (mPlayer != null) {
-            mPlayer.setLooping(true);
-            mPlayer.setVolume(5, 5);
+            mPlayer.setLooping(true);//make the song loop
+            mPlayer.setVolume(VOLUME, VOLUME);
         }
 
 
@@ -61,8 +63,8 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
         return START_NOT_STICKY;
     }
 
-    public void pauseMusic() {
-        if (mPlayer != null) {
+    public void pauseMusic() {//pause the music, the prefs could be called here instead of any class
+        if (mPlayer != null) {//to much work, but no time, sorry for this
             if (mPlayer.isPlaying()) {
                 mPlayer.pause();
                 length = mPlayer.getCurrentPosition();
@@ -85,7 +87,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
 
         if (mPlayer != null) {
             mPlayer.setLooping(true);
-            mPlayer.setVolume(50, 50);
+            mPlayer.setVolume(VOLUME, VOLUME);
             mPlayer.start();
         }
 
@@ -114,7 +116,7 @@ public class MusicService extends Service implements MediaPlayer.OnErrorListener
 
     public boolean onError(MediaPlayer mp, int what, int extra) {
 
-        Toast.makeText(this, "Music player failed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, this.getString(R.string.music_service_player_error), Toast.LENGTH_SHORT).show();
         if (mPlayer != null) {
             try {
                 mPlayer.stop();

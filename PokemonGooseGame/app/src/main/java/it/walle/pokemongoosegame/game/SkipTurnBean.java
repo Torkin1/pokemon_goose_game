@@ -14,7 +14,8 @@ public class SkipTurnBean {
 
     public boolean isHasSkipped() {
         return hasSkipped;
-    }
+    }//true if the player has to skip, name var should be, shouldskip, don't be rude
+    //we are tired
 
     public void setHasSkipped(boolean hasSkipped) {
         this.hasSkipped = hasSkipped;

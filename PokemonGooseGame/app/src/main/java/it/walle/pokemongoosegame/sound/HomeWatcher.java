@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 
 public class HomeWatcher {
 
-    //static final String TAG = "hg";
     private Context mContext;
     private IntentFilter mFilter;
     private OnHomePressedListener mListener;
@@ -16,21 +15,22 @@ public class HomeWatcher {
 
     public HomeWatcher(Context context) {
         mContext = context;
-        mFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+        mFilter = new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);//don't stop music with them
     }
 
+    //check if the home button was pressed
     public void setOnHomePressedListener(OnHomePressedListener listener) {
         mListener = listener;
         mRecevier = new InnerRecevier();
     }
 
-    public void startWatch() {
+    public void startWatch() {//the watcher use the listeners and calls to this class, in case the music should start
         if (mRecevier != null) {
             mContext.registerReceiver(mRecevier, mFilter);
         }
     }
 
-    public void stopWatch() {
+    public void stopWatch() {//same as teh start but with the stop
         if (mRecevier != null) {
             mContext.unregisterReceiver(mRecevier);
         }
@@ -44,15 +44,14 @@ public class HomeWatcher {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+            String action = intent.getAction();//how to intent it's interpreted
             if (action != null && action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
                 String reason = intent.getStringExtra(SYSTEM_DIALOG_REASON_KEY);
-                if (reason != null) {
-                    //Log.e(TAG, "action:" + action + ",reason:" + reason);
+                if (reason != null) {//check here if it's working, some bugs will occure
                     if (mListener != null) {
-                        if (reason.equals(SYSTEM_DIALOG_REASON_HOME_KEY)) {
+                        if (reason.equals(SYSTEM_DIALOG_REASON_HOME_KEY)) {//if home button pressed
                             mListener.onHomePressed();
-                        } else if (reason.equals(SYSTEM_DIALOG_REASON_RECENT_APPS)) {
+                        } else if (reason.equals(SYSTEM_DIALOG_REASON_RECENT_APPS)) {//if the home button was pressed (shows teh app)
                             mListener.onHomeLongPressed();
                         }
                     }

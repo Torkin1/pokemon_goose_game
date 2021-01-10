@@ -34,13 +34,12 @@ public class Bootstrap {
     private final static int[] YELLOW_CELLS_STARTING_INDEX = {5, 9};
     private final static String BOARD_NAME = "Default";
     private final static String[] YELLOW_EFFECT_CLASS_NAME = {
-
             LittleHiddenTreasure.class.getName(),
             NoPlaceLikeHome.class.getName(),
             ItsATrap.class.getName(),
             TheTributeOfThePious.class.getName(),
             AnotherDayAnotherVictory.class.getName(),
-            ItsOnFireYo.class.getName(),
+            ItsOnFireYo.class.getName(),//that's the coolest, right? RIGHT?
             OhNoMyPocket.class.getName(),
             ThatBerryLooksTasty.class.getName(),
             ThatLittleBrat.class.getName(),
@@ -87,6 +86,7 @@ public class Bootstrap {
     }
 
     private void createDefaultBoard(Context context) {
+        //setting all the board as a default one
         CreateBoardSettingsBean bean = new CreateBoardSettingsBean();
 
         List<Integer> yellowCellStartingIndex = new ArrayList<>();
@@ -100,6 +100,7 @@ public class Bootstrap {
         bean.setBoardPGParamsName(BOARD_NAME);
         bean.setBoardSettingsName(BOARD_NAME);
 
+        //set the variable with the default settings, with createBoardSettings
         CreateBoardSettings controller = CreateBoardSettings.getReference(bean);
 
         controller.setBoardPGParams();

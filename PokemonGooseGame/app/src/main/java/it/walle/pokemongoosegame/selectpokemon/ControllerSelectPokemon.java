@@ -18,14 +18,11 @@ public class ControllerSelectPokemon{
 
     public List<AddNewPlayerBean> getAddNewPlayerBeans() {
         return addNewPlayerBeans;
-    }
+    }//list with new player
 
-    private static final String TAG = ControllerSelectPokemon.class.getSimpleName();
+
     public void setAddNewPlayerBeans(List<AddNewPlayerBean> addNewPlayerBeans) {
         this.addNewPlayerBeans = addNewPlayerBeans;
-        for (AddNewPlayerBean b : addNewPlayerBeans){
-            Log.i(TAG, "player to be added: " + b.getPlayerUsername());
-        }
     }
 
     public ControllerSelectPokemon(){

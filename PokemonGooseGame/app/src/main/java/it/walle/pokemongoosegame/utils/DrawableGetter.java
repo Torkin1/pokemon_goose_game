@@ -22,7 +22,7 @@ public class DrawableGetter {
 
     private int getDrawableId(String drawableName) throws DrawableNotFoundException {
         // Retrieves drawable id corresponding to the provided name
-        Field[] allDrawableFields = R.drawable.class.getFields();
+        Field[] allDrawableFields = R.drawable.class.getFields();//get the all the drawable field, so can be used by knowing the name
         for (Field f : allDrawableFields){
             if (f.getName().compareTo(drawableName) == 0){
                 try {
@@ -40,6 +40,7 @@ public class DrawableGetter {
         return getDrawableId(typeName);
     }
 
+    //in case need different images for different laguages, make it as string and create the drawable for that language
     public int getCellBgDrawableId(Class<? extends Cell> cellClass) throws DrawableNotFoundException {
         final String DRAWABLE_BG_BASE_NAME = "cell_bg_";
         String drawableBgName = DRAWABLE_BG_BASE_NAME + cellClass.getSimpleName().toLowerCase();

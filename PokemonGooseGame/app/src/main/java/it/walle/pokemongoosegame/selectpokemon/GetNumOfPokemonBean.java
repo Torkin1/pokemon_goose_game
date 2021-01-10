@@ -7,8 +7,8 @@ import com.android.volley.Response;
 import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
 
 public class GetNumOfPokemonBean {
-    private Context context;
-    private Response.Listener<CountPokemon> listener;
+    private Context context;//need the context on it
+    private Response.Listener<CountPokemon> listener;//verry useful, we need to know the number of pokemon
     private Response.ErrorListener errorListener;
 
     public Response.Listener<CountPokemon> getListener() {

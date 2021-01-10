@@ -22,20 +22,21 @@ import it.walle.pokemongoosegame.utils.MethodGetter;
 import it.walle.pokemongoosegame.utils.NoSuchSetterException;
 
 public class CoreController {
-    // The game main engine.
+    // The game main engine. one core to control them all
 
     private final static String TAG = CoreController.class.getName();
 
     private static CoreController ref = null;
-    public synchronized static CoreController getReference(){   // Call this only if a game has already been set
-        if (ref == null || ref.game == null){
+
+    public synchronized static CoreController getReference() {   // Call this only if a game has already been set
+        if (ref == null || ref.game == null) {
             throw new IllegalStateException("You can get a reference to CoreController only after a game has been set");
         }
         return ref;
     }
 
-    public synchronized static CoreController getReference(Game game){  // Call this when you want to set the game while obtaining a ref to CoreController
-        if (ref == null){
+    public synchronized static CoreController getReference(Game game) {  // Call this when you want to set the game while obtaining a ref to CoreController
+        if (ref == null) {
             ref = new CoreController();
         }
         ref.setGame(game);
@@ -59,54 +60,54 @@ public class CoreController {
         game.getInGamePlayers().addAll(game.getAllPlayers());
 
         // Sets all pokemons health
-        for (Player p : game.getInGamePlayers()){
+        for (Player p : game.getInGamePlayers()) {
             p.getPokemon().setMaxHp(MAX_HEALTH_POKEMON);
             p.getPokemon().setCurrentHp(MAX_HEALTH_POKEMON);
         }
     }
 
-    public synchronized Board getBoard(){
+    public synchronized Board getBoard() {
         return this.game.getBoard();
     }
 
-    public synchronized List<Player> getPlayers(){
+    public synchronized List<Player> getPlayers() {
         return this.game.getInGamePlayers();
     }
 
-    public List<Player> getWinners(){
+    public List<Player> getWinners() {
         return this.game.getWinners();
     }
 
-    public List<Player> getLosers(){
+    public List<Player> getLosers() {
         return this.game.getLosers();
     }
 
-    public Integer getPlate(){
+    public Integer getPlate() {
         return this.game.getPlate();
     }
 
-    public void addToPlate(int money){
+    public void addToPlate(int money) {
         // Adds a positive value to the plate
         game.setPlate(getPlate() + Math.abs(money));
     }
 
-    public int drainPlate(){
+    public int drainPlate() {
         // returns content of plate and resets it
         int res = game.getPlate();
         game.setPlate(0);
         return res;
     }
 
-    public void setPlate(Integer val){
-        if(val < 0)
+    public void setPlate(Integer val) {//set the plates and control if it should go under 0 (impossible)
+        if (val < 0)
             val = 0;
         this.game.setPlate(val);
     }
 
-    public synchronized void nextTurn(){
+    public synchronized void nextTurn() {
 
         // it's nonsense to call this method when there are no more players in game
-        if (getPlayers().isEmpty()){
+        if (getPlayers().isEmpty()) {
             throw new IllegalStateException("No players left in game");
         }
 
@@ -116,11 +117,11 @@ public class CoreController {
         this.game.setNextPlayerIndex((newPlayerIndex + 1) % this.game.getInGamePlayers().size());
     }
 
-    public synchronized Player getPlayerByUsername(String username){
+    public synchronized Player getPlayerByUsername(String username) {
         return game.getPlayerByUsername(username);
     }
 
-    public void setNextPlayer(String username){
+    public void setNextPlayer(String username) {
         this
                 .game
                 .setNextPlayerIndex(this
@@ -131,7 +132,7 @@ public class CoreController {
                                 .getPlayerByUsername(username)));
     }
 
-    public void chooseLoser(LoserBean bean){
+    public void chooseLoser(LoserBean bean) {
 
         Player loser = getPlayerByUsername(bean.getPlayerUsername());
 
@@ -143,7 +144,7 @@ public class CoreController {
         game.getLosers().add(loser);
     }
 
-    public void chooseWinner(WinnerBean bean){
+    public void chooseWinner(WinnerBean bean) {
 
         // Removes the player from the game and adds it to the winner list, returning their score
         Player winner = this.game.getPlayerByUsername(bean.getWinnerUsername());
@@ -155,11 +156,10 @@ public class CoreController {
         bean.setScore(score);
     }
 
-    public void skipTurn(SkipTurnBean bean){
-
+    public void skipTurn(SkipTurnBean bean) {
         // If player has turns to skip, make the player skip the turn and decrements player number of idle turns
         Player player = game.getPlayerByUsername(bean.getPlayerUsername());
-        if (player.getNumOfIdleTurns() > 0){
+        if (player.getNumOfIdleTurns() > 0) {
             player.setIdleTurns(player.getNumOfIdleTurns() - 1);
             bean.setHasSkipped(true);
         } else {
@@ -167,10 +167,10 @@ public class CoreController {
         }
     }
 
-    private int calculateScore(Player player){
+    private int calculateScore(Player player) {
 
         //Check if the player has lost, if he has lost set the score to 0
-        if(this.game.getLosers().contains(player)){
+        if (this.game.getLosers().contains(player)) {
             return 0;
         }
 
@@ -184,14 +184,14 @@ public class CoreController {
         return scoreHp + scoreMoney + scorePlate;
     }
 
-    public List<WinnerBean> endGame(){   // Call this when you want the game to normally end (for example, when all player have become winners or losers)
+    public List<WinnerBean> endGame() {   // Call this when you want the game to normally end (for example, when all player have become winners or losers)
         List<WinnerBean> winnerBeans = new ArrayList<>();
 
         // Create a list of winners
         List<Player> winners = game.getWinners();
 
         // Now for all the players create winnerBean and set username and score
-        for(int i = 0; i < winners.size(); i++){
+        for (int i = 0; i < winners.size(); i++) {
             WinnerBean bean = new WinnerBean();
             bean.setWinnerUsername(winners.get(i).getUsername());
             bean.setScore(calculateScore(winners.get(i)));
@@ -204,7 +204,7 @@ public class CoreController {
             public int compare(WinnerBean o1, WinnerBean o2) {
 
                 int result = o1.getScore() - o2.getScore();
-                return - result;
+                return -result;
             }
         });
 
@@ -213,32 +213,32 @@ public class CoreController {
         return winnerBeans;
     }
 
-    public void abortGame(){    // call this when you want to interrupt the game (pause game to resume another time, canceling game, ...)
+    public void abortGame() {    // call this when you want to interrupt the game (pause game to resume another time, canceling game, ...)
         this.game = null;
     }
 
-    public void throwDices(ThrowDicesBean bean){
+    public void throwDices(ThrowDicesBean bean) {
 
         // Generates a number of casual values using params specified in bean
         ArrayList<Integer> exitNumbers = new ArrayList<>();
-        for(int i = 0; i < bean.getNumOfDices(); i++){
+        for (int i = 0; i < bean.getNumOfDices(); i++) {
             exitNumbers.add(ThreadLocalRandom.current().nextInt(1, bean.getNumOfFaces()));
         }
         bean.setExitNumbers(exitNumbers);
     }
 
-    public String[] getAllPlayersInACellUsernames(int index){
+    public String[] getAllPlayersInACellUsernames(int index) {
         // Returns the usernames of the players who are occupying the cell with the provided index
         List<String> usernames = new ArrayList<>();
-        for (Player p : game.getInGamePlayers()){
-            if (p.getCurrentPosition() == index){
+        for (Player p : game.getInGamePlayers()) {
+            if (p.getCurrentPosition() == index) {
                 usernames.add(p.getUsername());
             }
         }
         return usernames.toArray(new String[0]);
     }
 
-    public String getCurrentPlayerUsername(){
+    public String getCurrentPlayerUsername() {
         // Returns the username of the current player
         return this
                 .getGame()
@@ -249,7 +249,7 @@ public class CoreController {
                 .getUsername();
     }
 
-    public int getCurrentPlayerPosition(){
+    public int getCurrentPlayerPosition() {
         // Returns the index of the cell currently occupied by the player
         return this
                 .getGame()
@@ -260,7 +260,7 @@ public class CoreController {
                 .getCurrentPosition();
     }
 
-    public int getCurrentPlayerCoins(){
+    public int getCurrentPlayerCoins() {
         return this
                 .getGame()
                 .getInGamePlayers()
@@ -270,47 +270,21 @@ public class CoreController {
                 .getMoney();
     }
 
-    private void changeEntityValue(Object entity, EntityParam param, int value){
-        // adds the specified value to the entity param and returns the old value
-        try {
-            MethodGetter.getSetter(param.toString(), entity.getClass()).invoke(entity, value);
-        } catch (IllegalAccessException | InvocationTargetException | NoSuchSetterException e) {
-            Log.e(TAG, e.getMessage(), e);
-        }
 
-    }
+    public void moveInCell(MoveBean bean) {
 
-    public void changePlayerValue(ChangePlayerValueBean bean) {
-        // Changes values of player params, looking at the param group first
-        switch (bean.getParam().getGroup()){
-            case PLAYER:
-                changeEntityValue(
-                        game.getPlayerByUsername(bean.getUsername()),
-                        bean.getParam(),
-                        bean.getValue());
-            case POKEMON:
-                changeEntityValue(
-                        game.getPlayerByUsername(bean.getUsername()).getPokemon(),
-                        bean.getParam(),
-                        bean.getValue());
-        }
-
-    }
-
-    public void moveInCell(MoveBean bean){
-
-        int newPos = bean.getBoardIndex();
+        int newPos = bean.getBoardIndex();//we use the position that we set in the bean
 
         // If target cell index exceeds index of last cell, player must go back
         int lastCellIndex = game.getBoard().getCells().size() - 1;
         int delta = bean.getBoardIndex() - lastCellIndex;
-        if (delta > 0){
+        if (delta > 0) {
             newPos = lastCellIndex - delta;
         }
 
         //Set the new position of the player
         Player player = this.game
-                        .getPlayerByUsername(bean.getPlayerUsername());
+                .getPlayerByUsername(bean.getPlayerUsername());
 
         player.setCurrentPosition(newPos);
 
@@ -320,7 +294,7 @@ public class CoreController {
                 .get(newPos);
 
         //Check if in the cell there are an effect or not. If there are, do entry effect
-        if(cell.getEntryEffect() != null){
+        if (cell.getEntryEffect() != null) {
             InvocationContext invocationContext =
                     this.createInvocationContext(
                             bean.getPlayerUsername(),
@@ -332,14 +306,14 @@ public class CoreController {
         }
     }
 
-    public void moveFromCell(MoveBean bean){
+    public void moveFromCell(MoveBean bean) {
         Cell cell = this.game
                 .getBoard()
                 .getCells()
                 .get(bean.getBoardIndex());
 
         //Check if in the cell there are an effect or not. If there are, do exit effect
-        if(cell.getExitEffect() != null){
+        if (cell.getExitEffect() != null) {
             InvocationContext invocationContext =
                     this.createInvocationContext(
                             bean.getPlayerUsername(),
@@ -351,14 +325,14 @@ public class CoreController {
         }
     }
 
-    public void stayInCell(MoveBean bean){
+    public void stayInCell(MoveBean bean) {
         Cell cell = this.game
                 .getBoard()
                 .getCells()
                 .get(bean.getBoardIndex());
 
         //Check if in the cell there are an effect or not. If there are, do stay effect
-        if(cell.getStayEffect() != null){
+        if (cell.getStayEffect() != null) {
             InvocationContext invocationContext =
                     this.createInvocationContext(
                             bean.getPlayerUsername(),
@@ -380,7 +354,7 @@ public class CoreController {
         return invocationContext;
     }
 
-    public void observePlate(LifecycleOwner lifecycleOwner, Observer<Integer> observer){
+    public void observePlate(LifecycleOwner lifecycleOwner, Observer<Integer> observer) {
         this.game.observePlate(lifecycleOwner, observer);
     }
 }

@@ -12,6 +12,7 @@ import it.walle.pokemongoosegame.R;
 
 public class ToastWithIcon extends Toast {
 
+    //Remember you can set a theme for it too, check always the difference in the dark mode and not
     private final ImageView ivIcon;
     private final TextView tvMsg;
     private static ToastWithIcon lastToast;
@@ -26,8 +27,10 @@ public class ToastWithIcon extends Toast {
                 getResources().
                 getConfiguration().
                 uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
 //TODO Add more personalization for the other cases
-        switch (nightModeFlags) {
+
+        switch (nightModeFlags) {//check when is nightmode and change the text
             case Configuration.UI_MODE_NIGHT_YES:
                 this.tvMsg.setTextColor(0xff0000ff);
                 break;
@@ -38,12 +41,12 @@ public class ToastWithIcon extends Toast {
         this.setView(toastContent);
     }
 
-    public ToastWithIcon(Activity activity, Drawable icon, String msg, int duration){
+    public ToastWithIcon(Activity activity, Drawable icon, String msg, int duration) {
         this(activity, icon, msg);
         this.setDuration(duration);
     }
 
-    public ToastWithIcon(Activity activity, Drawable icon, String msg, int duration, boolean isCancelable){
+    public ToastWithIcon(Activity activity, Drawable icon, String msg, int duration, boolean isCancelable) {
         this(activity, icon, msg, duration);
         this.isCancelable = false;
     }
@@ -51,7 +54,7 @@ public class ToastWithIcon extends Toast {
     @Override
     public void show() {
 
-        if (lastToast != null && lastToast.isCancelable){
+        if (lastToast != null && lastToast.isCancelable) {
             lastToast.cancel();
         }
         super.show();

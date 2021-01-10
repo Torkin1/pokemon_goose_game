@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 // Volley request of a json which will be converted to a Gson object
 public class GsonQueryRequest<T> extends Request<T> {
 
-    private final Gson gsonParser;
+    private final Gson gsonParser;  //gson parser, to parse the horrible Json to nice Gson
     private final Class<T> containerClass;
     private final Response.Listener<T> listener;
 

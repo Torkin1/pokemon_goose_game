@@ -6,6 +6,7 @@ public class AddNewPlayerBean {
     private String playerUsername;  // The player username
     private Pokemon pokemon;          // The pokemon id
 
+    //setters and getters
     public String getPlayerUsername() {
         return playerUsername;
     }

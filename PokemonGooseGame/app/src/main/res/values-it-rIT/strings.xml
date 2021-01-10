@@ -95,4 +95,5 @@
     <string name="a_challenger_approaches_yellow_effect_run_lost_case">"Non puoi scappare così, sarebbe antisportivo! Questo tentativo di fuga fa infuriare il tuo avversario, che combatte con maggiore determinazione. Impari nel peggiore dei modi che solo quando si scappa dai problemi diventano davvero irrisolvibili. Cedi 20 monete al tuo avversario, ringraziandolo per la lezione di vita"</string>
     <string name="a_challenger_approaches_yellow_effect_fight_button_name">COMBATTIAMO</string>
     <string name="a_challenger_approaches_yellow_effect_run_button_name">SCAPPA</string>
+    <string name="music_service_player_error">Il Music player ha fallito</string>
 </resources>

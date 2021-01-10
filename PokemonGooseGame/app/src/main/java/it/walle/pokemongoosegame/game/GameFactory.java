@@ -62,8 +62,7 @@ public class GameFactory {
                         // Notifies observer that the game is ready
                         bean.setGameLiveData(new MutableLiveData<>(game));
                         bean.getGameLiveData().observe(bean.getLifeCycleOwner(), bean.getGameObserver());
-                        // p
-                        Log.d("burp", "Observer is obserbing game object");
+                        //Here was used our first "Burp" log... good memories RIP
                         break;
                     case BoardFactory.CREATE_BOARD_FAILURE:
                         Log.e(TAG, ((Exception) msg.obj).getMessage(), (Exception) msg.obj);

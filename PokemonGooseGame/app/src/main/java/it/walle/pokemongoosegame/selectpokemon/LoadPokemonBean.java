@@ -14,6 +14,7 @@ public class LoadPokemonBean {
     private Response.ErrorListener errorListener;
     private RequestQueue pokemonRequestQueue;       // set this if you want to stack pokemon requests in a different queue from the main one
 
+    //getters and settersm enjoy them
     public RequestQueue getPokemonRequestQueue() {
         return pokemonRequestQueue;
     }

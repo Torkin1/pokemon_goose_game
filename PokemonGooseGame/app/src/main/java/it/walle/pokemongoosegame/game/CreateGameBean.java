@@ -29,7 +29,7 @@ public class CreateGameBean {
         this.context = context;
     }
 
-    public CreateGameBean(){
+    public CreateGameBean() {
         playerBeans = new ArrayList<>();
     }
 
