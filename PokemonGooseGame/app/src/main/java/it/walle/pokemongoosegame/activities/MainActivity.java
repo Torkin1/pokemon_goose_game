@@ -155,15 +155,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             soundPool.play(sound_click, 1, 1, 0, 0, 1);
                         startActivity(aboutUs);
                         break;
-//TODO
+//TODO case Policy and more if you like
 
-//                    case  R.id.nav_Policy:{
-//
-//                        Intent browserIntent  = new Intent(Intent.ACTION_VIEW , Uri.parse(""));
-//                        startActivity(browserIntent);
-//
-//                    }
-                    //       break;
+
                     case R.id.nav_share: {
 
                         Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -326,8 +320,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        //Controll this otherwise if you press back from an activity, will go back, but the onResume
+        //will be called not the onCreate
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true)) {
+            if (mServ != null) {
+                mServ.resumeMusic();
+            }
+        }
+
+    }
+
+    @Override
     protected void onPause() {
-        stopMusic();
+        mServ.pauseMusic();
         super.onPause();
 
 
@@ -335,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onStop() {
-        stopMusic();
+        mServ.pauseMusic();
         super.onStop();
     }
 

@@ -538,8 +538,8 @@ public class GameActivity extends AppCompatActivity {
 
             //Intialize the ImageView with pokemon icon
             pokemon_icon = findViewById(R.id.choosedPokemon);
-//        PokePawn pawns;
-//        Map<String, PokePawn> pawnMap = GameEngine.getInstance().getPawns();
+
+
             Player player = CoreController.getReference().getPlayerByUsername(CoreController.getReference().getCurrentPlayerUsername());
 
 

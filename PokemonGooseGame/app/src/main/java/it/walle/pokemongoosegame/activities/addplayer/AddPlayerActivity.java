@@ -742,6 +742,20 @@ public class AddPlayerActivity extends AppCompatActivity {
         super.onStop();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //Controll this otherwise if you press back from an activity, will go back, but the onResume
+        //will be called not the onCreate
+        final SharedPreferences prefs = getSharedPreferences(getString(R.string.game_flag), MODE_PRIVATE);
+        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true)) {
+            if (mServ != null) {
+                mServ.resumeMusic();
+            }
+        }
+
+    }
+
     private void stopMusic() {
         //Detect idle screen
         PowerManager pm = (PowerManager)
