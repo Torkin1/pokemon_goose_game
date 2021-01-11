@@ -253,7 +253,8 @@ public class AddPlayerActivity extends AppCompatActivity {
                         // Adds the player with the selected pokemon to the game
                         AddNewPlayerBean addNewPlayerBean = new AddNewPlayerBean();
                         addNewPlayerBean.setPlayerUsername(currentPlayerName);
-                        addNewPlayerBean.setPokemon(allPokemons.get(currentlySelectedPokemonIndex));
+                        Pokemon pokemonChoose = new Pokemon(allPokemons.get(currentlySelectedPokemonIndex));
+                        addNewPlayerBean.setPokemon(pokemonChoose);
                         controllerSelectPokemon.getAddNewPlayerBeans().add(addNewPlayerBean);
 
                         // updates etPlayerName

@@ -18,6 +18,17 @@ public class Pokemon{
     private int maxHp;                                                            // Max pokemon health
 
     public Pokemon(){}
+
+    //With this constructor we can create entity pokemon with the same values of the param pokemon
+    public Pokemon(Pokemon pokemon){
+        this.id = pokemon.getId();
+        this.name = pokemon.getName();
+        this.stats = pokemon.getStats();
+        this.types = pokemon.getTypes();
+        this.sprites = pokemon.getSprites();
+        this.maxHp = pokemon.getMaxHp();
+    }
+
     //all the getters and setters
 
     public Sprites getSprites() {
