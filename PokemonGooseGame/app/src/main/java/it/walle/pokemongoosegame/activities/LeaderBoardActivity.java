@@ -75,6 +75,8 @@ public class LeaderBoardActivity extends AppCompatActivity {
             // If it's the first player it is the winner of the game
             if (position == 0) {
                 holder.ivWinner.setVisibility(View.VISIBLE);
+            } else {
+                holder.ivWinner.setVisibility(View.INVISIBLE);
             }
         }
 
