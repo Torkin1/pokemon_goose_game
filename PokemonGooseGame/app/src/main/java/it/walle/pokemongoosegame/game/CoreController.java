@@ -18,8 +18,6 @@ import it.walle.pokemongoosegame.entity.Player;
 import it.walle.pokemongoosegame.entity.board.Board;
 import it.walle.pokemongoosegame.entity.board.cell.Cell;
 import it.walle.pokemongoosegame.entity.effect.InvocationContext;
-import it.walle.pokemongoosegame.utils.MethodGetter;
-import it.walle.pokemongoosegame.utils.NoSuchSetterException;
 
 public class CoreController {
     // The game main engine. one core to control them all
