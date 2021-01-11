@@ -163,71 +163,77 @@ public class GameActivity extends AppCompatActivity {
             }
         });
 
-        // binds players pokemon healths to observers
-        for (Player p : CoreController.getReference().getPlayers()) {
-            p.getPokemon().observeCurrentHp(this, new Observer<Integer>() {
-                @Override
-                public void onChanged(Integer currentHp) {
+        //binds players pokemon healths to observers
+        //Doing this we can avoid problems with null reference with CoreController when LeaderBoardActivity is started
+        try{
+            for (Player p : CoreController.getReference().getPlayers()) {
+                p.getPokemon().observeCurrentHp(this, new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer currentHp) {
 
-                    // If pokemon health reaches 0 or below, the player owning the pokemon loses the game
-                    if (currentHp <= 0) {
-                        LoserBean bean = new LoserBean();
-                        bean.setPlayerUsername(p.getUsername());
-                        CoreController.getReference().chooseLoser(bean);
+                        // If pokemon health reaches 0 or below, the player owning the pokemon loses the game
+                        if (currentHp <= 0) {
+                            LoserBean bean = new LoserBean();
+                            bean.setPlayerUsername(p.getUsername());
+                            CoreController.getReference().chooseLoser(bean);
 
-                        // Informs player that they have lost the game
-                        Dialog loseDialog = (new AlertDialog.Builder(GameActivity.this))
-                                .setTitle(String.format(getString(R.string.ALERT_POKEMON_FAINTED_TITLE), p.getUsername()))
-                                .setMessage(String.format(getString(R.string.ALERT_POKEMON_FAINTED_MSG), p.getPokemon().getName()))
-                                .setIcon(ContextCompat.getDrawable(GameActivity.this, R.drawable._f47432d67f0546c05a0719573105396_removebg_preview))
-                                .create();
-                        DialogInterface.OnDismissListener onDismissLoseDialogListener = new DialogInterface.OnDismissListener() {
-                            @Override
-                            public void onDismiss(DialogInterface dialog) {
+                            // Informs player that they have lost the game
+                            Dialog loseDialog = (new AlertDialog.Builder(GameActivity.this))
+                                    .setTitle(String.format(getString(R.string.ALERT_POKEMON_FAINTED_TITLE), p.getUsername()))
+                                    .setMessage(String.format(getString(R.string.ALERT_POKEMON_FAINTED_MSG), p.getPokemon().getName()))
+                                    .setIcon(ContextCompat.getDrawable(GameActivity.this, R.drawable._f47432d67f0546c05a0719573105396_removebg_preview))
+                                    .create();
+                            DialogInterface.OnDismissListener onDismissLoseDialogListener = new DialogInterface.OnDismissListener() {
+                                @Override
+                                public void onDismiss(DialogInterface dialog) {
 
-                                // updates pawns
-                                GameEngine.getInstance().getPawnSemaphore().release();
+                                    // updates pawns
+                                    GameEngine.getInstance().getPawnSemaphore().release();
 
-                                // If the loser is the current player, proceeds to next player
-                                if (CoreController.getReference().getCurrentPlayerUsername().compareTo(p.getUsername()) == 0 && CoreController.getReference().getPlayers().size() > 1) {
-                                    CoreController.getReference().nextTurn();
-                                    playerTurn();
+                                    // If the loser is the current player, proceeds to next player
+                                    if (CoreController.getReference().getCurrentPlayerUsername().compareTo(p.getUsername()) == 0 && CoreController.getReference().getPlayers().size() > 1) {
+                                        CoreController.getReference().nextTurn();
+                                        playerTurn();
+                                    }
+
                                 }
-
-                            }
-                        };//creates a  dialog for the looser
-                        DialogManager.getInstance().enqueueDialog(loseDialog, onDismissLoseDialogListener);
+                            };//creates a  dialog for the looser
+                            DialogManager.getInstance().enqueueDialog(loseDialog, onDismissLoseDialogListener);
+                        }
                     }
-                }
-            });
-        }
-
-        text_coins_value = findViewById(R.id.text_coins_value);
-        text_plate_value = findViewById(R.id.text_plate_value);
-
-        //Binds current plate with the text
-        CoreController.getReference().observePlate(this, new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                //Chage the value of the plate
-                text_plate_value.setText(String.valueOf(integer));
+                });
             }
-        });
 
-        // Binds current player coins to text_coins_value
-        for (Player p : CoreController.getReference().getPlayers()) {
-            p.observeMoney(this, new Observer<Integer>() {
+            text_coins_value = findViewById(R.id.text_coins_value);
+            text_plate_value = findViewById(R.id.text_plate_value);
+
+            //Binds current plate with the text
+
+            CoreController.getReference().observePlate(this, new Observer<Integer>() {
                 @Override
-                public void onChanged(Integer coins) {
-
-                    // updates view only if it's the current player
-                    if (p.getUsername().compareTo(CoreController.getReference().getCurrentPlayerUsername()) == 0) {
-                        text_coins_value.setText(String.valueOf(coins));
-                    }
+                public void onChanged(Integer integer) {
+                    //Change the value of the plate
+                    text_plate_value.setText(String.valueOf(integer));
                 }
             });
-        }
 
+            // Binds current player coins to text_coins_value
+            for (Player p : CoreController.getReference().getPlayers()) {
+                p.observeMoney(this, new Observer<Integer>() {
+                    @Override
+                    public void onChanged(Integer coins) {
+
+                        // updates view only if it's the current player
+                        if (p.getUsername().compareTo(CoreController.getReference().getCurrentPlayerUsername()) == 0) {
+                            text_coins_value.setText(String.valueOf(coins));
+                        }
+                    }
+                });
+            }
+        }
+        catch(IllegalStateException e){
+            Log.d(TAG, e.toString());
+        }
 
         // Initializes surfaces
         svBackground = (SurfaceView) findViewById(R.id.svBackground);
