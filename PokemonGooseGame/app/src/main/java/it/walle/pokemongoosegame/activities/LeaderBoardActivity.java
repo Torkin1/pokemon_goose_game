@@ -316,21 +316,28 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        stopMusic();
         super.onPause();
+    }
 
+    @Override
+    protected void onStop() {
+        stopMusic();
+        super.onStop();
+    }
+
+    private void stopMusic() {
         //Detect idle screen
         PowerManager pm = (PowerManager)
                 getSystemService(Context.POWER_SERVICE);
-        boolean isScreenOn = false;
-        if (pm != null) {
-            isScreenOn = pm.isScreenOn();
-        }
 
-        if (!isScreenOn) {
-            if (mServ != null) {
-                mServ.pauseMusic();
-            }
-        }
+        boolean isScreenOn = false;
+
+        if (pm != null)
+            isScreenOn = pm.isInteractive();//returns true if the device is read
+
+        if (!isScreenOn && mServ != null)
+            mServ.pauseMusic();
     }
 
 

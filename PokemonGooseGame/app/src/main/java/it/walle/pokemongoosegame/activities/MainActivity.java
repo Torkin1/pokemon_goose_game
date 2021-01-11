@@ -356,15 +356,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //Detect idle screen
         PowerManager pm = (PowerManager)
                 getSystemService(Context.POWER_SERVICE);
-        boolean isScreenOn = false;
-        if (pm != null) {
-            isScreenOn = pm.isScreenOn();
-        }
 
-        if (!isScreenOn) {
-            if (mServ != null) {
-                mServ.pauseMusic();
-            }
-        }
+        boolean isScreenOn = false;
+
+        if (pm != null)
+            isScreenOn = pm.isInteractive();//returns true if the device is read
+
+        if (!isScreenOn && mServ != null)
+            mServ.pauseMusic();
     }
 }

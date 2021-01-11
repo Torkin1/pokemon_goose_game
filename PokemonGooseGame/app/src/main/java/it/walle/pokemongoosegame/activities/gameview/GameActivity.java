@@ -394,29 +394,31 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        stopMusic();
         killSurfaceUpdaterThreads();//kill the thread in stop to, so no more requests should have be done
         super.onStop();
     }
 
     @Override
     protected void onPause() {
-
+        stopMusic();
         killSurfaceUpdaterThreads();//onPause kill the htread anyway, preventing errors
         super.onPause();
 
+    }
+
+    private void stopMusic() {
         //Detect idle screen
         PowerManager pm = (PowerManager)
                 getSystemService(Context.POWER_SERVICE);
-        boolean isScreenOn = false;
-        if (pm != null) {
-            isScreenOn = pm.isScreenOn();
-        }
 
-        if (!isScreenOn) {//iff screen turned off pause the musc
-            if (mServ != null) {
-                mServ.pauseMusic();
-            }
-        }
+        boolean isScreenOn = false;
+
+        if (pm != null)
+            isScreenOn = pm.isInteractive();//returns true if the device is read
+
+        if (!isScreenOn && mServ != null)
+            mServ.pauseMusic();
     }
 
     private void killSurfaceUpdaterThreads() {
