@@ -506,7 +506,10 @@ public class GameActivity extends AppCompatActivity {
             playerTurn();
         } else {//if there are no more player, end the game and start the a leaderboard activity
             startActivity(new Intent(this, LeaderBoardActivity.class));
-            finish();
+
+            DialogManager.getInstance().resetQueue();//possibly some dialogs are still open, better clean them
+
+            finish();//onDesotry on this activity
         }
     }
 

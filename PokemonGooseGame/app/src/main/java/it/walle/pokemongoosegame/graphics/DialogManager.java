@@ -19,6 +19,13 @@ public class DialogManager {
 
     private final Queue<Dialog> displayedDialogs = new LinkedList<>();  // holds a FIFO queue of dialogs to be displayed
 
+    //better clean the queue in case we can't access to it anymore
+    public void resetQueue(){
+        if (!displayedDialogs.isEmpty()) {
+            displayedDialogs.remove();
+        }
+    }
+
     public synchronized void enqueueDialog(Dialog dialog, DialogInterface.OnDismissListener onDismissListener) {
 
         // Adds a custom on dismiss listener which pops dialog from the queue
