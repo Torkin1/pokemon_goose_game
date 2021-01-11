@@ -25,17 +25,7 @@ public class AppConstants {
             SCREEN_WIDTH,
             SCREEN_HEIGHT,
             CELL_MARGIN = 15,
-            LEFT_GAME_MENU_WIDTH,
-            VELOCITY_WHILE_MOVING,
-            PAWN_JUMP_Y = 3;        // Used to calculate delta Y of pawn while moving up
-
-
-    public static boolean isDrawable = true;
-
-    public static int
-            DONE_CELLS = 0;
-
-    //for gravity when the pawn has to move up
+            LEFT_GAME_MENU_WIDTH;
 
     public static float convertDpToPixel(float dp, Context context) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
@@ -52,13 +42,8 @@ public class AppConstants {
         int height = metrics.heightPixels;
         this.SCREEN_WIDTH = width;
         this.SCREEN_HEIGHT = height;
-        float dip = 90f;
-        float px = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, metrics);
         float menu_dp_width = 90f;
         this.LEFT_GAME_MENU_WIDTH = (int) convertDpToPixel(menu_dp_width, context);
-
-        this.VELOCITY_WHILE_MOVING = -10;
-
 
     }
 

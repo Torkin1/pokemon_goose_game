@@ -341,7 +341,7 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                                                     public void onResponse(Bitmap response) {
                                                         GameEngine.this.pawnDrawer(response,player, pokePawn, canvas, context, playerUsername, in_cell_counter);
 
-                                                        //control how many pawns are in that pawn
+                                                        //control how many pawns are in that cell with this pawn
                                                         if (CoreController.getReference()
                                                                 .getAllPlayersInACellUsernames(player.getCurrentPosition()).length > 1) {
                                                             in_cell_counter++;
@@ -562,15 +562,6 @@ private void pawnDrawer(Bitmap sprite, Player player, PokePawn pokePawn, Canvas 
                         i = rows;
                     }
                 }
-
-            }
-
-            //Has this an utily anymore? I think we should delete this, I made this.. so I like it but we`re not
-            //using it anymore, please kill me
-            if (!AppConstants.isDrawable) {
-                AppConstants.DONE_CELLS = cellIndex;
-                AppConstants.isDrawable = !AppConstants.isDrawable;
-
 
             }
         }

@@ -378,7 +378,6 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         scrollBoardPage(1);
-                        AppConstants.isDrawable = !AppConstants.isDrawable;
                     }
                 });
 
