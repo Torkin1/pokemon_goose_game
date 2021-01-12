@@ -15,17 +15,14 @@ public abstract class SurfaceUpdaterThread extends Thread {
         //Passing a surfaceholder as param on the constructor
         this.surfaceView = surfaceView;
         this.context = context;
-    }//It will do an ovveride of the run method and the start will call it from GameView.
+    }//It will do an ovveride of the run method and the start will call it from GameActivity.
 
     @Override
-    public void run() {
-
+    public void run() {//the thread will live until isRunning it's true, after it will end
         isRunning = true;
-        Log.d(TAG, "I've just have born");
         while (isRunning){
             doUpdate();
         }
-        Log.d(TAG, "I'm dying lol");
 
     }
 
