@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 import java.util.Calendar;
 
+import it.walle.pokemongoosegame.graphics.DialogManager;
+import it.walle.pokemongoosegame.graphics.WIPDialog;
 import it.walle.pokemongoosegame.sound.HomeWatcher;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.sound.MusicService;
@@ -97,18 +99,18 @@ public class AboutusActivity extends AppCompatActivity {
         });
         mHomeWatcher.startWatch();
         //elemts to be displayed
-        Element adsElement = new Element();
         View aboutPage = new AboutPage(this)
                 .isRTL(false)
-                .setDescription(" It's not a game Its the game!")
+                .setDescription(getString(R.string.ABOUT_US_DESC))
                 .setImage(R.drawable.logo)
-                .addItem(new Element().setTitle("Version 0.1 Pre Alfa"))
-                .addGroup("CONNECT WITH US!")
-                .addEmail("jmihai96@gmail.com")
-                .addWebsite("http://www.savewalterwhite.com/")
-                .addYoutube("UCfM3zsQsOnfWNUppiycmBuw")
-                .addPlayStore("com.Wall-E.PokémonGooseGame")
-                .addInstagram("mrbean")
+                .addItem(new Element().setTitle(getString(R.string.VERSION)))
+
+                // TODO: add contact means (mail, instagram, github ...)
+
+                .addGroup(getString(R.string.ABOUT_US_TEAM_HEADER))
+                .addItem(new Element().setTitle("Jianu Mihai"))
+                .addItem(new Element().setTitle("Mei Lorenzo"))
+                .addItem(new Element().setTitle("Daniele La Prova"))
                 .addItem(createCopyright())
                 .create();
         setContentView(aboutPage);
@@ -117,7 +119,7 @@ public class AboutusActivity extends AppCompatActivity {
     //create an copyright element
     private Element createCopyright() {
         Element copyright = new Element();
-        @SuppressLint("DefaultLocale") final String copyrightString = String.format("Copyright %d by Wall-E Team", Calendar.getInstance().get(Calendar.YEAR));
+        final String copyrightString = String.format(getString(R.string.COPYRIGHT), Calendar.getInstance().get(Calendar.YEAR));
         copyright.setTitle(copyrightString);
         copyright.setIconDrawable(R.drawable.copyright_icon);
         copyright.setGravity(Gravity.CENTER);

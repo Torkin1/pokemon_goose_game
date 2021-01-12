@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">PokemonGooseGame</string>
+    <string name="app_name" translatable="false">PokémonGooseGame</string>
     <string name="navigation_drawer_open">Open Navigation Drawer</string>
     <string name="navigation_drawer_close">Close Navigation Drawer</string>
     <string name="FRONT_SPRITE_DESCRIPTION">Front sprite of pokemon</string>
@@ -100,4 +100,21 @@
     <string name="music_service_player_error">Music player failed</string>
     <string name="work_in_progress_dialog_title">Working in progress...</string>
     <string name="work_in_progress_dialog_description">We are working for you, please be patient</string>
+    <string name="MENU_MAIN_HOME_TITLE" translatable="false">Home</string>
+    <string name="MENU_MAIN_INFO_TITLE">Info</string>
+    <string name="MENU_MAIN_STATS_TITLE">Stats</string>
+    <string name="MENU_MAIN_ABOUT_US_TITLE">About Us</string>
+    <string name="MENU_MAIN_LOGIN_TITLE">Login</string>
+    <string name="MAIN_MENU_PROFILE_TITLE">Profile</string>
+    <string name="MAIN_MENU_LOGOUT_TITLE">LogOut</string>
+    <string name="MAIN_MENU_COMUNICATE_TITLE">Comunicate</string>
+    <string name="MAIN_MENU_SHARE_TITLE">Share</string>
+    <string name="MAIN_MENU_FAVOURITES_TITLE">Favourites</string>
+    <string name="MAIN_MENU_EXPLORE_TITLE">Explore</string>
+    <string name="MAIN_MENU_USER_TITLE">User</string>
+    <string name="MAIN_MENU_HEADER_TITLE" translatable="false">@string/app_name</string>
+    <string name="COPYRIGHT">Copyright %d by Wall-E Team</string>
+    <string name="ABOUT_US_DESC">It\'s not a game, Its the game!</string>
+    <string name="VERSION">Version 0.1 Pre Alfa</string>
+    <string name="ABOUT_US_TEAM_HEADER">The Team:</string>
 </resources>

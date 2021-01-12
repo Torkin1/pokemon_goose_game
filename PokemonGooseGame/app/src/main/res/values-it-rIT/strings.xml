@@ -28,7 +28,7 @@
     <string name="ALERT_NO_BOARD_SELECTED_MSG">Scegli una configurazione per la plancia prima di continuare!</string>
     <string name="ALERT_NO_POKEMON_SELECTED_TITLE">Nessun pokemon selezionato!</string>
     <string name="ALERT_NO_POKEMON_SELECTED_MSG">Devi scegliere un pokemon prima!</string>
-    <string name="BUTTON_START_GAME_TEXT">Inzia partita</string>
+    <string name="BUTTON_START_GAME_TEXT">Inizia partita</string>
     <string name="ALERT_NO_PLAYER_ADDED_MSG">Per piacere aggiungi almeno un giocatore prima iniziare</string>
     <string name="ALERT_NO_PLAYER_ADDED_TITLE">Nessun giocatore aggiunto!</string>
     <string name="TOAST_WITH_ICON_HINT">Messaggio toast qui</string>
@@ -98,4 +98,19 @@
     <string name="music_service_player_error">Il Music player ha fallito</string>
     <string name="work_in_progress_dialog_title">Lavori in corso...</string>
     <string name="work_in_progress_dialog_description">Stiamo lavorando per voi, per piacere abbi pazienza</string>
+    <string name="MENU_MAIN_STATS_TITLE">Statistiche</string>
+    <string name="MENU_MAIN_LOGIN_TITLE">Accedi</string>
+    <string name="MAIN_MENU_PROFILE_TITLE">Profilo</string>
+    <string name="MAIN_MENU_LOGOUT_TITLE">Esci</string>
+    <string name="MAIN_MENU_COMUNICATE_TITLE">Comunica</string>
+    <string name="MAIN_MENU_SHARE_TITLE">Condividi</string>
+    <string name="MAIN_MENU_FAVOURITES_TITLE">Preferiti</string>
+    <string name="MAIN_MENU_EXPLORE_TITLE">Esplora</string>
+    <string name="MAIN_MENU_USER_TITLE">Utente</string>
+    <string name="MENU_MAIN_INFO_TITLE" translatable="false">Informazioni</string>
+    <string name="MENU_MAIN_ABOUT_US_TITLE" translatable="false">Su di noi</string>
+    <string name="COPYRIGHT">Diritti di autore %d di Wall-E Team</string>
+    <string name="ABOUT_US_DESC">Non è un gioco, è il gioco!</string>
+    <string name="VERSION">Versione 0.1 Pre Alfa</string>
+    <string name="ABOUT_US_TEAM_HEADER">La squadra:</string>
 </resources>

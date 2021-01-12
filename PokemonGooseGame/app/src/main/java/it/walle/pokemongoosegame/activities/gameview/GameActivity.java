@@ -43,6 +43,7 @@ import java.util.List;
 
 import it.walle.pokemongoosegame.graphics.DialogManager;
 import it.walle.pokemongoosegame.graphics.ToastWithIcon;
+import it.walle.pokemongoosegame.graphics.WIPDialog;
 import it.walle.pokemongoosegame.sound.HomeWatcher;
 import it.walle.pokemongoosegame.activities.LeaderBoardActivity;
 import it.walle.pokemongoosegame.R;
@@ -151,13 +152,8 @@ public class GameActivity extends AppCompatActivity {
         config_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                Dialog workInProgress = (new AlertDialog.Builder(GameActivity.this))
-                        .setTitle(R.string.work_in_progress_dialog_title)
-                        .setIcon(R.drawable.work_in_progress_icon)
-                        .setMessage(R.string.work_in_progress_dialog_description)
-                        .create();
-
+                // TODO: implement sub menu
+                Dialog workInProgress = new WIPDialog(GameActivity.this);
                 DialogManager.getInstance().enqueueDialog(workInProgress);
 
             }

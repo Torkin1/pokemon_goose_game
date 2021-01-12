@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,6 +31,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.navigation.NavigationView;
 
 import it.walle.pokemongoosegame.Bootstrap;
+import it.walle.pokemongoosegame.graphics.DialogManager;
+import it.walle.pokemongoosegame.graphics.WIPDialog;
 import it.walle.pokemongoosegame.sound.HomeWatcher;
 import it.walle.pokemongoosegame.R;
 import it.walle.pokemongoosegame.activities.addplayer.AddPlayerActivity;
@@ -132,47 +135,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                //all the cases that exist in the navigation menu
-                //all have click sound or back sound, depends on the action
-                switch (menuItem.getItemId()) {
+                // plays click sound
+                if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
+                    soundPool.play(sound_click, 1, 1, 0, 0, 1);
 
-                    case R.id.nav_home:
-                        Intent home = new Intent(MainActivity.this, MainActivity.class);
-                        onBackPressed();
-                        break;
-
-                    case R.id.nav_info:
-
-                        Intent info = new Intent(MainActivity.this, InfoActivity.class);
-                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
-                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
-                        startActivity(info);
-                        break;
-
-                    case R.id.nav_AboutUs:
-                        Intent aboutUs = new Intent(MainActivity.this, AboutusActivity.class);
-                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
-                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
-                        startActivity(aboutUs);
-                        break;
-//TODO case Policy and more if you like
-
-
-                    case R.id.nav_share: {
-
-                        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-                        if (prefs.getBoolean(getString(R.string.isSoundOn_flag), true))
-                            soundPool.play(sound_click, 1, 1, 0, 0, 1);
-                        //creating a dummy share option
-                        sharingIntent.setType("text/plain");
-                        String shareBody = "http://play.google.com/store/apps/detail?id=" + getPackageName();
-                        String shareSub = "Try now";
-                        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, shareSub);
-                        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-                        startActivity(Intent.createChooser(sharingIntent, "Share using"));
-
-                    }
-                    break;
+                // do actions depending on menu item clicked
+                int menuItemId = menuItem.getItemId();
+                if (menuItemId == R.id.nav_AboutUs) {
+                    Intent aboutUs = new Intent(MainActivity.this, AboutusActivity.class);
+                    startActivity(aboutUs);
+                } else {
+                    // TODO: implement features for remaining menu items, so that this code will never run anymore
+                    Dialog wipDialog = new WIPDialog(MainActivity.this);
+                    DialogManager.getInstance().enqueueDialog(wipDialog);
                 }
                 return false;
             }

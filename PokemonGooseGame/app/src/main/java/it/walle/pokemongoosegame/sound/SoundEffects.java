@@ -57,4 +57,8 @@ public class SoundEffects {
         soundPool.play(sound_back, 1, 1, 0, 0, 1);
         Toast.makeText(context, "Hello dal sound", Toast.LENGTH_SHORT).show();
     }
+
+    public void playClickSound(){
+
+    }
 }

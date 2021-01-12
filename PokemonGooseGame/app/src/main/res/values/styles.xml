@@ -1,14 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<resources>
-    <style name="GreetingsLabel">
-        <item name="font">8dp</item>
-        <item name="paddingEnd">8dp</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
-    </style>
-
-</resources>
--->
 
 <resources>
     <style name="GreetingsLabel" parent="Theme.MaterialComponents.DayNight">
@@ -17,6 +7,10 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Body1</item>
 
+    </style>
+    <style name="about_image">
+        <item name="android:layout_width">200dp</item>
+        <item name="android:layout_height">200dp</item>
     </style>
 
 </resources>
