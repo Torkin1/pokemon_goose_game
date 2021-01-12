@@ -247,8 +247,8 @@ public class LeaderBoardActivity extends AppCompatActivity {
 
                         .setEmissionDuration(2000)
                         .setEmissionRate(200)
-                        .setVelocityX(10, 10)
-                        .setVelocityY(200)
+                        .setVelocityX(10, 100)
+                        .setVelocityY(200, 100)
                         .setRotationalVelocity(180, 180)
                         .enableFadeOut(Utils.getDefaultAlphaInterpolator())
                         .setTouchEnabled(true)
