@@ -335,7 +335,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onPause() {
-        mServ.pauseMusic();
+        stopMusic();
         super.onPause();
 
 
@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onStop() {
-        mServ.pauseMusic();
+        stopMusic();
         super.onStop();
     }
 
