@@ -81,7 +81,7 @@ public class GameEngine {
     private final Map<String, PokePawn> pawns = new HashMap<>();
 
     // Matrix which will hold graphic cells of current board screen.
-    // The indexes of this matrix correspond to the indexes used to display  the grapic cells of current board screen, with displayedCells[0][0] corresponding to the bottom left cell
+    // The indexes of this matrix correspond to the indexes used to display  the graphic cells of current board screen, with displayedCells[0][0] corresponding to the bottom left cell
     private final GraphicCell[][] displayedCells;
 
     // Used by threads to do updates only when necessary
