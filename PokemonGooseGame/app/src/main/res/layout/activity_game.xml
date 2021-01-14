@@ -32,12 +32,6 @@
             android:src="@drawable/config_img"
             android:contentDescription="@string/config_image_description"/>
 
-
-
-
-
-
-
         <ImageView
             android:id="@+id/page_up_img"
             android:layout_width="36dp"
@@ -66,21 +60,43 @@
             android:layout_marginEnd="@dimen/basic_margin"
             android:src="@drawable/down_arrow_off" />
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_above="@id/dice_image"
+            >
+
+            <TextView
+                android:id="@+id/tvRoll"
+                style="@style/GreetingsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/TV_ROLL"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                android:gravity="center"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:rotation="180"
+                android:src="@drawable/finger_point_nog" />
+
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/dice_image"
-            android:contentDescription="@string/dice_image_description"
-
-            android:layout_width="77dp"
-            android:layout_height="93dp"
-            android:layout_below="@+id/page_down_img"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="@dimen/basic_margin"
-            android:layout_marginTop="@dimen/margin_dimension"
-            android:layout_marginEnd="@dimen/basic_margin"
-            android:layout_marginBottom="@dimen/bottom_dice_distance"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="50dp"
             android:baselineAlignBottom="true"
+            android:contentDescription="@string/dice_image_description"
             android:src="@drawable/dice1" />
 
 
@@ -178,13 +194,13 @@
 
         <ImageView
             android:id="@+id/choosedPokemon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginStart="@dimen/basic_margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_coins_value"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/bug" />
+            app:srcCompat="@drawable/pikpng_com_pokeball_png_589803" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,8 +223,6 @@
         app:layout_constraintStart_toEndOf="@+id/left_game_menu"
         app:layout_constraintTop_toBottomOf="@+id/upBard"
         app:layout_constraintVertical_bias="1.0" />
-
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -117,4 +117,5 @@
     <string name="ABOUT_US_DESC">It\'s not a game, Its the game!</string>
     <string name="VERSION">Version 0.1 Pre Alfa</string>
     <string name="ABOUT_US_TEAM_HEADER">The Team:</string>
+    <string name="TV_ROLL">Tap to Roll!</string>
 </resources>
