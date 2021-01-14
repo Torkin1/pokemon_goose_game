@@ -538,7 +538,7 @@ public class GameActivity extends AppCompatActivity {
             Player player = CoreController.getReference().getPlayerByUsername(CoreController.getReference().getCurrentPlayerUsername());
 
 
-            //draws the icons in the top fo the view to make the player understand and remember the his pokemon
+            // draws current player pokemon sprite
             DAOSprite daoSprite = new DAOSprite(this);
             daoSprite
                     .loadSprite(
@@ -574,14 +574,7 @@ public class GameActivity extends AppCompatActivity {
             coreController.skipTurn(skipTurnBean);
             if (!skipTurnBean.isHasSkipped()) {
 
-                //Ask the player to trow the dice and abilitates the dice
-                new ToastWithIcon(this,
-                        ContextCompat
-                                .getDrawable(this,
-                                        R.drawable.throw_dice_toast),
-                        String.format(getString(R.string.TOAST_THROW_DICE), playerTurn),
-                        Toast.LENGTH_SHORT)
-                        .show();
+                // Enables dice
                 diceImage.setEnabled(true);
             } else {
                 Dialog skipTurnDialog = new AlertDialog.Builder(this)
