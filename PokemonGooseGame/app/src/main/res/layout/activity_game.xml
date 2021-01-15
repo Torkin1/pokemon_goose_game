@@ -60,46 +60,46 @@
             android:src="@drawable/down_arrow_off" />
 
 
-        <TextView
-            android:id="@+id/tvRoll"
-            style="@style/GreetingsLabel"
 
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_below="@+id/page_down_img"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/default_menu_game_distance"
-            android:layout_marginTop="@dimen/default_menu_game_distance"
-
-
-            android:layout_marginEnd="@dimen/default_menu_game_distance"
-            android:autoSizeMaxTextSize="18sp"
-            android:autoSizeMinTextSize="4sp"
-            android:autoSizeStepGranularity="2sp"
-            android:autoSizeTextType="uniform"
-            android:contentDescription="@string/text_that_suggest_the_roll_of_the_dice"
-            android:gravity="center"
-            android:text="@string/TV_ROLL"
-            android:textAlignment="center"
-            android:textColor="@color/white" />
-
-        <ImageView
-            android:id="@+id/ivHand"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:layout_above="@+id/dice_image"
-
-            android:layout_below="@+id/tvRoll"
-            android:layout_alignParentStart="true"
-
-            android:layout_alignParentEnd="true"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_marginStart="@dimen/basic_margin"
             android:layout_marginEnd="@dimen/basic_margin"
-            android:contentDescription="@string/hand_that_indicate_the_dice"
-            android:rotation="180"
+            android:layout_below="@id/page_down_img"
+            android:layout_above="@id/dice_image"
+            android:gravity="bottom"
+            >
 
-            android:src="@drawable/finger_point_nog" />
+            <TextView
+                android:id="@+id/tvRoll"
+                style="@style/GreetingsLabel"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:autoSizeMaxTextSize="18sp"
+                android:autoSizeMinTextSize="4sp"
+                android:autoSizeStepGranularity="2sp"
+                android:autoSizeTextType="uniform"
+                android:contentDescription="@string/text_that_suggest_the_roll_of_the_dice"
+                android:gravity="center"
+                android:text="@string/TV_ROLL"
+                android:textAlignment="center"
+                android:textColor="@color/white" />
+
+            <ImageView
+                android:id="@+id/ivHand"
+                android:layout_width="match_parent"
+                android:layout_height="35dp"
+                android:contentDescription="@string/hand_that_indicate_the_dice"
+                android:rotation="180"
+
+                android:src="@drawable/finger_point_nog" />
+
+        </LinearLayout>
+
+
 
         <ImageView
             android:id="@+id/dice_image"
