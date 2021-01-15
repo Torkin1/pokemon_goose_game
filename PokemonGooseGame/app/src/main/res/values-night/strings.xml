@@ -102,4 +102,7 @@
     <string name="work_in_progress_dialog_title">Working in progress.</string>
     <string name="work_in_progress_dialog_description">We are working for you,</string>
     <string name="BOARD_CREATION_ALGORITHMS">Procedurally generated</string>
+    <string name="hand_that_indicate_the_dice">hand That indicate the dice</string>
+    <string name="text_that_suggest_the_roll_of_the_dice">Text that suggest the roll of the dice</string>
+    <string name="choosed_pokemon_displayed_here">Choosed pokemon displayed here</string>
 </resources>

@@ -115,4 +115,7 @@
     <string name="ABOUT_US_TEAM_HEADER">La squadra:</string>
     <string name="TV_ROLL">Tocca per tirare!</string>
     <string name="BOARD_CREATION_ALGORITHMS">Generata proceduralmente</string>
+    <string name="hand_that_indicate_the_dice">Mano che indica il dado</string>
+    <string name="text_that_suggest_the_roll_of_the_dice">Testo che suggerisce di tirare il dado</string>
+    <string name="choosed_pokemon_displayed_here">Il pokemon scelto viene mostrato qui</string>
 </resources>

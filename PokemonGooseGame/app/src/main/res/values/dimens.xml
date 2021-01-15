@@ -16,4 +16,5 @@
     <dimen name="general_dialog_image_dim">180dp</dimen>
     <dimen name="general_dialog_textWidth">450dp</dimen>
     <dimen name="general_dialog_text_height">100dp</dimen>
+    <dimen name="default_menu_game_distance">5dp</dimen>
 </resources>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/frameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -60,20 +59,7 @@
             android:contentDescription="@string/down_arrow_description"
             android:src="@drawable/down_arrow_off" />
 
-<!--        <LinearLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_above="@id/dice_image"-->
-<!--            android:layout_below="@+id/page_down_img"-->
-<!--            android:layout_marginTop="4dp"-->
-<!--            android:layout_marginBottom="4dp"-->
-<!--            android:orientation="vertical">-->
 
-
-
-
-
-<!--        </LinearLayout>-->
         <TextView
             android:id="@+id/tvRoll"
             style="@style/GreetingsLabel"
@@ -83,15 +69,16 @@
             android:layout_below="@+id/page_down_img"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/basic_margin"
-            android:layout_marginTop="5dp"
+            android:layout_marginStart="@dimen/default_menu_game_distance"
+            android:layout_marginTop="@dimen/default_menu_game_distance"
 
-            android:layout_marginEnd="@dimen/basic_margin"
+
+            android:layout_marginEnd="@dimen/default_menu_game_distance"
             android:autoSizeMaxTextSize="18sp"
             android:autoSizeMinTextSize="4sp"
             android:autoSizeStepGranularity="2sp"
             android:autoSizeTextType="uniform"
-            android:contentDescription="@string/down_arrow_description"
+            android:contentDescription="@string/text_that_suggest_the_roll_of_the_dice"
             android:gravity="center"
             android:text="@string/TV_ROLL"
             android:textAlignment="center"
@@ -99,7 +86,7 @@
 
         <ImageView
             android:id="@+id/ivHand"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="35dp"
             android:layout_above="@+id/dice_image"
 
@@ -109,7 +96,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/basic_margin"
             android:layout_marginEnd="@dimen/basic_margin"
-            android:contentDescription="@string/down_arrow_description"
+            android:contentDescription="@string/hand_that_indicate_the_dice"
             android:rotation="180"
 
             android:src="@drawable/finger_point_nog" />
@@ -231,7 +218,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/text_coins_value"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/pikpng_com_pokeball_png_589803" />
+            app:srcCompat="@drawable/pikpng_com_pokeball_png_589803"
+            android:contentDescription="@string/choosed_pokemon_displayed_here" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
