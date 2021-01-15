@@ -36,14 +36,14 @@
             android:id="@+id/page_up_img"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:contentDescription="@string/up_arrow_description"
-
             android:layout_below="@+id/config_game_btn"
+
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="@dimen/basic_margin"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="@dimen/basic_margin"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="31dp"
+            android:layout_marginEnd="15dp"
+            android:contentDescription="@string/up_arrow_description"
             android:src="@drawable/up_arrow_off" />
 
         <ImageView
@@ -60,46 +60,73 @@
             android:contentDescription="@string/down_arrow_description"
             android:src="@drawable/down_arrow_off" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/dice_image"
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_above="@id/dice_image"-->
+<!--            android:layout_below="@+id/page_down_img"-->
+<!--            android:layout_marginTop="4dp"-->
+<!--            android:layout_marginBottom="4dp"-->
+<!--            android:orientation="vertical">-->
+
+
+
+
+
+<!--        </LinearLayout>-->
+        <TextView
+            android:id="@+id/tvRoll"
+            style="@style/GreetingsLabel"
+
             android:layout_below="@+id/page_down_img"
-            android:layout_marginTop="4dp"
-            android:layout_marginBottom="4dp"
-            android:orientation="vertical">
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/basic_margin"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="@dimen/basic_margin"
+            android:contentDescription="@string/down_arrow_description"
 
-            <TextView
-                android:id="@+id/tvRoll"
-                style="@style/GreetingsLabel"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:autoSizeMaxTextSize="18sp"
-                android:autoSizeMinTextSize="4sp"
-                android:autoSizeTextType="uniform"
-                android:gravity="center"
-                android:text="@string/TV_ROLL"
-                android:textAlignment="center"
-                android:textColor="@color/white" />
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:autoSizeMaxTextSize="18sp"
+            android:autoSizeMinTextSize="4sp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeStepGranularity="2sp"
+            android:gravity="center"
+            android:text="@string/TV_ROLL"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="35dp"
-                android:rotation="180"
-                android:src="@drawable/finger_point_nog" />
+        <ImageView
+            android:id="@+id/ivHand"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:rotation="180"
 
-        </LinearLayout>
+            android:layout_below="@+id/tvRoll"
+            android:layout_above="@+id/dice_image"
+
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/basic_margin"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="@string/down_arrow_description"
+
+            android:src="@drawable/finger_point_nog" />
 
         <ImageView
             android:id="@+id/dice_image"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="40dp"
+
             android:baselineAlignBottom="true"
             android:contentDescription="@string/dice_image_description"
             android:src="@drawable/dice1" />
