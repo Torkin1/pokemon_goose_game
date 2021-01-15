@@ -301,7 +301,7 @@ public class AddPlayerActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) {
                                     if (type != null) {
-                                        if (type.equals(BoardTypeEnumeration.PG.getType())) {
+                                        if (type.equals(getResources().getString(R.string.BOARD_CREATION_ALGORITHMS))) {
 
                                             LocalDatabase localDatabase = (LocalDatabase) LocalDatabase.getReference(AddPlayerActivity.this);
 

@@ -118,4 +118,5 @@
     <string name="VERSION">Version 0.1 Pre Alfa</string>
     <string name="ABOUT_US_TEAM_HEADER">The Team:</string>
     <string name="TV_ROLL">Tap to Roll!</string>
+    <string name="BOARD_CREATION_ALGORITHMS">Procedurally generated</string>
 </resources>

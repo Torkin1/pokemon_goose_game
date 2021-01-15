@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <array name="BOARD_CREATION_ALGORITHMS">
-        <item>Procedurally generated</item>
+        <item>@string/BOARD_CREATION_ALGORITHMS</item>
     </array>
 </resources>
