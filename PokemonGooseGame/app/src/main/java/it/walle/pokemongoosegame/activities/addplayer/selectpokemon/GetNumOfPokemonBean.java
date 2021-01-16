@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.android.volley.Response;
 
-import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.CountPokemon;
 
 public class GetNumOfPokemonBean {
     private Context context;//need the context on it

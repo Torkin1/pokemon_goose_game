@@ -7,7 +7,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 
 import it.walle.pokemongoosegame.entity.pokeapi.EntityPack;
-import it.walle.pokemongoosegame.entity.pokeapi.allpokemon.CountPokemon;
+import it.walle.pokemongoosegame.entity.pokeapi.pokemon.CountPokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.pokemon.Pokemon;
 import it.walle.pokemongoosegame.entity.pokeapi.type.Type;
 import it.walle.pokemongoosegame.volley.GsonQueryRequest;

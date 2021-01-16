@@ -1,4 +1,4 @@
-package it.walle.pokemongoosegame.entity.pokeapi.allpokemon;
+package it.walle.pokemongoosegame.entity.pokeapi.pokemon;
 
 public class CountPokemon {
     private int count; //Numero di pokemon
